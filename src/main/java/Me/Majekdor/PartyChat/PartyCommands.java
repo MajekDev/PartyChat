@@ -340,7 +340,7 @@ public class PartyCommands implements CommandExecutor {
 
                 //Error Messages
             } else {
-                player.sendMessage(Main.format((plugin.messageData.getConfig().getString("unknown-command")).replace("%prefix%", prefix)));
+                player.sendMessage(Main.format((m.getString("unknown-command")).replace("%prefix%", prefix)));
             }
         }
         return false;
