@@ -1,4 +1,4 @@
-What is PartyChat?
+**What is PartyChat?**
 PartyChat is a configurable, easy to use plugin, that allows players to chat with their friends in private parties. 
 Only players within the party and admins are able to see the messages. Nicknames from plugins such as Essentials are supported. 
 Default Minecraft color codes and hex color codes are also supported!
