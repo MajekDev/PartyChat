@@ -1,0 +1,21 @@
+#PartyChat by Majekdor | Created on 5/23/2020
+
+#Change whether or not the plugin blocks inappropriate party names
+block-inappropriate-names: false
+
+#Add words you would like to block here. Make sure you uncomment the lines
+blocked-names:
+  wordlist:
+    #- blocked
+    #- words
+    #- go
+    #- here
+
+#Change whether or not the plugin uses permissions
+#If set to false everyone will have permission to use PartyChat
+#If set to true only players with the permission partychat.use will be able to use PartyChat
+use-permissions: false
+
+#Change whether or not staff sees all PartyChat messages by default
+#This can be toggled with /spy or /partyspy
+auto-spy: true
