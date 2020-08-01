@@ -19,3 +19,6 @@ use-permissions: false
 #Change whether or not staff sees all PartyChat messages by default
 #This can be toggled with /spy or /partyspy
 auto-spy: true
+
+#Change the maximum amount of characters allowed for a party name. This does not include color codes.
+max-characters: 20

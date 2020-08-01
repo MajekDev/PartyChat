@@ -1,5 +1,6 @@
 package Me.Majekdor.PartyChat;
 
+import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -115,7 +116,9 @@ public class PartyCommands implements CommandExecutor {
                     player.sendMessage(Main.format((m.getString("no-name")).replace("%prefix%", prefix))); return true;
                 } else if (args.length == 2) {
                     String partyName = args[1];
-                    if (args[1].length() >= 20) {
+                    int max = plugin.getConfig().getInt("max-characters");
+                    String noColor = ChatColor.stripColor(partyName);
+                    if (noColor.length() >= max) {
                         player.sendMessage(Main.format((m.getString("less-20")).replace("%prefix%", prefix))); return true;
                     }
                     if (parties.contains(args[1])) {

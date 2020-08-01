@@ -69,7 +69,7 @@ public class PartyListeners implements Listener {
         }
         PartyCommands.partyChat.put(player.getName(), false);
         if (player.hasPermission("partychat.spy") && (!(SpyCommand.serverStaff.contains(player.getName())))) {
-            Boolean autoSpy = m.getBoolean("auto-spy");
+            Boolean autoSpy = plugin.getConfig().getBoolean("auto-spy");
             SpyCommand.spyToggle.put(player.getName(), autoSpy);
             SpyCommand.serverStaff.add(player.getName());
         }
