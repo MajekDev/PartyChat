@@ -5,11 +5,11 @@ import org.bukkit.configuration.file.FileConfiguration;
 import java.util.Arrays;
 
 public class MessageDataWrapper {
-    static MessagesManager MessageConfig;
+    static DataManager MessageConfig;
     Main plugin;
     public MessageDataWrapper(Main instance) {
         plugin = instance;
-        MessageDataWrapper.MessageConfig = new MessagesManager(instance, null, "messages.yml");
+        MessageDataWrapper.MessageConfig = new DataManager(instance, null, "messages.yml");
         MessageDataWrapper.MessageConfig.createFile(
                 null,
                 "PartyChat by Majekdor - Need help? Message me on Discord @Majekdor#6346\r\n" +
@@ -37,7 +37,7 @@ public class MessageDataWrapper {
                 "                 %prefix%",
                 "          &7Created by: &bMajekdor",
                 "                &7Version: &b%version%",
-                "&7&l----------------------------\r\n"
+                "&7&l----------------------------"
         ));
         m.addDefault("party-help1", Arrays.asList(
                 "&7--------------- %prefix% &bHelp &7---------------",

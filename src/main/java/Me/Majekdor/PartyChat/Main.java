@@ -8,14 +8,12 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-//Created by Majekdor on 5/23/2020
+// Created by Majekdor on 5/23/2020
 
 public final class Main extends JavaPlugin {
-    public MessagesManager messageData;
-    //public static String format(String format) {
-    //    return ChatColor.translateAlternateColorCodes('&', format);
-    //}
+    public DataManager messageData;
 
+    // Format hex colors codes and standard minecraft color codes
     public static final Pattern pattern = Pattern.compile("#[a-fA-F0-9]{6}");
 
     public static String format(String msg) {
@@ -44,6 +42,7 @@ public final class Main extends JavaPlugin {
         this.getCommand("spy").setExecutor(new SpyCommand(this));
         //bstats stuff
         int pluginId = 7667; Metrics metrics = new Metrics(this, pluginId);
+        Bukkit.getConsoleSender().sendMessage(format("[PartyChat v2.3.1] PartyChat enabled."));
     }
 
     @Override

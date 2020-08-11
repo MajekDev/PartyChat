@@ -10,14 +10,14 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.logging.Level;
 
-public class MessagesManager {
+public class DataManager {
     private final JavaPlugin plugin;
     private FileConfiguration dataConfig = null;
     private File configFile = null;
     private final String folderName;
     private final String fileName;
 
-    public MessagesManager(JavaPlugin instance, String folderName, String fileName) {
+    public DataManager(JavaPlugin instance, String folderName, String fileName) {
         this.plugin = instance;
         this.folderName = folderName;
         this.fileName = fileName;
@@ -65,6 +65,7 @@ public class MessagesManager {
         }
     }
 
+    // Not in use but saved for future reference
     public void saveDefaultConfig() {
         if (this.configFile == null)
             this.configFile = new File(this.plugin.getDataFolder(), "messages.yml");

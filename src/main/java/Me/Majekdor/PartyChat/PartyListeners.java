@@ -29,11 +29,13 @@ public class PartyListeners implements Listener {
             String removePlayer = player.getName();
             String partyName = PartyCommands.players.get(player.getName());
             List<String> partymembers = PartyCommands.party.get(partyName);
-            partymembers.remove(removePlayer); PartyCommands.inParty.remove(removePlayer); PartyCommands.players.remove(removePlayer, partyName);
+            partymembers.remove(removePlayer); PartyCommands.inParty.remove(removePlayer);
+            PartyCommands.players.remove(removePlayer, partyName);
             for (String s : partymembers) {
                 Player p = Bukkit.getPlayerExact(s);
                 if (!(p == null))
-                    p.sendMessage(Main.format((m.getString("player-leave")).replace("%player%", player.getDisplayName()).replace("%prefix%", prefix)));
+                    p.sendMessage(Main.format((m.getString("player-leave"))
+                            .replace("%player%", player.getDisplayName()).replace("%prefix%", prefix)));
             }
             if (partymembers.isEmpty()) {
                 PartyCommands.parties.remove(partyName);
@@ -44,7 +46,7 @@ public class PartyListeners implements Listener {
             //Give the party a new random leader if the party creator leaves
             Player lead = PartyCommands.isLeader.get(partyName);
             String leader1 = lead.getName();
-            if (leader1 == player.getName()) {
+            if (leader1.equals(player.getName())) {
                 PartyCommands.isLeader.remove(partyName, player);
                 if (!(partymembers.isEmpty())) {
                     Random random = new Random();
@@ -55,7 +57,8 @@ public class PartyListeners implements Listener {
                     for (String s : partymembers) {
                         Player p = Bukkit.getPlayerExact(s);
                         if ((!(p == null)) && (!(s.equals(newLeader))))
-                            p.sendMessage(Main.format((m.getString("new-leader")).replace("%player%", leader.getDisplayName()).replace("%prefix%", prefix)));
+                            p.sendMessage(Main.format((m.getString("new-leader"))
+                                    .replace("%player%", leader.getDisplayName()).replace("%prefix%", prefix)));
                     }
                 }
             }
@@ -88,14 +91,16 @@ public class PartyListeners implements Listener {
                     Player p = Bukkit.getPlayerExact(s);
                     if (!(p == null))
                         messageReceived.add(p.getName());
-                    p.sendMessage(Main.format((m.getString("message-format") + message).replace("%partyName%", partyName).replace("%player%", player.getDisplayName())));
+                    p.sendMessage(Main.format((m.getString("message-format") + message)
+                            .replace("%partyName%", partyName).replace("%player%", player.getDisplayName())));
                 }
                 // Send spy message to staff
                 for (String s : SpyCommand.serverStaff) {
                     Player p = Bukkit.getPlayerExact(s);
                     if ((!(p == null)) && (!(messageReceived.contains(p.getName()))))
                         if (SpyCommand.spyToggle.get(p.getName())) {
-                            p.sendMessage(Main.format((m.getString("spy-format") + message).replace("%partyName%", partyName).replace("%player%", player.getDisplayName())));
+                            p.sendMessage(Main.format((m.getString("spy-format") + message)
+                                    .replace("%partyName%", partyName).replace("%player%", player.getDisplayName())));
                         }
                 }
             }
