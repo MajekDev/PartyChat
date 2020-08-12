@@ -1,5 +1,6 @@
 package Me.Majekdor.PartyChat;
 
+import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -12,6 +13,7 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.logging.Level;
 
 public class PartyListeners implements Listener {
     Main plugin;
@@ -87,6 +89,9 @@ public class PartyListeners implements Listener {
                 String partyName = PartyCommands.players.get(player.getName());
                 List<String> partymembers = PartyCommands.party.get(partyName);
                 List<String> messageReceived = new ArrayList<String>();
+                // Log all partychat messages to console
+                Bukkit.getConsoleSender().sendMessage(Main.format(ChatColor.RED + "[PCSPY] [" + partyName
+                        + ChatColor.RED + "] " + player.getName() + ": " + message));
                 for (String s : partymembers) {
                     Player p = Bukkit.getPlayerExact(s);
                     if (!(p == null))

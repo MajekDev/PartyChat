@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginDescriptionFile;
 
 import java.util.*;
+import java.util.logging.Level;
 
 public class PartyCommands implements CommandExecutor {
 
@@ -69,18 +70,24 @@ public class PartyCommands implements CommandExecutor {
                 String partyName = players.get(player.getName());
                 List<String> partymembers = party.get(partyName);
                 List<String> messageReceived = new ArrayList<String>();
+                // Log all partychat messages to console
+                Bukkit.getConsoleSender().sendMessage(Main.format(ChatColor.RED + "[PCSPY] [" + partyName + ChatColor.RED + "] " + player.getName() + ":" + message));
                 for (String s : partymembers) {
                     Player p = Bukkit.getPlayerExact(s);
                     if (!(p == null))
                         messageReceived.add(p.getName());
-                    p.sendMessage(Main.format((m.getString("message-format") + withoutSpace).replace("%partyName%", partyName).replace("%player%", player.getDisplayName()).replace("%prefix%", prefix)));
+                    p.sendMessage(Main.format((m.getString("message-format") + withoutSpace)
+                            .replace("%partyName%", partyName).replace("%player%", player.getDisplayName())
+                            .replace("%prefix%", prefix)));
                 }
                 // Send spy message to staff
                 for (String s : SpyCommand.serverStaff) {
                     Player p = Bukkit.getPlayerExact(s);
                     if ((!(p == null)) && (!(messageReceived.contains(p.getName()))))
                         if (SpyCommand.spyToggle.get(p.getName())) {
-                            p.sendMessage(Main.format((m.getString("spy-format") + withoutSpace).replace("%partyName%", partyName).replace("%player%", player.getDisplayName()).replace("%prefix%", prefix)));
+                            p.sendMessage(Main.format((m.getString("spy-format") + withoutSpace)
+                                    .replace("%partyName%", partyName).replace("%player%", player.getDisplayName())
+                                    .replace("%prefix%", prefix)));
                         }
                 }
             }
@@ -154,7 +161,8 @@ public class PartyCommands implements CommandExecutor {
                     String leader = lead.getDisplayName();
                     List<String> partymembers = party.get(partyName);
                     if (partymembers.size() == 1) {
-                        player.sendMessage(Main.format((m.getString("info-leader") + leader).replace("%partyName%", partyName).replace("%prefix%", prefix))); return true;
+                        player.sendMessage(Main.format((m.getString("info-leader") + leader).replace("%partyName%", partyName)
+                                .replace("%prefix%", prefix))); return true;
                     }
                     StringBuilder members = new StringBuilder();
                     for (String s : partymembers) {
@@ -164,7 +172,8 @@ public class PartyCommands implements CommandExecutor {
                     }
                     String trimmed = members.toString().trim();
                     String toSend = trimmed.substring(0, trimmed.length()-1);
-                    player.sendMessage(Main.format((m.getString("info-members") + toSend).replace("%player%", leader).replace("%partyName%", partyName).replace("%prefix%", prefix)));
+                    player.sendMessage(Main.format((m.getString("info-members") + toSend).replace("%player%", leader)
+                            .replace("%partyName%", partyName).replace("%prefix%", prefix)));
                 }
                 //Add Command
             } else if (args[0].equalsIgnoreCase("add")) {
@@ -184,9 +193,11 @@ public class PartyCommands implements CommandExecutor {
                     String addedPlayer = target.getDisplayName();
                     String targetReal = target.getName();
                     for (String inviteMessage : m.getStringList("invite-message")) {
-                        target.sendMessage(Main.format((inviteMessage).replace("%prefix%", prefix).replace("%partyName%", partyName).replace("%player%", player.getDisplayName())));
+                        target.sendMessage(Main.format((inviteMessage).replace("%prefix%", prefix)
+                                .replace("%partyName%", partyName).replace("%player%", player.getDisplayName())));
                     }
-                    player.sendMessage(Main.format((m.getString("invite-sent")).replace("%prefix%", prefix).replace("%player%", target.getDisplayName())));
+                    player.sendMessage(Main.format((m.getString("invite-sent")).replace("%prefix%", prefix)
+                            .replace("%player%", target.getDisplayName())));
                     players.put(targetReal, partyName);
                 }
                 //Accept Command
@@ -202,10 +213,12 @@ public class PartyCommands implements CommandExecutor {
                 for (String s : partymembers) {
                     Player p = Bukkit.getPlayerExact(s);
                     if (!(p == null))
-                        p.sendMessage(Main.format((m.getString("player-join")).replace("%prefix%", prefix).replace("%player%", player.getDisplayName())));
+                        p.sendMessage(Main.format((m.getString("player-join")).replace("%prefix%", prefix)
+                                .replace("%player%", player.getDisplayName())));
                 }
                 partymembers.add(player.getName()); inParty.add(player.getName()); party.replace(partyName, partymembers);
-                player.sendMessage(Main.format((m.getString("you-join")).replace("%prefix%", prefix).replace("%partyName%", partyName)));
+                player.sendMessage(Main.format((m.getString("you-join")).replace("%prefix%", prefix)
+                        .replace("%partyName%", partyName)));
                 //Deny Command
             } else if (args[0].equalsIgnoreCase("deny")) {
                 if (inParty.contains(player.getName())) {
@@ -218,7 +231,8 @@ public class PartyCommands implements CommandExecutor {
                 players.remove(player.getName(), partyName);
                 player.sendMessage(Main.format((m.getString("you-decline")).replace("%prefix%", prefix)));
                 Player leader = isLeader.get(partyName);
-                leader.sendMessage(Main.format((m.getString("decline-join")).replace("%prefix%", prefix).replace("%player%", player.getDisplayName())));
+                leader.sendMessage(Main.format((m.getString("decline-join")).replace("%prefix%", prefix)
+                        .replace("%player%", player.getDisplayName())));
                 //Leave Command
             } else if (args[0].equalsIgnoreCase("leave")) {
                 if (!(inParty.contains(player.getName()))) {
@@ -228,11 +242,13 @@ public class PartyCommands implements CommandExecutor {
                 List<String> partymembers = party.get(partyName);
                 partymembers.remove(player.getName()); inParty.remove(player.getName());
                 players.remove(player.getName(), partyName);
-                player.sendMessage(Main.format((m.getString("you-leave")).replace("%partyName%", partyName).replace("%prefix%", prefix)));
+                player.sendMessage(Main.format((m.getString("you-leave")).replace("%partyName%", partyName)
+                        .replace("%prefix%", prefix)));
                 for (String s : partymembers) {
                     Player p = Bukkit.getPlayerExact(s);
                     if (!(p == null))
-                        p.sendMessage(Main.format((m.getString("player-leave")).replace("%player%", player.getDisplayName()).replace("%prefix%", prefix)));
+                        p.sendMessage(Main.format((m.getString("player-leave"))
+                                .replace("%player%", player.getDisplayName()).replace("%prefix%", prefix)));
                 }
                 if (isLeader.get(partyName).equals(player.getName())) {
                     isLeader.remove(partyName, player.getName());
@@ -247,7 +263,8 @@ public class PartyCommands implements CommandExecutor {
                     for (String s : partymembers) {
                         Player p = Bukkit.getPlayerExact(s);
                         if ((!(p == null)) && (!(s.equals(newLeader))))
-                            p.sendMessage(Main.format((m.getString("new-leader")).replace("%player%", leader.getDisplayName()).replace("%prefix%", prefix)));
+                            p.sendMessage(Main.format((m.getString("new-leader"))
+                                    .replace("%player%", leader.getDisplayName()).replace("%prefix%", prefix)));
                     }
                 }
 
@@ -271,14 +288,16 @@ public class PartyCommands implements CommandExecutor {
                     }
                     Player target = Bukkit.getPlayer(args[1]);
                     String removePlayer = target.getName();
-                    target.sendMessage(Main.format((m.getString("you-removed")).replace("%player%", player.getDisplayName()).replace("%prefix%", prefix)));
+                    target.sendMessage(Main.format((m.getString("you-removed")).replace("%player%", player.getDisplayName())
+                            .replace("%prefix%", prefix)));
                     players.remove(removePlayer, partyName);
                     List<String> partymembers = party.get(partyName);
                     partymembers.remove(target.getName()); players.remove(target, partyName); inParty.remove(removePlayer);
                     for (String s : partymembers) {
                         Player p = Bukkit.getPlayerExact(s);
                         if (!(p == null))
-                            p.sendMessage(Main.format((m.getString("player-removed")).replace("%player%", target.getDisplayName()).replace("%prefix%", prefix)));
+                            p.sendMessage(Main.format((m.getString("player-removed"))
+                                    .replace("%player%", target.getDisplayName()).replace("%prefix%", prefix)));
                     }
                     if (partymembers.isEmpty()) {
                         parties.remove(partyName);
@@ -299,14 +318,16 @@ public class PartyCommands implements CommandExecutor {
                 for (String s : partymembers) {
                     Player p = Bukkit.getPlayerExact(s);
                     if (!(p == null) && (!(s == leader))) {
-                        p.sendMessage(Main.format((m.getString("party-disbanded")).replace("%partyName%", partyName).replace("%prefix%", prefix)));
+                        p.sendMessage(Main.format((m.getString("party-disbanded")).replace("%partyName%", partyName)
+                                .replace("%prefix%", prefix)));
                         inParty.remove(p.getName());
                         players.remove(p.getName(), partyName);
                     }
                 }
                 parties.remove(partyName); isLeader.remove(partyName, player);
                 inParty.remove(player.getName()); players.remove(player.getName(), partyName);
-                player.sendMessage(Main.format((m.getString("party-disbanded")).replace("%partyName%", partyName).replace("%prefix%", prefix)));
+                player.sendMessage(Main.format((m.getString("party-disbanded")).replace("%partyName%", partyName)
+                        .replace("%prefix%", prefix)));
 
                 //Promote Command
             } else if (args[0].equalsIgnoreCase("promote")) {
@@ -337,7 +358,8 @@ public class PartyCommands implements CommandExecutor {
                     for (String s : partymembers) {
                         Player p = Bukkit.getPlayerExact(s);
                         if ((!(p == null)) && (!(s == newLeader)))
-                            p.sendMessage(Main.format((m.getString("new-leader")).replace("%player%", target.getDisplayName()).replace("%prefix%", prefix)));
+                            p.sendMessage(Main.format((m.getString("new-leader"))
+                                    .replace("%player%", target.getDisplayName()).replace("%prefix%", prefix)));
                     }
                 }
 

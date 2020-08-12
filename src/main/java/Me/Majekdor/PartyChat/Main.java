@@ -30,9 +30,9 @@ public final class Main extends JavaPlugin {
 
     @Override
     public void onEnable() {
+        Bukkit.getConsoleSender().sendMessage(format("&f[&bParty&eChat&f] &aLet's get this party started yo..."));
         new MessageDataWrapper(this);
         this.getServer().getPluginManager().registerEvents(new PartyListeners(this), this);
-        Bukkit.getConsoleSender().sendMessage(format("&f[&bParty&eChat&f] &aLet's get this party started yo..."));
         final FileConfiguration config = this.getConfig();
         this.saveDefaultConfig();
         this.getCommand("partychat").setExecutor(new PartyCommands(this));
@@ -42,7 +42,11 @@ public final class Main extends JavaPlugin {
         this.getCommand("spy").setExecutor(new SpyCommand(this));
         //bstats stuff
         int pluginId = 7667; Metrics metrics = new Metrics(this, pluginId);
-        Bukkit.getConsoleSender().sendMessage(format("[PartyChat v2.3.1] PartyChat enabled."));
+        Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(this, new Runnable(){
+            public void run(){
+                Bukkit.getConsoleSender().sendMessage("[PCv2] Successfully loaded PartyChat version 2.3.1");
+            }
+        }, 60L); // 3 second delay
     }
 
     @Override
