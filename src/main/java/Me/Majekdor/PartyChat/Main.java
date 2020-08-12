@@ -44,7 +44,7 @@ public final class Main extends JavaPlugin {
         int pluginId = 7667; Metrics metrics = new Metrics(this, pluginId);
         Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(this, new Runnable(){
             public void run(){
-                Bukkit.getConsoleSender().sendMessage("[PCv2] Successfully loaded PartyChat version 2.3.1");
+                Bukkit.getConsoleSender().sendMessage("[PCv2] Successfully loaded PartyChat version 2.3.2");
             }
         }, 60L); // 3 second delay
     }
