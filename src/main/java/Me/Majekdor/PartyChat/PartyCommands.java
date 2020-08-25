@@ -20,12 +20,13 @@ public class PartyCommands implements CommandExecutor {
     }
 
     //Generating hashmaps and lists that we'll need
-    public static List<String> inParty = new ArrayList<String>();
-    public static List<String> parties = new ArrayList<String>();
-    public static Map<String, String> players = new HashMap<String, String>();
-    public static Map<String, List<String>> party = new HashMap<String, List<String>>();
-    public static Map<String, Boolean> partyChat = new HashMap<String, Boolean>();
-    public static Map<String, Player> isLeader = new HashMap<String, Player>();
+    public static List<String> inParty = new ArrayList<>();
+    public static List<String> parties = new ArrayList<>();
+    public static Map<String, String> players = new HashMap<>();
+    public static Map<String, List<String>> party = new HashMap<>();
+    public static Map<String, Boolean> partyChat = new HashMap<>();
+    public static Map<String, Player> isLeader = new HashMap<>();
+    public static Map<String, String> pendingInv = new HashMap<>();
 
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         if (!(sender instanceof Player)) {
@@ -147,7 +148,7 @@ public class PartyCommands implements CommandExecutor {
                     List<String> members = new ArrayList<String>();
                     String leader = player.getName(); isLeader.put(partyName, player);
                     players.put(leader, partyName); members.add(leader); party.put(partyName, members);
-                } else if (args.length >= 3) {
+                } else if (args.length > 3) {
                     player.sendMessage(Main.format((m.getString("name-only-one")).replace("%prefix%", prefix)));
                 }
                 //Info Command
@@ -199,13 +200,23 @@ public class PartyCommands implements CommandExecutor {
                     player.sendMessage(Main.format((m.getString("invite-sent")).replace("%prefix%", prefix)
                             .replace("%player%", target.getDisplayName())));
                     players.put(targetReal, partyName);
+                    pendingInv.put(target.getName(), partyName);
+
+                    // Invite expires after the time defined in the config file
+                    int delay = plugin.getConfig().getInt("expire-time") * 20;
+                    Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> {
+                        if (pendingInv.containsKey(target.getName())) {
+                            pendingInv.remove(target.getName());
+                            target.sendMessage(Main.format((m.getString("expired-invite")).replace("%prefix%", prefix)));
+                        }
+                    }, delay);
                 }
                 //Accept Command
             } else if (args[0].equalsIgnoreCase("accept")) {
                 if (inParty.contains(player.getName())) {
                     player.sendMessage(Main.format((m.getString("in-party")).replace("%prefix%", prefix))); return true;
                 }
-                if (!(players.containsKey(player.getName()))) {
+                if (!(pendingInv.containsKey(player.getName()))) {
                     player.sendMessage(Main.format((m.getString("no-invites")).replace("%prefix%", prefix))); return true;
                 }
                 String partyName = players.get(player.getName());
@@ -217,6 +228,7 @@ public class PartyCommands implements CommandExecutor {
                                 .replace("%player%", player.getDisplayName())));
                 }
                 partymembers.add(player.getName()); inParty.add(player.getName()); party.replace(partyName, partymembers);
+                pendingInv.remove(player.getName());
                 player.sendMessage(Main.format((m.getString("you-join")).replace("%prefix%", prefix)
                         .replace("%partyName%", partyName)));
                 //Deny Command
@@ -224,11 +236,11 @@ public class PartyCommands implements CommandExecutor {
                 if (inParty.contains(player.getName())) {
                     player.sendMessage(Main.format((m.getString("in-party")).replace("%prefix%", prefix))); return true;
                 }
-                if (!(players.containsKey(player.getName()))) {
+                if (!(pendingInv.containsKey(player.getName()))) {
                     player.sendMessage(Main.format((m.getString("no-invites")).replace("%prefix%", prefix))); return true;
                 }
                 String partyName = players.get(player.getName());
-                players.remove(player.getName(), partyName);
+                players.remove(player.getName(), partyName); pendingInv.remove(player.getName());
                 player.sendMessage(Main.format((m.getString("you-decline")).replace("%prefix%", prefix)));
                 Player leader = isLeader.get(partyName);
                 leader.sendMessage(Main.format((m.getString("decline-join")).replace("%prefix%", prefix)
@@ -277,7 +289,7 @@ public class PartyCommands implements CommandExecutor {
                 if (!(inParty.contains(player.getName()))) {
                     player.sendMessage(Main.format((m.getString("not-in-party")).replace("%prefix%", prefix))); return true;
                 }
-                if (!(leader == player.getName())) {
+                if (!(leader.equals(player.getName()))) {
                     player.sendMessage(Main.format((m.getString("not-leader")).replace("%prefix%", prefix))); return true;
                 }
                 if (args.length == 1) {

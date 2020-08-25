@@ -105,7 +105,8 @@ public class PartyListeners implements Listener {
                     if ((!(p == null)) && (!(messageReceived.contains(p.getName()))))
                         if (SpyCommand.spyToggle.get(p.getName())) {
                             p.sendMessage(Main.format((m.getString("spy-format") + message)
-                                    .replace("%partyName%", partyName).replace("%player%", player.getDisplayName())));
+                                    .replace("%partyName%", partyName)
+                                    .replace("%player%", player.getDisplayName())));
                         }
                 }
             }

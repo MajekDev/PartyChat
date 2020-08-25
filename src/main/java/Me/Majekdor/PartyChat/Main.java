@@ -32,6 +32,7 @@ public final class Main extends JavaPlugin {
     public void onEnable() {
         Bukkit.getConsoleSender().sendMessage(format("&f[&bParty&eChat&f] &aLet's get this party started yo..."));
         new MessageDataWrapper(this);
+        FileConfiguration m = MessageDataWrapper.MessageConfig.getConfig();
         this.getServer().getPluginManager().registerEvents(new PartyListeners(this), this);
         final FileConfiguration config = this.getConfig();
         this.saveDefaultConfig();
@@ -40,13 +41,12 @@ public final class Main extends JavaPlugin {
         this.getCommand("party").setExecutor(new PartyCommands(this));
         this.getCommand("party").setTabCompleter(new PartyTab());
         this.getCommand("spy").setExecutor(new SpyCommand(this));
-        //bstats stuff
-        int pluginId = 7667; Metrics metrics = new Metrics(this, pluginId);
-        Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(this, new Runnable(){
-            public void run(){
-                Bukkit.getConsoleSender().sendMessage("[PCv2] Successfully loaded PartyChat version 2.3.2");
-            }
-        }, 60L); // 3 second delay
+        int pluginId = 7667; Metrics metrics = new Metrics(this, pluginId); // Metric stuffs
+        Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(this, () ->
+                Bukkit.getConsoleSender().sendMessage("[PCv2] Successfully loaded PartyChat version 2.3.2"), 60L); // 3 second delay
+        m.addDefault("expired-invite", "%prefix% &7Your party invite has timed out.");
+        MessageDataWrapper.MessageConfig.saveConfig();
+        MessageDataWrapper.MessageConfig.reloadConfig();
     }
 
     @Override

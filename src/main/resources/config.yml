@@ -22,3 +22,6 @@ auto-spy: true
 
 #Change the maximum amount of characters allowed for a party name. This does not include color codes.
 max-characters: 20
+
+#Change how long it takes for a party invite/join request to time out (in seconds)
+expire-time: 60

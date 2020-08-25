@@ -70,7 +70,7 @@ public class MessageDataWrapper {
         ));
         m.addDefault("party-prefix", "&f[&bParty&eChat&f]");
         m.addDefault("message-format", "&f[&b%partyName%&f] &7%player% &f» ");
-        m.addDefault("spy-format", "&e&oSpy&7&o: &f[%partyName%&f] &7%player% &f» ");
+        m.addDefault("spy-format", "&e&oSpy&7&o: &f[&b%partyName%&f] &7%player% &f» ");
         m.addDefault("no-permission", "%prefix% &cYou don't have permission to use this command!");
         m.addDefault("unknown-command", "%prefix% &cUnknown command. Use /party help.");
         m.addDefault("in-party", "%prefix% &cYou are already in a party!");
