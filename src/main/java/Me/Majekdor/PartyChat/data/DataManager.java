@@ -1,4 +1,4 @@
-package Me.Majekdor.PartyChat;
+package Me.Majekdor.PartyChat.data;
 
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;

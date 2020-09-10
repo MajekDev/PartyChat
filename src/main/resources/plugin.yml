@@ -1,9 +1,9 @@
 name: PartyChat
-version: 2.3.2
-main: Me.Majekdor.PartyChat.Main
-api-version: 1.16
+version: 2.4.0
+main: Me.Majekdor.PartyChat.PartyChat
+api-version: '1.16'
 authors: [Majekdor]
-description: Plugin that allows players to chat like normal but only among a specific group.
+description: 'Plugin that allows players to chat like normal but only among a specific group.'
 commands:
   partychat:
     description: Toggle party chat.
@@ -14,3 +14,5 @@ commands:
   spy:
     description: Admin spy command.
     aliases: [partyspy]
+  pcreload:
+    description: Reload the plugin.

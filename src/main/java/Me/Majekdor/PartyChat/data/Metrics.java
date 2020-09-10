@@ -1,4 +1,4 @@
-package Me.Majekdor.PartyChat;
+package Me.Majekdor.PartyChat.data;
 
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
