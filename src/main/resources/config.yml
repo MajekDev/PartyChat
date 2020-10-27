@@ -1,0 +1,49 @@
+# PartyChat by Majekdor | Created on 5/23/2020 | Updated 10/15/2020
+# Need help? https://github.com/Majekdor/PartyChat/wiki or message me on Discord @Majekdor#6346
+
+# Whether or not the plugin blocks inappropriate party names
+block-inappropriate-names: false
+
+# Add words you would like to block here.
+blocked-names:
+  wordlist:
+    - 'blocked'
+    - 'words'
+    - 'these'
+    - 'are'
+    - 'placeholders'
+
+# Whether or not the plugin uses permissions
+# If set to false everyone will have permission to use PartyChat
+# If set to true only players with the permission partychat.use will be able to use PartyChat
+use-permissions: false
+
+# Change whether or not all messages sent in PartyChat are logged to console
+console-log: true
+
+# Change whether or not the plugin formats hex color codes in normal chat
+format-chat: true
+
+# Whether or not staff sees all PartyChat messages by default
+# This can be toggled with /spy or /partyspy
+auto-spy: true
+
+# The maximum amount of characters allowed for a party name. This does not include color codes.
+max-characters: 20
+
+# How long it takes for a party invite/join request to time out (in seconds)
+expire-time: 60
+
+# How long a player must wait before attempting to join the same party again (in seconds)
+block-time: 60
+
+# Whether or not parties are public by default when created
+# If set to false new parties will automatically be private unless toggled
+# This is set to true by default
+public-on-creation: true
+
+# Don't set to true unless you want players to see random messages or other undesirable behavior
+# No seriously don't turn this on unless you actually need to debug something
+# If you have to turn this on you should probably contact the developer
+debug: false
+

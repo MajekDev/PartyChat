@@ -1,0 +1,133 @@
+# PartyChat by Majekdor - Need help? Message me on Discord @Majekdor#6346
+#
+# =========================
+# | MESSAGE CONFIGURATION |
+# =========================
+#
+# Available Placeholders:
+# NOTE: Do NOT throw these into random messages. Only move them within the message they're in
+# and don't expect %player% to work how you want it to wherever it is.
+#
+# %partyName% - displays the name of the party
+# %leader% - displays the party leader
+# %player% - displays the player name
+# %prefix% - displays the PartyChat prefix as chosen above
+# %version% - displays the plugin version
+#
+# Messages: (Listed in alphabetical order)
+
+add-self: '%prefix% &cYou cannot invite yourself!'
+choose-toggle: '%prefix% &cPlease specify a toggle!'
+decline-join: '%prefix% &b%player% &7has declined the party invite.'
+deny-join: '%prefix% &7Join request denied.'
+expired-invite: '%prefix% &7Your party invite has timed out.'
+expired-join: '%prefix% &7Your join request has timed out.'
+in-party: '%prefix% &cYou are already in a party!'
+inappropriate-name: '%prefix% &cThat name is inappropriate.'
+info-leader: '%prefix% &b&l%partyName% &7- Leader: &b'
+info-members: '%prefix% &b&l%partyName% &7- Leader: &b%player% &7Members: &b'
+invite-sent: '%prefix% &7Party invite sent to &b%player%&7.'
+join-denied: '%prefix% &7Your join request was denied.'
+join-wait: '%prefix% &7Please wait a minute before requesting to join again.'
+less-20: '%prefix% &cThat name is too long!'
+location-unsafe: '%prefix% &cThis location is unsafe! Please find a safe location before summoning your party.'
+message-format: '&f[&b%partyName%&f] &7%player% &f» '
+name-only-one: '%prefix% &cYour party name can only be one word!'
+name-taken: '%prefix% &cThat party name is taken!'
+new-leader: '%prefix% &b%player% &7is now the party leader.'
+no-invites: '%prefix% &cYou have no pending invites!'
+no-item: '%prefix% &cYou must have an item in your hand to use this command!'
+no-name: '%prefix% &cPlease give your party a name!'
+no-permission: '%prefix% &cYou do not have permission to use this command!'
+not-in-party: '%prefix% &cYou are not in a party!'
+not-leader: '%prefix% &cOnly the party leader can use this command!'
+not-online: '%prefix% &cPlayer is not online!'
+other-format-prefix: '&(white)[&(aqua)Party&(yellow)Chat&(white)]'
+party-disbanded: '%prefix% &b&l%partyName% &7has been disbanded.'
+party-private: '%prefix% &cSpecified party is private!'
+party-rename: '%prefix% &7Party renamed to &b&l%partyName%&7.'
+pc-disabled: '%prefix% &7Party chat &cdisabled&7.'
+pc-enabled: '%prefix% &7Party chat &aenabled&7.'
+player-in-party: '%prefix% &cSpecified player is already in the party!'
+player-join: '%prefix% &b%player% &7has joined the party!'
+player-leave: '%prefix% &b%player% &7has left the party.'
+player-not-in-party: '%prefix% &cPlayer is not in the party!'
+player-removed: '%prefix% &b%player% &7has been removed from the party.'
+prefix: '&f[&bParty&eChat&f]'
+promote-self: '%prefix% &cYou cannot promote yourself!'
+remove-self: '%prefix% &cUse /p leave to remove yourself!'
+request-sent: '%prefix% &7Join request sent.'
+specify-party: '%prefix% &cPlease specify a party!'
+specify-player: '%prefix% &cPlease specify a player!'
+spy-disabled: '&2&oAdmin %prefix% &7Spy mode is now &cdisabled&7.'
+spy-enabled: '&2&oAdmin %prefix% &7Spy mode is now &aenabled&7.'
+spy-format: '&c[PCSPY] [%player% -> %partyName%]:&7'
+summon-sent: '%prefix% &7Summon request sent to party members.'
+teleport-accepted: '%prefix% &b%player% &7has accepted your summon request.'
+teleport-bar-text: '&e&lTeleporting... Do not move!'
+teleport-canceled: '%prefix% &cYou moved! Teleportation canceled...'
+teleport-canceled-leader: '%prefix% &7%player% &cmoved! Teleportation canceled...'
+teleport-denied: '%prefix% &b%player% &7has denied your summon request.'
+teleport-denied-player: '%prefix% &7Summon request denied.'
+teleport-prepare: '%prefix% &7Preparing to teleport... hold still!'
+teleport-timeout: '%prefix% &7Summon request has timed out.'
+teleport-unsafe: '%prefix% &cTeleport location is unsafe. Canceling teleport.'
+teleported: '%prefix% &7Teleported to party leader.'
+toggle-private: '%prefix% &7Your party is now private.'
+toggle-public: '%prefix% &7Your party is now public.'
+unknown-command: '%prefix% &cUnknown command. Use /party help.'
+unknown-party: '%prefix% &cThat party does not exist!'
+unknown-player: '%prefix% &cUnable to find player.'
+you-decline: '%prefix% &7Party invited denied.'
+you-join: '%prefix% &7You have joined &b&l%partyName%&7!'
+you-leader: '%prefix% &7You are now the leader of the party.'
+you-leave: '%prefix% &7You have left &b&l%partyName%&7.'
+you-promoted: '%prefix% &b%player% &7has promoted you to party leader.'
+you-removed: '%prefix% &b%player% &7has removed you from the party.'
+party-info:
+  - '&7&l------------------------------'
+  - '                 %prefix%'
+  - '          &7Created by: &bMajekdor'
+  - '                &7Version: &b%version%'
+  - '     &7Use /party help to get started'
+  - '&7&l------------------------------'
+party-help1:
+  - '&7--------------- %prefix% &bHelp &7---------------'
+  - '&7Commands with &c* &7are only available to the leader.'
+  - '&b/party create <name> &7- Creates a new party for you.'
+  - '&b/party add <player> &7- Invites a player to your party.'
+  - '&b/party accept &7- Accepts the party invite.'
+  - '&b/party deny &7- Denies the party invite.'
+  - '&b/party join <party> &7- Request to join a party.'
+  - '&b/partychat &7- Toggles party chat. Alias: &b/pc'
+  - '&7This is page 1, type &b/p help 2 &7to view other commands.'
+party-help2:
+  - '&7--------------- %prefix% &bHelp &7---------------'
+  - '&7Commands with &c* &7are only available to the leader.'
+  - '&b/party leave &7- Leaves the current party.'
+  - '&b/party info &7- Lists info about your current party.'
+  - '&b/party shareitem &7- Share item info from item in hand.'
+  - '&b/party promote <player> &7- Promotes player to leader. &c*'
+  - '&b/party remove <player> &7- Removes player from party. &c*'
+  - '&b/party disband &7- Disbands the entire party. &c*'
+  - '&b/party toggle <public/private> &7- Toggle settings. &c*'
+  - '&7This is page 2, type &b/p help 1 &7to view other commands.'
+party-created:
+  - '%prefix% &7You have created a party named &b&l%partyName%&7!'
+  - '%prefix% &7Use /party add <player> to invite another player!'
+
+# PLEASE NOTE THESE ARE DIFFERENT TO ALLOW HOVER AND CLICKABLE TEXT
+# IF YOU WOULD LIKE TO CHANGE THEM BUT DON'T KNOW HOW READ THE DOCUMENTATION ON GITHUB
+# https://github.com/Majekdor/PartyChat/wiki/Custom-Formatting
+invite-message:
+  - '%prefix% &(aqua)%player% &(gray)has invited you to join &(aqua,bold)%partyName%&(gray)!'
+  - '&(gray)Type or click $(hovercmd,/party accept,{&(yellow)Click to accept the invite.},{&(aqua)/party accept}) to join.'
+  - '&(gray)Type or click $(hovercmd,/party deny,{&(yellow)Click to decline the invite.},{&(aqua)/party deny}) to decline.'
+request-join:
+  - '%prefix% &(aqua)%player% &(gray)has requested to join the party!'
+  - '&(gray)Type or click $(hovercmd,/party accept,{&(yellow)Click to accept the request.},{&(aqua)/party accept}) to join.'
+  - '&(gray)Type or click $(hovercmd,/party deny,{&(yellow)Click to decline the request.},{&(aqua)/party deny}) to decline.'
+summon-request:
+  - '%prefix% &(aqua)%player% &(gray)has requested to summon the party!'
+  - '&(gray)Type or click $(hovercmd,/party accept,{&(yellow)Click to accept the summons.},{&(aqua)/party accept}) to teleport.'
+  - '&(gray)Type or click $(hovercmd,/party deny,{&(yellow)Click to decline the summons.},{&(aqua)/party deny}) to decline.'
