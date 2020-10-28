@@ -8,6 +8,7 @@ Features:
 - Unlimited amount of players per party
 - Toggleable party chat (just type in chat!)
 - Configurable prefix and colors
+- GUI support - interact only thru GUI!
 - Ability to block inappropriate party names
 - Small and efficient plugin
 - Works in any Minecraft version!
