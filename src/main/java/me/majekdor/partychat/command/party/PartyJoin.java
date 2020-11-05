@@ -31,7 +31,7 @@ public class PartyJoin extends CommandParty implements TabCompleter {
         // See if the party exists
         boolean found = false;
         for (Party party : Party.parties.values()) {
-            if (partyName.equalsIgnoreCase(Chat.removeColorCodes(partyName))) {
+            if (partyName.equalsIgnoreCase(Chat.removeColorCodes(party.name)) || partyName.equalsIgnoreCase(party.name)) {
                 partyName = party.name; found = true;
                 break;
             }

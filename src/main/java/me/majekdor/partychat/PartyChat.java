@@ -40,6 +40,7 @@ public final class PartyChat extends JavaPlugin {
     public static boolean debug;
     public static List<Player> serverStaff = new ArrayList<>();
     private Database db;
+    public static String minecraftVersion;
 
     public PartyChat() {
         instance = this;
@@ -73,6 +74,11 @@ public final class PartyChat extends JavaPlugin {
                 Bukkit.getConsoleSender().sendMessage("");
             }
         });
+
+        String[] versionSplit = mcversion.split("_");
+        String version = versionSplit[1]; minecraftVersion = version;
+        Bukkit.getConsoleSender().sendMessage("Version without 1. - " + version);
+
 
         // Update config and messages files
         this.saveDefaultConfig();

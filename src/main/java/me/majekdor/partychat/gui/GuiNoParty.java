@@ -35,7 +35,14 @@ public class GuiNoParty extends Gui {
         meta.setDisplayName(ChatColor.YELLOW + "Create A Party"); create.setItemMeta(meta);
         lore.clear(); addActionItem(3, create, () -> partyNameAnvil(p));
 
-        ItemStack join = new ItemStack(Material.GREEN_CONCRETE); meta = join.getItemMeta();
+        String version = PartyChat.minecraftVersion;
+        ItemStack join;
+        if (Integer.parseInt(version) < 13)
+            join = new ItemStack(Material.GREEN_WOOL);
+        else
+            join = new ItemStack(Material.GREEN_CONCRETE);
+
+        meta = join.getItemMeta();
         lore.add(ChatColor.GRAY + "Click here to join an existing party!"); meta.setLore(lore);
         meta.setDisplayName(ChatColor.GREEN + "Join A Party"); join.setItemMeta(meta);
         addActionItem(5, join, () -> new GuiJoinParty().openGui(p)); lore.clear();

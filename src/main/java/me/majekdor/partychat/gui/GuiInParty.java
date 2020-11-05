@@ -65,15 +65,27 @@ public class GuiInParty extends Gui {
             meta.setDisplayName(ChatColor.YELLOW + "Click to rename party"); rename.setItemMeta(meta);
             addActionItem(4, rename, () -> partyRenameAnvil(p));
 
+
+            String version = PartyChat.minecraftVersion;
             if (party.isPublic) {
-                ItemStack publicParty = new ItemStack(Material.GREEN_CONCRETE); meta = publicParty.getItemMeta();
+                ItemStack publicParty;
+                if (Integer.parseInt(version) < 13)
+                    publicParty = new ItemStack(Material.GREEN_WOOL);
+                else
+                    publicParty = new ItemStack(Material.GREEN_CONCRETE);
+                meta = publicParty.getItemMeta();
                 meta.setDisplayName(ChatColor.GREEN + "Public party");
                 lore.add(ChatColor.GRAY + "Players can request to join this party");
                 lore.add(ChatColor.GRAY + "Click to make the party private"); meta.setLore(lore);
                 publicParty.setItemMeta(meta); lore.clear();
                 addActionItem(5, publicParty, () -> togglePrivate(p));
             } else {
-                ItemStack privateParty = new ItemStack(Material.RED_CONCRETE); meta = privateParty.getItemMeta();
+                ItemStack privateParty;
+                if (Integer.parseInt(version) < 13)
+                    privateParty = new ItemStack(Material.RED_WOOL);
+                else
+                    privateParty = new ItemStack(Material.RED_CONCRETE);
+                meta = privateParty.getItemMeta();
                 meta.setDisplayName(ChatColor.RED + "Private party");
                 lore.add(ChatColor.GRAY + "Players cannot request to join this party");
                 lore.add(ChatColor.GRAY + "Click to make the party public"); meta.setLore(lore);

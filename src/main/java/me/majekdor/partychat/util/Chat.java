@@ -17,7 +17,8 @@ public class Chat {
     public static final Pattern pattern3 = Pattern.compile("&#[a-fA-F0-9]{3}");
     public static List<Integer> formatted = new ArrayList<>();
     public static final List<org.bukkit.ChatColor> ILLEGAL_COLORS = Arrays.asList(org.bukkit.ChatColor.MAGIC, org.bukkit.ChatColor.BLACK);
-    public static final List<Character> COLOR_CHARS = Arrays.asList('0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f', 'l', 'm', 'n', 'o', 'r');
+    public static final List<Character> COLOR_CHARS = Arrays.asList('0', '1', '2', '3', '4', '5', '6', '7', '8',
+            '9', 'a', 'b', 'c', 'd', 'e', 'f', 'l', 'm', 'n', 'o', 'r', 'x');
 
     /**
      * Apply standard Minecraft color codes (&a) and hex color codes (#aabbcc)
@@ -34,6 +35,8 @@ public class Chat {
             message = sixChar(message);
             message = threeChar(message);
             formatted.clear();
+        } else {
+            message = applyBukkitColors(message);
         }
         return message;
     }
@@ -137,9 +140,14 @@ public class Chat {
         char[] chars = message.toCharArray();
         for (int i = 0; i < chars.length; ++i) {
             if (chars[i] == '&' || chars[i] == org.bukkit.ChatColor.COLOR_CHAR) {
-                if (COLOR_CHARS.contains(chars[i+1])) {
-                    ++i;
-                    continue;
+                try {
+                    if (COLOR_CHARS.contains(chars[i+1])) {
+                        ++i;
+                        continue;
+                    }
+                } catch (ArrayIndexOutOfBoundsException e) {
+                    // do nothing :)
+                    // allows for removing color codes in tab complete methods
                 }
             }
             sb.append(chars[i]);
