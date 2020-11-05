@@ -24,10 +24,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 import java.util.logging.Logger;
 
 public final class PartyChat extends JavaPlugin {
@@ -41,6 +38,7 @@ public final class PartyChat extends JavaPlugin {
     public static List<Player> serverStaff = new ArrayList<>();
     private Database db;
     public static String minecraftVersion;
+    public static boolean disableGuis;
 
     public PartyChat() {
         instance = this;
@@ -57,9 +55,8 @@ public final class PartyChat extends JavaPlugin {
         Bukkit.getConsoleSender().sendMessage(Chat.colorize("    &b____   &e___             "));
         Bukkit.getConsoleSender().sendMessage(Chat.colorize("   &b(  _ \\ &e/ __)     &2PartyChat &9v" + pdf.getVersion()));
         Bukkit.getConsoleSender().sendMessage(Chat.colorize("    &b)___/&e( (__      &8Detected Minecraft &9"  + mcversion));
-        Bukkit.getConsoleSender().sendMessage(Chat.colorize("   &b(__)   &e\\___)     &8Last updated &910/15/2020 &8by &bMajekdor"));
+        Bukkit.getConsoleSender().sendMessage(Chat.colorize("   &b(__)   &e\\___)     &8Last updated &911/5/2020 &8by &bMajekdor"));
         Bukkit.getConsoleSender().sendMessage(Chat.colorize(""));
-        Bukkit.getConsoleSender().sendMessage(Chat.colorize("[PartyChat] Loading configuration..."));
 
         // Check for plugin update
         Logger logger = this.getLogger();
@@ -75,29 +72,19 @@ public final class PartyChat extends JavaPlugin {
             }
         });
 
+        // Get minecraft version
         String[] versionSplit = mcversion.split("_");
-        String version = versionSplit[1]; minecraftVersion = version;
-        Bukkit.getConsoleSender().sendMessage("Version without 1. - " + version);
+        minecraftVersion = versionSplit[1];
 
+        // Disable guis for versions below 1.12.2
+        if (Integer.parseInt(minecraftVersion) < 13)
+            disableGuis = true;
+        else disableGuis = this.getConfig().getBoolean("disable-guis");
+        if (disableGuis) Bukkit.getConsoleSender().sendMessage("[PartyChat] GUIs have been disabled. You can change " +
+                "this in the config if your server version is 1.13 or above.");
 
         // Update config and messages files
-        this.saveDefaultConfig();
-        File configFile = new File(getDataFolder(), "config.yml"); String[] foo = new String[0];
-        try {
-            ConfigUpdater.update(instance, "config.yml", configFile, Arrays.asList(foo));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        this.reloadConfig();
-        messageData = new DataManager(instance, null, "messages.yml");
-        messageData.saveDefaultConfig();
-        File messagesFile = new File(getDataFolder(), "messages.yml");
-        try {
-            ConfigUpdater.update(instance, "messages.yml", messagesFile, Arrays.asList(foo));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        messageData.reloadConfig();
+        refreshConfigs();
 
         // Load parties if saved
         if (this.getConfig().getBoolean("persistent-parties")) {
@@ -123,10 +110,17 @@ public final class PartyChat extends JavaPlugin {
         // Metrics
         int pluginId = 7667; new Metrics(this, pluginId);
 
+        Bukkit.getConsoleSender().sendMessage(Bukkit.getVersion());
+
         // Plugin successfully loaded
         Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(this, () ->
                 Bukkit.getConsoleSender().sendMessage("[PartyChat] Successfully loaded PartyChat version "
                         +  pdf.getVersion()), 60L); // 3 second delay
+        if (Bukkit.getVersion().contains("Spigot")) {
+            Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(this, () ->
+                    Bukkit.getConsoleSender().sendMessage("Psst... you're using Spigot, you should really try Paper =D" +
+                            "\nhttps://papermc.io/downloads"), 60L); // 3 second delay
+        }
     }
 
     @Override
@@ -145,6 +139,28 @@ public final class PartyChat extends JavaPlugin {
 
     public static GuiHandler getGuiHandler() {
         return instance.guiHandler;
+    }
+
+    public static void refreshConfigs() {
+        // Update config and messages files
+        Bukkit.getConsoleSender().sendMessage(Chat.colorize("[PartyChat] Loading configuration..."));
+        instance.saveDefaultConfig();
+        File configFile = new File(instance.getDataFolder(), "config.yml"); String[] foo = new String[0];
+        try {
+            ConfigUpdater.update(instance, "config.yml", configFile, Arrays.asList(foo));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        instance.reloadConfig();
+        messageData = new DataManager(instance, null, "messages.yml");
+        messageData.saveDefaultConfig();
+        File messagesFile = new File(instance.getDataFolder(), "messages.yml");
+        try {
+            ConfigUpdater.update(instance, "messages.yml", messagesFile, Arrays.asList(foo));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        messageData.reloadConfig();
     }
 
     /**

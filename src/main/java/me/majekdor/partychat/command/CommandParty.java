@@ -90,6 +90,13 @@ public class CommandParty implements CommandExecutor, TabCompleter {
                         sendMessageWithPrefix(player, m.getString("unknown-command"));
                 }
             } else { // no args
+                if (PartyChat.disableGuis) {
+                    for (String partyInfo : m.getStringList("party-info")) {
+                        sendMessageWithPrefix(player, partyInfo.replace("%version%",
+                                PartyChat.instance.getDescription().getVersion()));
+                    }
+                    return true;
+                }
                 if (Party.inParty.containsKey(player.getUniqueId())) {
                     new GuiInParty().openGui(player);
                 } else {

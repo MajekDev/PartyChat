@@ -1,5 +1,6 @@
 package me.majekdor.partychat.gui;
 
+import com.cryptomorin.xseries.XMaterial;
 import dev.dbassett.skullcreator.SkullCreator;
 import me.majekdor.partychat.PartyChat;
 import me.majekdor.partychat.command.party.*;
@@ -8,6 +9,7 @@ import me.majekdor.partychat.util.Chat;
 import net.wesjd.anvilgui.AnvilGUI;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -15,6 +17,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class GuiInParty extends Gui {
 
@@ -34,7 +37,7 @@ public class GuiInParty extends Gui {
         addLabel(0, head);
         setLore(0, Chat.colorize("&7Current party: " + party.name));
 
-        ItemStack members = new ItemStack(Material.WRITABLE_BOOK); meta = members.getItemMeta();
+        ItemStack members = new ItemStack(Material.BOOK); meta = members.getItemMeta();
         meta.setDisplayName(ChatColor.YELLOW + "Party Members");
         lore.add(ChatColor.GRAY + "Click to view all of the current members of the party.");
         meta.setLore(lore); members.setItemMeta(meta); lore.clear();
@@ -42,7 +45,13 @@ public class GuiInParty extends Gui {
         ItemStack invite = new ItemStack(Material.NETHER_STAR); meta = invite.getItemMeta();
         meta.setDisplayName(ChatColor.YELLOW + "Click to invite a player"); invite.setItemMeta(meta);
 
-        ItemStack leave = new ItemStack(Material.RED_STAINED_GLASS_PANE); meta = leave.getItemMeta();
+        ItemStack leave;
+        if (Integer.parseInt(PartyChat.minecraftVersion) < 13)
+            leave = new ItemStack(Objects.requireNonNull(XMaterial.RED_STAINED_GLASS_PANE.parseMaterial(true)), 1 , (byte) 14);
+        else {
+            leave = new ItemStack(Material.RED_STAINED_GLASS_PANE);
+        }
+        meta = leave.getItemMeta();
         meta.setDisplayName(Chat.colorize("&eClick to leave " + party.name));
         leave.setItemMeta(meta);
 
@@ -61,7 +70,8 @@ public class GuiInParty extends Gui {
             summon.setItemMeta(meta); lore.clear();
             addActionItem(3, summon, () -> summonParty(p));
 
-            ItemStack rename = new ItemStack(Material.OAK_SIGN); meta = rename.getItemMeta();
+            ItemStack rename = new ItemStack(Objects.requireNonNull(XMaterial.OAK_SIGN.parseMaterial(true)));
+            meta = rename.getItemMeta();
             meta.setDisplayName(ChatColor.YELLOW + "Click to rename party"); rename.setItemMeta(meta);
             addActionItem(4, rename, () -> partyRenameAnvil(p));
 
@@ -70,7 +80,7 @@ public class GuiInParty extends Gui {
             if (party.isPublic) {
                 ItemStack publicParty;
                 if (Integer.parseInt(version) < 13)
-                    publicParty = new ItemStack(Material.GREEN_WOOL);
+                    publicParty = new ItemStack(Objects.requireNonNull(XMaterial.GREEN_WOOL.parseMaterial(true)), 1 , (byte) 13);
                 else
                     publicParty = new ItemStack(Material.GREEN_CONCRETE);
                 meta = publicParty.getItemMeta();
@@ -82,7 +92,7 @@ public class GuiInParty extends Gui {
             } else {
                 ItemStack privateParty;
                 if (Integer.parseInt(version) < 13)
-                    privateParty = new ItemStack(Material.RED_WOOL);
+                    privateParty = new ItemStack(Objects.requireNonNull(XMaterial.RED_WOOL.parseMaterial(true)), 1 , (byte) 14);
                 else
                     privateParty = new ItemStack(Material.RED_CONCRETE);
                 meta = privateParty.getItemMeta();

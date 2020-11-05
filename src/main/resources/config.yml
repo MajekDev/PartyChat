@@ -46,6 +46,10 @@ public-on-creation: true
 # If this is enabled players will not be kicked from a party when the leave the server
 persistent-parties: false
 
+# Disable guis if you don't want them
+# Note: this is ignored and guis are automatically disabled if you're running a version below 1.12.2
+disable-guis: false
+
 # Don't set to true unless you want players to see random messages or other undesirable behavior
 # No seriously don't turn this on unless you actually need to debug something
 # If you have to turn this on you should probably contact the developer

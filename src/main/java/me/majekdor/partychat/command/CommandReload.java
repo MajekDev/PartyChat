@@ -6,6 +6,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.jetbrains.annotations.NotNull;
 
@@ -19,9 +20,10 @@ public class CommandReload implements CommandExecutor {
         if (cmd.getName().equalsIgnoreCase("pcreload")) {
             if (sender.hasPermission("partychat.admin")) {
                 /*
-                 These first three are the only important lines
+                 These first four are the only important lines
                  The rest is all formatting to look cool :D
                  */
+                PartyChat.instance.reloadConfig(); PartyChat.messageData.reloadConfig();
                 PartyChat.instance.getPluginLoader().disablePlugin(PartyChat.instance);
                 sender.sendMessage(ChatColor.DARK_GRAY  + "[LOG]" + ChatColor.RED + " Disabling PartyChat plugin...");
                 PartyChat.instance.getPluginLoader().enablePlugin(PartyChat.instance);
@@ -31,8 +33,9 @@ public class CommandReload implements CommandExecutor {
                 Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(PartyChat.instance, () ->
                         sender.sendMessage(ChatColor.DARK_GRAY  + "[LOG]" + ChatColor.GRAY +
                                 " Successfully loaded PartyChat version " + pdf.getVersion()), 30L);
+            } else {
+                CommandParty.sendMessageWithPrefix((Player) sender, "&cYou do not have permission to use this command.");
             }
-            //CommandParty.sendMessageWithPrefix((Player) sender, m.getString("no-permission"));
             return true;
         }
         return false;

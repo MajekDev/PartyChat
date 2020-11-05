@@ -29,13 +29,6 @@ public abstract class Database {
 
     public void initialize() {
         connection = getSQLConnection();
-        try {
-            PreparedStatement ps = connection.prepareStatement("SELECT * FROM " + table + " WHERE name = ?");
-            ResultSet rs = ps.executeQuery();
-            close(ps,rs);
-        } catch (SQLException ex) {
-            plugin.getLogger().log(Level.SEVERE, "Unable to retrieve connection", ex);
-        }
     }
 
     public void close(PreparedStatement ps, ResultSet rs) {

@@ -1,11 +1,13 @@
 package me.majekdor.partychat.gui;
 
+import com.cryptomorin.xseries.XMaterial;
 import dev.dbassett.skullcreator.SkullCreator;
 import me.majekdor.partychat.PartyChat;
 import me.majekdor.partychat.command.party.PartyCreate;
 import me.majekdor.partychat.util.Chat;
 import net.wesjd.anvilgui.AnvilGUI;
 import org.bukkit.ChatColor;
+import org.bukkit.DyeColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
@@ -13,6 +15,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class GuiNoParty extends Gui {
 
@@ -38,7 +41,7 @@ public class GuiNoParty extends Gui {
         String version = PartyChat.minecraftVersion;
         ItemStack join;
         if (Integer.parseInt(version) < 13)
-            join = new ItemStack(Material.GREEN_WOOL);
+            join = new ItemStack(Objects.requireNonNull(XMaterial.GREEN_WOOL.parseMaterial(true)), 1 , (byte) 13);
         else
             join = new ItemStack(Material.GREEN_CONCRETE);
 
