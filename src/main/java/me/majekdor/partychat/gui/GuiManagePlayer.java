@@ -6,6 +6,7 @@ import me.majekdor.partychat.command.party.PartyRemove;
 import me.majekdor.partychat.util.Chat;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -15,9 +16,9 @@ import java.util.List;
 
 public class GuiManagePlayer extends Gui {
 
-    public Player target;
+    public OfflinePlayer target;
 
-    public GuiManagePlayer(Player p) {
+    public GuiManagePlayer(OfflinePlayer p) {
         super("ManagePlayer", "Manage Player", 9);
         target = p;
     }
@@ -27,12 +28,12 @@ public class GuiManagePlayer extends Gui {
 
         ItemStack head = new ItemStack(SkullCreator.itemFromUuid(target.getUniqueId()));
         ItemMeta meta = head.getItemMeta(); List<String> lore = new ArrayList<>();
-        meta.setDisplayName(Chat.colorize(target.getDisplayName())); head.setItemMeta(meta);
+        meta.setDisplayName(Chat.colorize(target.getName())); head.setItemMeta(meta);
         addLabel(1, head);
 
         ItemStack promote = new ItemStack(Material.NETHER_STAR);
         meta = promote.getItemMeta(); meta.setDisplayName(ChatColor.YELLOW + "Click to promote player");
-        lore.add(ChatColor.GRAY + "This will make " + target.getDisplayName()
+        lore.add(ChatColor.GRAY + "This will make " + target.getName()
                 + " the party leader and demote you to a member");
         meta.setLore(lore); promote.setItemMeta(meta); lore.clear();
         addActionItem(3, promote, () -> promotePlayer(p, target));
@@ -48,12 +49,12 @@ public class GuiManagePlayer extends Gui {
         addActionItem(7, close, () -> new GuiMembers(p).openGui(p));
     }
 
-    private void removePlayer(Player currentLeader, Player toRemove) {
+    private void removePlayer(Player currentLeader, OfflinePlayer toRemove) {
         currentLeader.closeInventory();
         PartyRemove.execute(currentLeader, toRemove.getName());
     }
 
-    private void promotePlayer(Player currentLeader, Player newLeader) {
+    private void promotePlayer(Player currentLeader, OfflinePlayer newLeader) {
         currentLeader.closeInventory();
         PartyPromote.execute(currentLeader, newLeader.getName());
     }

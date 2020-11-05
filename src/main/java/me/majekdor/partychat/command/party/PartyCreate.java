@@ -10,7 +10,7 @@ public class PartyCreate extends CommandParty {
     public static void execute(Player player, String[] args) {
 
         // Check if the player is already in a party
-        if (Party.inParty.containsKey(player)) {
+        if (Party.inParty.containsKey(player.getUniqueId())) {
             sendMessageWithPrefix(player, m.getString("in-party")); return;
         }
 
@@ -19,12 +19,12 @@ public class PartyCreate extends CommandParty {
             sendMessageWithPrefix(player, m.getString("no-name")); return;
         }
 
-        // Check if a party with that name already exists
         String partyName = args[1];
         execute(player, partyName);
     }
 
     public static void execute(Player player, String partyName) {
+        // Check if a party with that name already exists
         if (Party.inParty.containsValue(partyName)) {
             sendMessageWithPrefix(player, m.getString("name-taken")); return;
         }
@@ -46,7 +46,7 @@ public class PartyCreate extends CommandParty {
 
         // Passed all requirements
         Party party = new Party(player, partyName);
-        Party.inParty.put(player, partyName);
+        Party.inParty.put(player.getUniqueId(), partyName);
         Party.parties.put(partyName, party);
         for (String partyCreated : m.getStringList("party-created")) {
             sendMessageWithPrefix(player, (partyCreated).replace("%partyName%", partyName));

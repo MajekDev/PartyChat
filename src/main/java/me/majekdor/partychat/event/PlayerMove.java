@@ -1,9 +1,10 @@
-package me.majekdor.partychat.listener;
+package me.majekdor.partychat.event;
 
 import me.majekdor.partychat.PartyChat;
 import me.majekdor.partychat.command.CommandParty;
 import me.majekdor.partychat.data.Party;
 import me.majekdor.partychat.util.Bar;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -28,8 +29,10 @@ public class PlayerMove implements Listener {
         Player player = e.getPlayer();Party party = Party.getParty(player);
         if (Party.noMove.contains(player)) {
             CommandParty.sendMessageWithPrefix(player, m.getString("teleport-canceled"));
-            CommandParty.sendMessageWithPrefix(party.leader, (m.getString("teleport-canceled-leader") + "")
-                    .replace("%player%", player.getDisplayName()));
+            Player leader = Bukkit.getPlayer(party.leader);
+            if (leader != null)
+                CommandParty.sendMessageWithPrefix(leader, (m.getString("teleport-canceled-leader") + "")
+                        .replace("%player%", player.getDisplayName()));
             bar = new Bar(); bar.removePlayer(player); bar.removeBar();
             party.pendingSummons.remove(player);
             Party.noMove.remove(player);

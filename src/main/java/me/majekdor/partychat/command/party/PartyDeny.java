@@ -2,21 +2,26 @@ package me.majekdor.partychat.command.party;
 
 import me.majekdor.partychat.command.CommandParty;
 import me.majekdor.partychat.data.Party;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
+
+import java.util.UUID;
 
 public class PartyDeny extends CommandParty {
 
     public static void execute(Player player) {
 
         // Check if the player is in a party
-        if (Party.inParty.containsKey(player)) {
+        if (Party.inParty.containsKey(player.getUniqueId())) {
             Party party = Party.getParty(player);
+            Player leader = Bukkit.getPlayer(party.leader);
 
             // Check if the player has a pending summon request
             if (party.pendingSummons.contains(player)) {
                 sendMessageWithPrefix(player, m.getString("teleport-denied-player"));
-                sendMessageWithPrefix(party.leader, (m.getString("teleport-denied") + "")
-                        .replace("%player%", player.getDisplayName()));
+                if (leader != null)
+                    sendMessageWithPrefix(leader, (m.getString("teleport-denied") + "")
+                            .replace("%player%", player.getDisplayName()));
                 party.pendingSummons.remove(player); return;
             }
 
@@ -30,7 +35,7 @@ public class PartyDeny extends CommandParty {
 
                 // Send messages and remove from list
                 sendMessageWithPrefix(player, m.getString("join-denied"));
-                sendMessageWithPrefix(party.leader, (m.getString("deny-join") + "")
+                sendMessageWithPrefix(leader, (m.getString("deny-join") + "")
                         .replace("%player%", player.getDisplayName()));
                 party.pendingJoinRequests.remove(player); return;
             }
@@ -53,9 +58,12 @@ public class PartyDeny extends CommandParty {
 
             // Send deny messages
             sendMessageWithPrefix(player, m.getString("you-decline"));
-            for (Player member : party.members)
+            for (UUID memberUUID : party.members) {
+                Player member = Bukkit.getPlayer(memberUUID);
+                if (member == null) continue;
                 sendMessageWithPrefix(member, (m.getString("decline-join") + "")
                         .replace("%player%", player.getDisplayName()));
+            }
             party.pendingInvitations.remove(player);
         }
     }

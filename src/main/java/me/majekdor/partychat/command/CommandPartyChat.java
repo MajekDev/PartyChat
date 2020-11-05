@@ -2,7 +2,7 @@ package me.majekdor.partychat.command;
 
 import me.majekdor.partychat.PartyChat;
 import me.majekdor.partychat.data.Party;
-import me.majekdor.partychat.listener.PlayerChat;
+import me.majekdor.partychat.event.PlayerChat;
 import me.majekdor.partychat.util.Chat;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -39,7 +39,7 @@ public class CommandPartyChat implements CommandExecutor, TabCompleter {
                 }
 
             // Check if the player is not in a party
-            if (!Party.inParty.containsKey(player)) {
+            if (!Party.inParty.containsKey(player.getUniqueId())) {
                 player.sendMessage(Chat.format(m.getString("not-in-party"))); return true;
             }
 
@@ -72,7 +72,9 @@ public class CommandPartyChat implements CommandExecutor, TabCompleter {
                     PartyChat.debug(player, "CommandPartyChat", partyChat.get(player), "Party"); // Debug
 
                     // Send message to party members
-                    for (Player member : party.members) {
+                    for (UUID memberUUID : party.members) {
+                        Player member = Bukkit.getPlayer(memberUUID);
+                        if (member == null) continue;
                         messageReceived.add(member);
                         member.sendMessage(Chat.format((m.getString("message-format") + message)
                                 .replace("%partyName%", party.name)

@@ -5,12 +5,14 @@ import me.majekdor.partychat.data.Party;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
+import java.util.UUID;
+
 public class PartyPromote extends CommandParty {
 
     public static void execute(Player player, String[] args) {
 
         // Check if the player is not in a party
-        if (!Party.inParty.containsKey(player)) {
+        if (!Party.inParty.containsKey(player.getUniqueId())) {
             sendMessageWithPrefix(player, m.getString("not-in-party"));
             return;
         }
@@ -18,8 +20,9 @@ public class PartyPromote extends CommandParty {
         Party party = Party.getParty(player);
 
         // Check if the player is not the party leader
-        if (player != party.leader) {
+        if (!player.getUniqueId().equals(party.leader)) {
             sendMessageWithPrefix(player, m.getString("not-leader"));
+            player.sendMessage(party.leader.toString() + "\n and \n" + player.getUniqueId().toString());
             return;
         }
 
@@ -36,7 +39,12 @@ public class PartyPromote extends CommandParty {
 
         // Make sure the specified player is in the party
         Player target = Bukkit.getPlayerExact(newLeader);
-        if (target == null || !party.members.contains(target)) {
+
+        if (target == null) {
+            sendMessageWithPrefix(player, m.getString("not-online")); return;
+        }
+
+        if (!party.members.contains(target.getUniqueId())) {
             sendMessageWithPrefix(player, m.getString("player-not-in-party"));
             return;
         }
@@ -48,12 +56,15 @@ public class PartyPromote extends CommandParty {
         }
 
         // Passed all of the checks
-        party.leader = target;
+        party.leader = target.getUniqueId();
         sendMessageWithPrefix(target, (m.getString("you-promoted") + "")
                 .replace("%player%", player.getDisplayName()));
-        for (Player member : party.members)
+        for (UUID memberUUID : party.members) {
+            Player member = Bukkit.getPlayer(memberUUID);
+            if (member == null) continue;
             if (member != target)
                 sendMessageWithPrefix(member, (m.getString("new-leader") + "")
                         .replace("%player%", target.getDisplayName()));
+        }
     }
 }

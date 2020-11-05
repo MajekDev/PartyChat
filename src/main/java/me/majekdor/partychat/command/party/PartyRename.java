@@ -10,14 +10,14 @@ public class PartyRename extends CommandParty {
     public static void execute(Player player, String[] args) {
 
         // Check if the player is not in a party
-        if (!Party.inParty.containsKey(player)) {
+        if (!Party.inParty.containsKey(player.getUniqueId())) {
             sendMessageWithPrefix(player, m.getString("not-in-party")); return;
         }
 
         Party party = Party.getParty(player);
 
         // Check if the player is not the party leader
-        if (player != party.leader) {
+        if (!player.getUniqueId().equals(party.leader)) {
             sendMessageWithPrefix(player, m.getString("not-leader")); return;
         }
 

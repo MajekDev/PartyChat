@@ -9,19 +9,25 @@ import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
+import java.util.UUID;
+
 public class PartyAccept extends CommandParty {
 
     public static void execute(Player player) {
 
         // Check if the player is in a party
-        if (Party.inParty.containsKey(player)) {
+        if (Party.inParty.containsKey(player.getUniqueId())) {
             Party party = Party.getParty(player);
 
             // Check if the player has a pending summon request
             if (party.pendingSummons.contains(player)) {
                 bar = new Bar(); bar.createBar(); bar.addPlayer(player);
+                Player leader = Bukkit.getPlayer(party.leader);
+                if (leader == null) {
+                    sendMessageWithPrefix(player, m.getString("leader-offline")); return;
+                }
                 if (party.size < 6) {
-                    sendMessageWithPrefix(party.leader, (m.getString("teleport-accepted") + "")
+                    sendMessageWithPrefix(Bukkit.getPlayer(party.leader), (m.getString("teleport-accepted") + "")
                             .replace("%player%", player.getDisplayName()));
                 }
                 sendMessageWithPrefix(player, m.getString("teleport-prepare"));
@@ -30,8 +36,8 @@ public class PartyAccept extends CommandParty {
                     if (Party.noMove.contains(player)) {
 
                         // Make sure the location is safe
-                        Location safe = Utils.findSafe(party.leader.getLocation(),
-                                party.leader.getLocation().getBlockY()-5, 256);
+                        Location safe = Utils.findSafe(leader.getLocation(),
+                                leader.getLocation().getBlockY()-5, 256);
                         if (safe == null) {
                             sendMessageWithPrefix(player, m.getString("teleport-unsafe"));
                         } else {
@@ -62,15 +68,17 @@ public class PartyAccept extends CommandParty {
                 // Send messages
                 sendMessageWithPrefix(requester, (m.getString("you-join") + "")
                         .replace("%partyName%", party.name));
-                for (Player member : party.members) {
+                for (UUID memberUUID : party.members) {
+                    Player member = Bukkit.getPlayer(memberUUID);
+                    if (member == null) continue;
                     sendMessageWithPrefix(member, (m.getString("player-join") + "")
                             .replace("%player%", requester.getDisplayName()));
                 }
 
                 // Put the player in the party
                 party.pendingJoinRequests.remove(requester);
-                Party.inParty.put(requester, party.name);
-                party.members.add(requester); party.size++; return;
+                Party.inParty.put(requester.getUniqueId(), party.name);
+                party.members.add(requester.getUniqueId()); party.size++; return;
             }
 
             // Player is in a party and /p accept has no use
@@ -90,16 +98,19 @@ public class PartyAccept extends CommandParty {
             }
 
             // Send messages
-            for (Player member : party.members)
+            for (UUID memberUUID : party.members) {
+                Player member = Bukkit.getPlayer(memberUUID);
+                if (member == null) continue;
                 sendMessageWithPrefix(member, (m.getString("player-join") + "")
                         .replace("%player%", player.getDisplayName()));
+            }
             sendMessageWithPrefix(player, (m.getString("you-join")  + "")
                     .replace("%partyName%", party.name));
 
             // Put the player in the party
             party.pendingInvitations.remove(player);
-            Party.inParty.put(player, party.name);
-            party.members.add(player); party.size++;
+            Party.inParty.put(player.getUniqueId(), party.name);
+            party.members.add(player.getUniqueId()); party.size++;
         }
     }
 }

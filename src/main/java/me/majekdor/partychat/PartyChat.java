@@ -7,12 +7,16 @@ import me.majekdor.partychat.command.CommandReload;
 import me.majekdor.partychat.data.ConfigUpdater;
 import me.majekdor.partychat.data.DataManager;
 import me.majekdor.partychat.data.Metrics;
+import me.majekdor.partychat.data.Party;
 import me.majekdor.partychat.gui.GuiHandler;
-import me.majekdor.partychat.listener.PlayerChat;
-import me.majekdor.partychat.listener.PlayerJoinLeave;
-import me.majekdor.partychat.listener.PlayerMove;
+import me.majekdor.partychat.event.PlayerChat;
+import me.majekdor.partychat.event.PlayerJoinLeave;
+import me.majekdor.partychat.event.PlayerMove;
+import me.majekdor.partychat.sqlite.Database;
+import me.majekdor.partychat.sqlite.SQLite;
 import me.majekdor.partychat.util.Chat;
 import me.majekdor.partychat.util.UpdateChecker;
+import me.majekdor.partychat.util.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginDescriptionFile;
@@ -35,6 +39,7 @@ public final class PartyChat extends JavaPlugin {
     public static boolean hasUpdate = false;
     public static boolean debug;
     public static List<Player> serverStaff = new ArrayList<>();
+    private Database db;
 
     public PartyChat() {
         instance = this;
@@ -88,6 +93,16 @@ public final class PartyChat extends JavaPlugin {
         }
         messageData.reloadConfig();
 
+        // Load parties if saved
+        if (this.getConfig().getBoolean("persistent-parties")) {
+            this.db = new SQLite(this);
+            this.db.load();
+            this.db.getPartyNames();
+            this.db.getParties();
+            this.db.clearTable();
+            Bukkit.getConsoleSender().sendMessage("[PartyChat] Loading saved parties from config...");
+        }
+
         // Register commands, tab completers, and listeners here
         Objects.requireNonNull(this.getCommand("party")).setExecutor(new CommandParty());
         Objects.requireNonNull(this.getCommand("party")).setTabCompleter(new CommandParty());
@@ -110,6 +125,14 @@ public final class PartyChat extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        // Save parties if enabled
+        if (this.getConfig().getBoolean("persistent-parties")) {
+            for (Party party : Party.parties.values()) {
+                this.db.addParty(party.name, party.leader,
+                        Utils.serializeMembers(party.members), party.size, party.isPublic);
+            }
+            Bukkit.getConsoleSender().sendMessage("[PartyChat] Saving active parties to config...");
+        }
         // Plugin shutdown logic
         Bukkit.getConsoleSender().sendMessage(Chat.colorize("&f[&bParty&eChat&f] &cDisbanding all parties for the night..."));
     }
@@ -130,6 +153,20 @@ public final class PartyChat extends JavaPlugin {
         if (debug) {
             player.sendMessage(Chat.format("&8[&2Debug&8]&f " + fromClass + " | partyChat:" + partyChat + " | Message -> " + messageTo));
             Bukkit.getConsoleSender().sendMessage(Chat.format("&8[&2Debug&8]&f " + fromClass + " | partyChat:" + partyChat + " | Message -> " + messageTo));
+        }
+    }
+
+    /**
+     * Used for debugging persistent parties and party disbands
+     *
+     * @param player            the player leaving the party
+     * @param leaveServer       true if they left the server false if they executed the command
+     * @param partyDisbanded    whether or not the party was disbanded
+     */
+    public static void debug(Player player, boolean leaveServer, boolean partyDisbanded) {
+        if (debug) {
+            player.sendMessage(Chat.format("&8[&2Debug&8]&f Player leave ? " + leaveServer + " | Party disbanded ? " + partyDisbanded));
+            Bukkit.getConsoleSender().sendMessage(Chat.format("&8[&2Debug&8]&f Player leave ? " + leaveServer + " | Party disbanded ? " + partyDisbanded));
         }
     }
 }

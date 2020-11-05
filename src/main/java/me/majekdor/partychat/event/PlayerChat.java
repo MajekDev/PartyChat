@@ -1,4 +1,4 @@
-package me.majekdor.partychat.listener;
+package me.majekdor.partychat.event;
 
 import me.majekdor.partychat.PartyChat;
 import me.majekdor.partychat.command.CommandPartyChat;
@@ -15,6 +15,7 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class PlayerChat implements Listener {
 
@@ -25,7 +26,7 @@ public class PlayerChat implements Listener {
     @EventHandler
     public void onPlayerChat(AsyncPlayerChatEvent event) {
         Player player = event.getPlayer();
-        if (Party.inParty.containsKey(player) && CommandPartyChat.partyChat.get(player) && !fromCommandPartyChat) {
+        if (Party.inParty.containsKey(player.getUniqueId()) && CommandPartyChat.partyChat.get(player) && !fromCommandPartyChat) {
             event.setCancelled(true); String message = event.getMessage();
             Party party = Party.getParty(player);
             List<Player> messageReceived = new ArrayList<>(); // This is used so staff don't get the message twice
@@ -37,7 +38,9 @@ public class PlayerChat implements Listener {
                         + player.getName() + ": " + message);
 
             // Send message to party members
-            for (Player member : party.members) {
+            for (UUID memberUUID : party.members) {
+                Player member = Bukkit.getPlayer(memberUUID);
+                if (member == null) continue;
                 messageReceived.add(member);
                 member.sendMessage(Chat.format((m.getString("message-format") + message)
                         .replace("%partyName%", party.name)

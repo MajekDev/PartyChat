@@ -2,14 +2,19 @@ package me.majekdor.partychat.command.party;
 
 import me.majekdor.partychat.command.CommandParty;
 import me.majekdor.partychat.data.Party;
+import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
+
+import java.util.Objects;
+import java.util.UUID;
 
 public class PartyInfo extends CommandParty {
 
     public static void execute(Player player) {
 
         // Check if the player is not in a party
-        if (!(Party.inParty.containsKey(player))) {
+        if (!(Party.inParty.containsKey(player.getUniqueId()))) {
             sendMessageWithPrefix(player, m.getString("not-in-party")); return;
         }
 
@@ -18,15 +23,16 @@ public class PartyInfo extends CommandParty {
 
         // Check if the player is the only one in the party
         if (party.size == 1) {
-            sendMessageWithPrefix(player, (m.getString("info-leader") + party.leader.getDisplayName())
+            sendMessageWithPrefix(player, (m.getString("info-leader") + Bukkit.getOfflinePlayer(party.leader).getName())
                     .replace("%partyName%", party.name)); return;
         }
 
         // Build a string of party members
         StringBuilder members = new StringBuilder();
-        for (Player member : party.members) {
-            if (!Party.isLeader(party, member)) // Don't add to member string if player is leader
-                members.append(member.getDisplayName()).append(", ");
+        for (UUID memberUUID : party.members) {
+            OfflinePlayer member = Bukkit.getOfflinePlayer(memberUUID);
+            if (!(memberUUID == party.leader)) // Don't add to member string if player is leader
+                members.append(member.getName()).append(", ");
         }
 
         // Clean up string
@@ -35,7 +41,7 @@ public class PartyInfo extends CommandParty {
 
         // Send player info message
         sendMessageWithPrefix(player, (m.getString("info-members") + cleanMembers)
-                .replace("%player%", party.leader.getDisplayName())
+                .replace("%player%", Objects.requireNonNull(Bukkit.getOfflinePlayer(party.leader).getName()))
                 .replace("%partyName%", party.name));
     }
 }

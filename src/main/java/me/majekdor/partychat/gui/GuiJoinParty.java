@@ -4,6 +4,7 @@ import dev.dbassett.skullcreator.SkullCreator;
 import me.majekdor.partychat.command.party.PartyJoin;
 import me.majekdor.partychat.data.Party;
 import me.majekdor.partychat.util.Chat;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -33,9 +34,9 @@ public class GuiJoinParty extends Gui {
                 parties.add(partyCheck);
         for (int i = 0; i < 45 && i + page * 45 < parties.size(); ++i) {
             Party party = parties.get(i + page * 45);
-            ItemStack head = new ItemStack(SkullCreator.itemFromUuid(party.leader.getUniqueId()));
+            ItemStack head = new ItemStack(SkullCreator.itemFromUuid(Bukkit.getOfflinePlayer(party.leader).getUniqueId()));
             List<String> lore = new ArrayList<>();  ItemMeta meta = head.getItemMeta();
-            lore.add(Chat.colorize("&7Leader: &b" +  party.leader.getDisplayName()));
+            lore.add(Chat.colorize("&7Leader: &b" +  Bukkit.getOfflinePlayer(party.leader).getName()));
             lore.add(Chat.colorize("&7Members: &b" + party.size)); meta.setLore(lore);
             meta.setDisplayName(Chat.colorize("&r&e" + party.name)); head.setItemMeta(meta);
             addActionItem(i, head, () -> joinParty(p, party.name)); p.closeInventory();

@@ -3,14 +3,17 @@ package me.majekdor.partychat.gui;
 import dev.dbassett.skullcreator.SkullCreator;
 import me.majekdor.partychat.data.Party;
 import me.majekdor.partychat.util.Chat;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class GuiMembers extends Gui {
 
@@ -28,14 +31,14 @@ public class GuiMembers extends Gui {
 
     @Override
     protected void populateInventory(Player p) {
-        List<Player> members = Party.getParty(p).members;
+        List<UUID> members = Party.getParty(p).members;
         party = Party.getParty(p);
         for (int i = 0; i < 45 && i + page * 45 < members.size(); ++i) {
-            Player member = members.get(i + page * 45);
+            OfflinePlayer member = Bukkit.getOfflinePlayer(members.get(i + page * 45));
             ItemStack head = new ItemStack(SkullCreator.itemFromUuid(member.getUniqueId()));
             List<String> lore = new ArrayList<>();  ItemMeta meta = head.getItemMeta();
-            meta.setDisplayName(ChatColor.AQUA  + Chat.colorize(member.getDisplayName()));
-            if (p == party.leader) {
+            meta.setDisplayName(ChatColor.AQUA  + Chat.colorize(member.getName()));
+            if (p.getUniqueId().equals(party.leader)) {
                 lore.add(ChatColor.GRAY + "Click to manage player");
                 meta.setLore(lore); head.setItemMeta(meta);
                 addActionItem(i, head, () -> new GuiManagePlayer(member).openGui(p));

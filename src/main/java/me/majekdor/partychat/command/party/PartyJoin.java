@@ -3,6 +3,7 @@ package me.majekdor.partychat.command.party;
 import me.majekdor.partychat.PartyChat;
 import me.majekdor.partychat.command.CommandParty;
 import me.majekdor.partychat.data.Party;
+import me.majekdor.partychat.util.Chat;
 import me.majekdor.partychat.util.TextUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.command.TabCompleter;
@@ -15,7 +16,7 @@ public class PartyJoin extends CommandParty implements TabCompleter {
     public static void execute(Player player, String[] args) {
 
         // Check if the player is already in a party
-        if (Party.inParty.containsKey(player)) {
+        if (Party.inParty.containsKey(player.getUniqueId())) {
             sendMessageWithPrefix(player, m.getString("in-party")); return;
         }
 
@@ -28,7 +29,14 @@ public class PartyJoin extends CommandParty implements TabCompleter {
 
     public static void execute(Player player, String partyName) {
         // See if the party exists
-        if (!Party.parties.containsKey(partyName)) {
+        boolean found = false;
+        for (Party party : Party.parties.values()) {
+            if (partyName.equalsIgnoreCase(Chat.removeColorCodes(partyName))) {
+                partyName = party.name; found = true;
+                break;
+            }
+        }
+        if (!found) {
             sendMessageWithPrefix(player, m.getString("unknown-party")); return;
         }
 
@@ -45,8 +53,13 @@ public class PartyJoin extends CommandParty implements TabCompleter {
         }
 
         // Send join request to the party leader
+        Player leader = Bukkit.getPlayer(party.leader);
+        if (leader == null) {
+            sendMessageWithPrefix(player, m.getString("leader-offline")); return;
+        }
+
         for (String request : m.getStringList("request-join")) {
-            TextUtils.sendFormatted(party.leader, request
+            TextUtils.sendFormatted(leader, request
                     .replace("%player%", player.getDisplayName())
                     .replace("%prefix%", Objects.requireNonNull(m.getString("other-format-prefix"))));
         }
@@ -65,7 +78,7 @@ public class PartyJoin extends CommandParty implements TabCompleter {
             if (party.pendingJoinRequests.contains(player)) {
                 party.pendingJoinRequests.remove(player);
                 sendMessageWithPrefix(player, m.getString("expired-join"));
-                sendMessageWithPrefix(party.leader, m.getString("expired-join"));
+                sendMessageWithPrefix(leader, m.getString("expired-join"));
             }
                 }, expire);
     }

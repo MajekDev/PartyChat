@@ -13,12 +13,14 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
+import java.util.UUID;
+
 public class PartyShareItem extends CommandParty {
 
     public static void execute(Player player, String[] args) {
 
         // Check if the player is not in a party
-        if (!(Party.inParty.containsKey(player))) {
+        if (!(Party.inParty.containsKey(player.getUniqueId()))) {
             sendMessageWithPrefix(player, m.getString("not-in-party")); return;
         }
 
@@ -39,7 +41,9 @@ public class PartyShareItem extends CommandParty {
 
         // Send message using sendFormatted to implement hover tool tip
         Party party = Party.getParty(player);
-        for (Player member : party.members) {
+        for (UUID memberUUID : party.members) {
+            Player member = Bukkit.getPlayer(memberUUID);
+            if (member == null) continue;
             TextUtils.sendFormatted(member, false, Chat.format((m.getString("message-format") + "")
                     .replace("%partyName%", party.name).replace("%player%", player.getDisplayName())
                     + (args.length > 1 ? TabCompleterBase.joinArgsBeyond(0, " ", args) + " "

@@ -50,7 +50,7 @@ public class GuiInParty extends Gui {
         meta.setDisplayName(ChatColor.YELLOW + "Click to close"); close.setItemMeta(meta);
         addActionItem(8, close, p::closeInventory);
 
-        if (p == party.leader) {
+        if (Party.isLeader(party, p)) {
 
             addActionItem(1, members, () -> new GuiMembers(p).openGui(p));
             addActionItem(2, invite, () -> invitePlayerAnvil(p));
@@ -113,9 +113,9 @@ public class GuiInParty extends Gui {
 
         new AnvilGUI.Builder()
                 .onClose(player -> {                        // called when the inventory is closing
-                    if (Party.inParty.containsKey(player)) {
+                    if (Party.inParty.containsKey(player.getUniqueId())) {
                         if (leave) {
-                            PartyLeave.execute(p);
+                            PartyLeave.execute(p, false);
                         }
                     }
                     leave = true;
@@ -123,11 +123,11 @@ public class GuiInParty extends Gui {
                 .onComplete((player, text) -> {             // called when the inventory output slot is clicked
                     String newText = text.replaceAll("\\s","");
                     Player target = Bukkit.getPlayerExact(newText);
-                    if (target == null || !Party.getParty(player).members.contains(target)) {
+                    if (target == null || !Party.getParty(player).members.contains(target.getUniqueId())) {
                         wait(player);
-                    } else if (Party.getParty(player).members.contains(target)) {
+                    } else if (Party.getParty(player).members.contains(target.getUniqueId())) {
                         PartyPromote.execute(player, newText);
-                        PartyLeave.execute(player);
+                        PartyLeave.execute(player, false);
                     }
                     leave = false;
                     return AnvilGUI.Response.close();
@@ -199,7 +199,7 @@ public class GuiInParty extends Gui {
 
     private void leaveParty(Player p) {
         p.closeInventory();
-        PartyLeave.execute(p);
+        PartyLeave.execute(p, false);
     }
 
     private void summonParty(Player p) {

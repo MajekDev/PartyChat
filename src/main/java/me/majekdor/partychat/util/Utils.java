@@ -5,14 +5,13 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
 import org.bukkit.block.Block;
+import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Method;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.function.Function;
 import java.util.logging.Level;
 
@@ -458,6 +457,24 @@ public final class Utils {
             if (zMin >= copy.getZ() || copy.getZ() >= zMax)
                 dx = -dx;
         }
+    }
+
+    public static String serializeMembers(List<UUID> members) {
+        StringBuilder sb = new StringBuilder();
+        for (UUID member : members) {
+            sb.append(member).append(",");
+        }
+        return sb.toString();
+    }
+
+    public static List<UUID> deserializeMembers(String members) {
+        String[] str = members.split(",");
+        List<String> memberUUIDs = new ArrayList<>(Arrays.asList(str));
+        List<UUID> toReturn = new ArrayList<>();
+        for (String uuid : memberUUIDs) {
+            toReturn.add(UUID.fromString(uuid));
+        }
+        return toReturn;
     }
 }
 

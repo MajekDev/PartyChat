@@ -9,13 +9,14 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.Objects;
+import java.util.UUID;
 
 public class PartyAdd extends CommandParty {
 
     public static void execute(Player player, String[] args) {
 
         // Check if the player is not in a party
-        if (!(Party.inParty.containsKey(player))) {
+        if (!(Party.inParty.containsKey(player.getUniqueId()))) {
             sendMessageWithPrefix(player, m.getString("not-in-party")); return;
         }
 
@@ -42,10 +43,12 @@ public class PartyAdd extends CommandParty {
         }
 
         // Player is trying to invite a player already in the party
-        for (Player member : party.members)
+        for (UUID memberUUID : party.members) {
+            Player member = Bukkit.getPlayer(memberUUID);
             if (member == invitee) {
                 sendMessageWithPrefix(player, m.getString("player-in-party")); return;
             }
+        }
 
         // Passed all the checks - send message to player and invitee
         for (String inv : m.getStringList("invite-message")) {

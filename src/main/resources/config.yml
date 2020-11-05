@@ -1,4 +1,4 @@
-# PartyChat by Majekdor | Created on 5/23/2020 | Updated 10/15/2020
+# PartyChat by Majekdor | Created on 5/23/2020 | Updated 10/27/2020
 # Need help? https://github.com/Majekdor/PartyChat/wiki or message me on Discord @Majekdor#6346
 
 # Whether or not the plugin blocks inappropriate party names
@@ -41,6 +41,10 @@ block-time: 60
 # If set to false new parties will automatically be private unless toggled
 # This is set to true by default
 public-on-creation: true
+
+# Whether or not parties will save on restart
+# If this is enabled players will not be kicked from a party when the leave the server
+persistent-parties: false
 
 # Don't set to true unless you want players to see random messages or other undesirable behavior
 # No seriously don't turn this on unless you actually need to debug something

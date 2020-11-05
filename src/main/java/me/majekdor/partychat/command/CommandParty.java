@@ -10,6 +10,7 @@ import me.majekdor.partychat.util.Chat;
 import me.majekdor.partychat.util.TabCompleterBase;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -19,10 +20,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public class CommandParty implements CommandExecutor, TabCompleter {
 
@@ -73,7 +71,7 @@ public class CommandParty implements CommandExecutor, TabCompleter {
                     case "join":
                         PartyJoin.execute(player, args); break;
                     case "leave":
-                        PartyLeave.execute(player); break;
+                        PartyLeave.execute(player, false); break;
                     case "shareitem":
                         PartyShareItem.execute(player, args); break;
                     case "promote":
@@ -92,7 +90,7 @@ public class CommandParty implements CommandExecutor, TabCompleter {
                         sendMessageWithPrefix(player, m.getString("unknown-command"));
                 }
             } else { // no args
-                if (Party.inParty.containsKey(player)) {
+                if (Party.inParty.containsKey(player.getUniqueId())) {
                     new GuiInParty().openGui(player);
                 } else {
                     new GuiNoParty().openGui(player);
@@ -125,7 +123,12 @@ public class CommandParty implements CommandExecutor, TabCompleter {
                     return TabCompleterBase.getOnlinePlayers(args[1]);
                 case "promote":
                 case "remove'":
-                    return TabCompleterBase.filterStartingWith(args[1], Party.getParty((Player) sender).members.stream().map(Player::getName));
+                    List<String> members = new ArrayList<>();
+                    for (UUID memberUUID : Party.getParty((Player) sender).members) {
+                        OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(memberUUID);
+                        members.add(offlinePlayer.getName());
+                    }
+                    return TabCompleterBase.filterStartingWith(args[1], members);
                 case "join":
                     List<String> publicParties = new ArrayList<>();
                     for (Party party : Party.parties.values())

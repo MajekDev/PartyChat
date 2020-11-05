@@ -1,4 +1,4 @@
-package me.majekdor.partychat.listener;
+package me.majekdor.partychat.event;
 
 import me.majekdor.partychat.PartyChat;
 import me.majekdor.partychat.command.CommandPartyChat;
@@ -35,8 +35,10 @@ public class PlayerJoinLeave implements Listener {
 
     @EventHandler
     public void onPlayerLeave(PlayerQuitEvent event) {
-        if (Party.inParty.containsKey(event.getPlayer())) {
-            PartyLeave.execute(event.getPlayer());
+        if (Party.inParty.containsKey(event.getPlayer().getUniqueId())) {
+            if (!(c.getBoolean("persistent-parties"))) {
+                PartyLeave.execute(event.getPlayer(), true);
+            }
         }
     }
 }

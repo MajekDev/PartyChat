@@ -68,8 +68,8 @@ public class DataManager {
     // Not in use but saved for future reference
     public void saveDefaultConfig() {
         if (this.configFile == null)
-            this.configFile = new File(this.plugin.getDataFolder(), "messages.yml");
+            this.configFile = new File(this.plugin.getDataFolder(), fileName);
         if (!this.configFile.exists())
-            this.plugin.saveResource("messages.yml", false);
+            this.plugin.saveResource(fileName, false);
     }
 }
