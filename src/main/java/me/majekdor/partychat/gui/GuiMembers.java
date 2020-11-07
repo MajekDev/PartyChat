@@ -1,7 +1,9 @@
 package me.majekdor.partychat.gui;
 
 import dev.dbassett.skullcreator.SkullCreator;
+import me.majekdor.partychat.PartyChat;
 import me.majekdor.partychat.data.Party;
+import me.majekdor.partychat.data.Restrictions;
 import me.majekdor.partychat.util.Chat;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -35,6 +37,8 @@ public class GuiMembers extends Gui {
         party = Party.getParty(p);
         for (int i = 0; i < 45 && i + page * 45 < members.size(); ++i) {
             OfflinePlayer member = Bukkit.getOfflinePlayer(members.get(i + page * 45));
+            if (member.getPlayer() != null && Restrictions.isVanished(member.getPlayer())) // Don't include vanished players
+                if (PartyChat.instance.getConfig().getBoolean("hide-vanished-players")) continue;
             ItemStack head = new ItemStack(SkullCreator.itemFromUuid(member.getUniqueId()));
             List<String> lore = new ArrayList<>();  ItemMeta meta = head.getItemMeta();
             meta.setDisplayName(ChatColor.AQUA  + Chat.colorize(member.getName()));

@@ -5,7 +5,9 @@ import me.majekdor.partychat.command.CommandPartyChat;
 import me.majekdor.partychat.command.CommandPartySpy;
 import me.majekdor.partychat.command.party.PartyLeave;
 import me.majekdor.partychat.data.Party;
+import me.majekdor.partychat.data.Restrictions;
 import me.majekdor.partychat.util.Chat;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -20,7 +22,10 @@ public class PlayerJoinLeave implements Listener {
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event) {
         Player player = event.getPlayer();
-        CommandPartyChat.partyChat.put(player, false);
+        if (CommandPartyChat.partyChat.containsKey(player))
+            CommandPartyChat.partyChat.replace(player, false);
+        else
+            CommandPartyChat.partyChat.put(player, false);
 
         if (player.hasPermission("partychat.admin")) {
             if (!PartyChat.serverStaff.contains(player))
@@ -40,5 +45,11 @@ public class PlayerJoinLeave implements Listener {
                 PartyLeave.execute(event.getPlayer(), true);
             }
         }
+
+        // Remove the player from the party if they left the server due to a ban
+        Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(PartyChat.instance, () -> {
+            if (Restrictions.isBanned(event.getPlayer()))
+                PartyLeave.execute(event.getPlayer(), false);
+        }, 20L); // Give hooked plugins time to figure their shit out
     }
 }

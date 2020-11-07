@@ -2,6 +2,7 @@ package me.majekdor.partychat.command;
 
 import me.majekdor.partychat.PartyChat;
 import me.majekdor.partychat.data.Party;
+import me.majekdor.partychat.data.Restrictions;
 import me.majekdor.partychat.event.PlayerChat;
 import me.majekdor.partychat.util.Chat;
 import org.bukkit.Bukkit;
@@ -58,6 +59,12 @@ public class CommandPartyChat implements CommandExecutor, TabCompleter {
 
             // Send message to party chat if in party, to normal chat if not
             if (args.length > 0) {
+
+                // Check if the player is muted - don't allow chat if they are
+                if (Restrictions.isMuted(player)) {
+                    player.sendMessage(Chat.format(m.getString("muted"))); return true;
+                }
+
                 StringBuilder message = new StringBuilder();
                 for (String arg : args) {
                     message.append(arg).append(" ");

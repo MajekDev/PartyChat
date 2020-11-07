@@ -56,6 +56,11 @@ public class Party {
         return parties.get(partyName);
     }
 
+    public static Party getParty(UUID uuid) {
+        String partyName = inParty.get(uuid);
+        return parties.get(partyName);
+    }
+
     public static String getRawName(Party party) {
         return Chat.removeColorCodes(party.name);
     }

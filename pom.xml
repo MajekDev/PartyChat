@@ -71,6 +71,14 @@
             <id>skullcreator-repo</id>
             <url>https://dl.bintray.com/deanveloper/SkullCreator</url>
         </repository>
+        <repository>
+            <id>placeholderapi</id>
+            <url>https://repo.extendedclip.com/content/repositories/placeholderapi/</url>
+        </repository>
+        <repository>
+            <id>ess-repo</id>
+            <url>https://ci.ender.zone/plugin/repository/everything/</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -89,13 +97,43 @@
         <dependency>
             <groupId>com.github.WesJD.AnvilGUI</groupId>
             <artifactId>anvilgui</artifactId>
-            <version>master-d1cc0a91c4-1</version>
+            <version>5d0f592c63</version>
         </dependency>
         <dependency>
             <groupId>dev.dbassett</groupId>
             <artifactId>skullcreator</artifactId>
             <version>3.0.0</version>
             <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.github.cryptomorin</groupId>
+            <artifactId>XSeries</artifactId>
+            <version>7.5.5</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>me.clip</groupId>
+            <artifactId>placeholderapi</artifactId>
+            <version>2.10.9</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>net.ess3</groupId>
+            <artifactId>EssentialsX</artifactId>
+            <version>2.16.1</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.gitlab.ruany</groupId>
+            <artifactId>LiteBansAPI</artifactId>
+            <version>0.3.4</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>me.leoko.advancedban.AdvancedBan</groupId>
+            <artifactId>advancedban</artifactId>
+            <version>2.1.7</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>com.github.cryptomorin</groupId>

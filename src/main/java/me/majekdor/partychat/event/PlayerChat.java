@@ -4,6 +4,7 @@ import me.majekdor.partychat.PartyChat;
 import me.majekdor.partychat.command.CommandPartyChat;
 import me.majekdor.partychat.command.CommandPartySpy;
 import me.majekdor.partychat.data.Party;
+import me.majekdor.partychat.data.Restrictions;
 import me.majekdor.partychat.util.Chat;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -30,6 +31,11 @@ public class PlayerChat implements Listener {
             event.setCancelled(true); String message = event.getMessage();
             Party party = Party.getParty(player);
             List<Player> messageReceived = new ArrayList<>(); // This is used so staff don't get the message twice
+
+            // Check if the player is muted - don't allow chat if they are
+            if (Restrictions.isMuted(player)) {
+                Chat.format(m.getString("muted")); return;
+            }
 
             PartyChat.debug(player, "AsyncPlayerChatEvent", CommandPartyChat.partyChat.get(player), "Party"); // Debug
 

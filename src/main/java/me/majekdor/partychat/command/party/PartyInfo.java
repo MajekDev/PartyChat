@@ -1,7 +1,9 @@
 package me.majekdor.partychat.command.party;
 
+import me.majekdor.partychat.PartyChat;
 import me.majekdor.partychat.command.CommandParty;
 import me.majekdor.partychat.data.Party;
+import me.majekdor.partychat.data.Restrictions;
 import org.bukkit.Bukkit;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
@@ -31,6 +33,8 @@ public class PartyInfo extends CommandParty {
         StringBuilder members = new StringBuilder();
         for (UUID memberUUID : party.members) {
             OfflinePlayer member = Bukkit.getOfflinePlayer(memberUUID);
+            if (member.getPlayer() != null && Restrictions.isVanished(member.getPlayer())) // Don't include vanished players
+                if (PartyChat.instance.getConfig().getBoolean("hide-vanished-players")) continue;
             if (!(memberUUID == party.leader)) // Don't add to member string if player is leader
                 members.append(member.getName()).append(", ");
         }

@@ -50,6 +50,9 @@ persistent-parties: false
 # Note: this is ignored and guis are automatically disabled if you're running a version below 1.12.2
 disable-guis: false
 
+# If enabled players who are vanished will not be shown in the list of party members
+hide-vanished-players: true
+
 # Don't set to true unless you want players to see random messages or other undesirable behavior
 # No seriously don't turn this on unless you actually need to debug something
 # If you have to turn this on you should probably contact the developer

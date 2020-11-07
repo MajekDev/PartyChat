@@ -1,10 +1,11 @@
 name: PartyChat
-version: 3.1.2
+version: 3.2.0
 main: me.majekdor.partychat.PartyChat
 api-version: 1.16
 authors: [ Majekdor ]
 description: Easily chat among your friends in a party without any commands.
 website: https://github.com/Majekdor/PartyChat
+softdepend: [PlaceholderAPI, Essentials, LiteBans, AdvancedBan]
 commands:
   partychat:
     description: Toggle party chat.

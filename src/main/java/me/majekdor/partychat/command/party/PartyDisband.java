@@ -3,6 +3,7 @@ package me.majekdor.partychat.command.party;
 import me.majekdor.partychat.command.CommandParty;
 import me.majekdor.partychat.data.Party;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import java.util.UUID;
@@ -25,10 +26,10 @@ public class PartyDisband extends CommandParty {
 
         // Remove everyone from the party and delete the party
         for (UUID memberUUID : party.members) {
-            Player member = Bukkit.getPlayer(memberUUID);
-            if (member == null) continue;
+            OfflinePlayer member = Bukkit.getOfflinePlayer(memberUUID);
             Party.inParty.remove(member.getUniqueId()); Party.parties.remove(party.name);
-            sendMessageWithPrefix(member, (m.getString("party-disbanded") + "")
+            if (member.getPlayer() != null)
+                sendMessageWithPrefix(member.getPlayer(), (m.getString("party-disbanded") + "")
                     .replace("%partyName%", party.name));
         }
     }

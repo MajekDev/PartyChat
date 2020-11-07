@@ -12,6 +12,7 @@ import me.majekdor.partychat.gui.GuiHandler;
 import me.majekdor.partychat.event.PlayerChat;
 import me.majekdor.partychat.event.PlayerJoinLeave;
 import me.majekdor.partychat.event.PlayerMove;
+import me.majekdor.partychat.hooks.PlaceholderAPI;
 import me.majekdor.partychat.sqlite.Database;
 import me.majekdor.partychat.sqlite.SQLite;
 import me.majekdor.partychat.util.Chat;
@@ -39,6 +40,9 @@ public final class PartyChat extends JavaPlugin {
     private Database db;
     public static String minecraftVersion;
     public static boolean disableGuis;
+    public static boolean hasEssentials = false;
+    public static boolean hasLiteBans = false;
+    public static boolean hasAdvancedBan = false;
 
     public PartyChat() {
         instance = this;
@@ -48,6 +52,8 @@ public final class PartyChat extends JavaPlugin {
     @Override
     public void onEnable() {
         // Begin loading plugin
+        long start = System.currentTimeMillis();
+
         PluginDescriptionFile pdf = PartyChat.instance.getDescription();
         debug = this.getConfig().getBoolean("debug");
         String a = getServer().getClass().getPackage().getName();
@@ -86,6 +92,9 @@ public final class PartyChat extends JavaPlugin {
         // Update config and messages files
         refreshConfigs();
 
+        // Hook into soft dependencies if they exist
+        goFishing();
+
         // Load parties if saved
         if (this.getConfig().getBoolean("persistent-parties")) {
             this.db = new SQLite(this);
@@ -110,12 +119,11 @@ public final class PartyChat extends JavaPlugin {
         // Metrics
         int pluginId = 7667; new Metrics(this, pluginId);
 
-        Bukkit.getConsoleSender().sendMessage(Bukkit.getVersion());
-
         // Plugin successfully loaded
-        Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(this, () ->
-                Bukkit.getConsoleSender().sendMessage("[PartyChat] Successfully loaded PartyChat version "
-                        +  pdf.getVersion()), 60L); // 3 second delay
+        Bukkit.getConsoleSender().sendMessage("[PartyChat] Successfully loaded PartyChat version "
+                        +  pdf.getVersion() + " in " + (System.currentTimeMillis() - start) + "ms");
+
+        // Prompt to use Paperclip - it's just better :P
         if (Bukkit.getVersion().contains("Spigot")) {
             Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(this, () ->
                     Bukkit.getConsoleSender().sendMessage("Psst... you're using Spigot, you should really try Paper =D" +
@@ -141,6 +149,9 @@ public final class PartyChat extends JavaPlugin {
         return instance.guiHandler;
     }
 
+    /**
+     * Reload both config files (messages.yml and config.yml)
+     */
     public static void refreshConfigs() {
         // Update config and messages files
         Bukkit.getConsoleSender().sendMessage(Chat.colorize("[PartyChat] Loading configuration..."));
@@ -161,6 +172,32 @@ public final class PartyChat extends JavaPlugin {
             e.printStackTrace();
         }
         messageData.reloadConfig();
+    }
+
+    /**
+     * Hook into soft dependencies for placeholder, ban, and mute support
+     */
+    public void goFishing() { // Get hooks lol
+        if (this.getServer().getPluginManager().isPluginEnabled("PlaceholderAPI") &&
+                this.getServer().getPluginManager().getPlugin("PlaceholderAPI") != null) {
+            getLogger().info("Hooking into PlaceholderAPI...");
+            new PlaceholderAPI(this).register();
+        }
+        if (this.getServer().getPluginManager().isPluginEnabled("LiteBans") &&
+                this.getServer().getPluginManager().getPlugin("LiteBans") != null) {
+            getLogger().info("Hooking into LiteBans...");
+            hasLiteBans = true;
+        }
+        if (this.getServer().getPluginManager().isPluginEnabled("AdvancedBan") &&
+                this.getServer().getPluginManager().getPlugin("AdvancedBan") != null) {
+            getLogger().info("Hooking into AdvancedBans...");
+            hasAdvancedBan = true;
+        }
+        if (this.getServer().getPluginManager().isPluginEnabled("Essentials") &&
+                this.getServer().getPluginManager().getPlugin("Essentials") != null) {
+            getLogger().info("Hooking into Essentials...");
+            hasEssentials = true;
+        }
     }
 
     /**

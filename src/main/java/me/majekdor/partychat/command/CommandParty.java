@@ -3,6 +3,7 @@ package me.majekdor.partychat.command;
 import me.majekdor.partychat.PartyChat;
 import me.majekdor.partychat.command.party.*;
 import me.majekdor.partychat.data.Party;
+import me.majekdor.partychat.data.Restrictions;
 import me.majekdor.partychat.gui.GuiInParty;
 import me.majekdor.partychat.gui.GuiNoParty;
 import me.majekdor.partychat.util.Bar;
@@ -21,6 +22,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class CommandParty implements CommandExecutor, TabCompleter {
 
@@ -127,7 +129,8 @@ public class CommandParty implements CommandExecutor, TabCompleter {
                 case "toggle":
                     return TabCompleterBase.filterStartingWith(args[1], Arrays.asList("private", "public"));
                 case "add":
-                    return TabCompleterBase.getOnlinePlayers(args[1]);
+                    return TabCompleterBase.getOnlinePlayers(args[1]).stream().filter(player -> player != null &&
+                            !Restrictions.isVanished(Bukkit.getPlayerExact(player))).collect(Collectors.toList());
                 case "promote":
                 case "remove'":
                     List<String> members = new ArrayList<>();
