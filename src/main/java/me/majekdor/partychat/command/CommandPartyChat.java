@@ -3,7 +3,6 @@ package me.majekdor.partychat.command;
 import me.majekdor.partychat.PartyChat;
 import me.majekdor.partychat.data.Party;
 import me.majekdor.partychat.data.Restrictions;
-import me.majekdor.partychat.event.PlayerChat;
 import me.majekdor.partychat.util.Chat;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -48,61 +47,52 @@ public class CommandPartyChat implements CommandExecutor, TabCompleter {
 
             // Toggle party chat
             if (args.length == 0) {
-                if (!partyChat.get(player)) {
+                if (!(partyChat.get(player))) {
                     partyChat.replace(player, true);
                     player.sendMessage(Chat.format(m.getString("pc-enabled")));
                 } else {
                     partyChat.replace(player, false);
                     player.sendMessage(Chat.format(m.getString("pc-disabled")));
                 }
+                return true;
             }
 
-            // Send message to party chat if in party, to normal chat if not
-            if (args.length > 0) {
-
-                // Check if the player is muted - don't allow chat if they are
-                if (Restrictions.isMuted(player)) {
-                    player.sendMessage(Chat.format(m.getString("muted"))); return true;
-                }
-
-                StringBuilder message = new StringBuilder();
-                for (String arg : args) {
-                    message.append(arg).append(" ");
-                }
-                if (!partyChat.get(player)) { // Send message to party chat
-                    List<Player> messageReceived = new ArrayList<>(); // This is used so staff don't get the message twice
-
-                    if (c.getBoolean("console-log")) // Log message to console
-                        Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[PCSPY] [" + Party.getRawName(party) + ChatColor.RED + "] "
-                                + player.getName() + ": " + message);
-
-                    PartyChat.debug(player, "CommandPartyChat", partyChat.get(player), "Party"); // Debug
-
-                    // Send message to party members
-                    for (UUID memberUUID : party.members) {
-                        Player member = Bukkit.getPlayer(memberUUID);
-                        if (member == null) continue;
-                        messageReceived.add(member);
-                        member.sendMessage(Chat.format((m.getString("message-format") + message)
-                                .replace("%partyName%", party.name)
-                                .replace("%player%", player.getDisplayName())));
-                    }
-
-                    // Send message to staff members
-                    for (Player staff : PartyChat.serverStaff) {
-                        if ((!messageReceived.contains(staff)) && CommandPartySpy.spyToggle.get(staff))
-                            staff.sendMessage(Chat.format((m.getString("spy-format") + " " + message)
-                                    .replace("%partyName%", Chat.removeColorCodes(party.name))
-                                    .replace("%player%", Chat.removeColorCodes(player.getName()))));
-                    }
-                } else { // Send message to normal chat
-                    PlayerChat.fromCommandPartyChat = true;
-                    player.chat(message.toString());
-                    PartyChat.debug(player, "CommandPartyChat", partyChat.get(player), "Chat"); // Debug
-                }
+            // Check if the player is muted - don't allow chat if they are
+            if (Restrictions.isMuted(player)) {
+                player.sendMessage(Chat.format(m.getString("muted"))); return true;
             }
+
+            StringBuilder message = new StringBuilder();
+            for (String arg : args) {
+                message.append(arg).append(" ");
+            }
+            List<Player> messageReceived = new ArrayList<>(); // This is used so staff don't get the message twice
+
+            if (c.getBoolean("console-log")) // Log message to console
+                Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[PCSPY] [" + Party.getRawName(party) + ChatColor.RED + "] "
+                        + player.getName() + ": " + message);
+
+            PartyChat.debug(player, "CommandPartyChat", partyChat.get(player), "Party"); // Debug
+
+            // Send message to party members
+            for (UUID memberUUID : party.members) {
+                Player member = Bukkit.getPlayer(memberUUID);
+                if (member == null) continue;
+                messageReceived.add(member);
+                member.sendMessage(Chat.format((m.getString("message-format") + message)
+                        .replace("%partyName%", party.name)
+                        .replace("%player%", player.getDisplayName())));
+            }
+
+            // Send message to staff members
+            for (Player staff : PartyChat.serverStaff) {
+                if ((!messageReceived.contains(staff)) && CommandPartySpy.spyToggle.get(staff))
+                    staff.sendMessage(Chat.format((m.getString("spy-format") + " " + message)
+                            .replace("%partyName%", Chat.removeColorCodes(party.name))
+                            .replace("%player%", Chat.removeColorCodes(player.getName()))));
+            }
+            return true;
         }
-
         return false;
     }
 

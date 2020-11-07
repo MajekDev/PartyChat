@@ -1,9 +1,6 @@
 package me.majekdor.partychat;
 
-import me.majekdor.partychat.command.CommandParty;
-import me.majekdor.partychat.command.CommandPartyChat;
-import me.majekdor.partychat.command.CommandPartySpy;
-import me.majekdor.partychat.command.CommandReload;
+import me.majekdor.partychat.command.*;
 import me.majekdor.partychat.data.ConfigUpdater;
 import me.majekdor.partychat.data.DataManager;
 import me.majekdor.partychat.data.Metrics;
@@ -106,9 +103,12 @@ public final class PartyChat extends JavaPlugin {
         }
 
         // Register commands, tab completers, and listeners here
+        Objects.requireNonNull(this.getCommand("normalchat")).setExecutor(new CommandNormalChat());
+        Objects.requireNonNull(this.getCommand("normalchat")).setTabCompleter(new CommandNormalChat());
         Objects.requireNonNull(this.getCommand("party")).setExecutor(new CommandParty());
         Objects.requireNonNull(this.getCommand("party")).setTabCompleter(new CommandParty());
         Objects.requireNonNull(this.getCommand("partychat")).setExecutor(new CommandPartyChat());
+        Objects.requireNonNull(this.getCommand("partychat")).setTabCompleter(new CommandPartyChat());
         Objects.requireNonNull(this.getCommand("pcreload")).setExecutor(new CommandReload());
         Objects.requireNonNull(this.getCommand("spy")).setExecutor(new CommandPartySpy());
         this.getServer().getPluginManager().registerEvents(new PlayerMove(), this);
