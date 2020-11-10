@@ -1,31 +1,7 @@
 name: PartyChat
-version: 3.3.0
-main: me.majekdor.partychat.bungee.PartyChat
+version: 3.2.1
+main: me.majekdor.partychat.PartyChat
 api-version: 1.16
-authors: [ Majekdor ]
-description: Easily chat among your friends in a party without any commands.
+authors: Majekdor
+description: This version of PartyChat is not Bungee compatible.
 website: https://github.com/Majekdor/PartyChat
-commands:
-  partychat:
-    description: Toggle party chat or speak in party chat /pc <message>.
-    aliases: [pc]
-    usage: /partychat <message>
-  normalchat:
-    description: Send message to normal chat /nc <message>.
-    aliases: [nc]
-    usage: /normalchat <message>
-  party:
-    description: Party management commands.
-    aliases: [p]
-  spy:
-    description: Admin spy command.
-    aliases: [partyspy]
-  pcreload:
-    description: Reload the plugin.
-
-permissions:
-  partychat.admin:
-    description: Allows use of spy and reload command.
-    default: op
-  partychat.use:
-    description: Allows use of PartyChat if use-permissions is enabled in the config.
