@@ -1,5 +1,6 @@
 package me.majekdor.partychat.command.party;
 
+import me.majekdor.partychat.PartyChat;
 import me.majekdor.partychat.command.CommandParty;
 import me.majekdor.partychat.data.Party;
 import org.bukkit.Bukkit;
@@ -62,5 +63,8 @@ public class PartyRemove extends CommandParty {
             sendMessageWithPrefix(member, (m.getString("player-removed") + "")
                     .replace("%player%", Objects.requireNonNull(targetOffline.getName())));
         }
+
+        if (c.getBoolean("party-save-on-update"))
+            PartyChat.getDatabase().updateParty(party);
     }
 }

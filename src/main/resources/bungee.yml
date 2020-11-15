@@ -3,5 +3,5 @@ version: 3.2.1
 main: me.majekdor.partychat.PartyChat
 api-version: 1.16
 authors: Majekdor
-description: This version of PartyChat is not Bungee compatible.
+description: This version of PartyChat is not BungeeCord compatible. PartyChat for BungeeCord is under development.
 website: https://github.com/Majekdor/PartyChat

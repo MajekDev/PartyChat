@@ -1,6 +1,7 @@
 package me.majekdor.partychat.command.party;
 
 import me.majekdor.partychat.PartyChat;
+import me.majekdor.partychat.api.PlayerPartyJoinEvent;
 import me.majekdor.partychat.command.CommandParty;
 import me.majekdor.partychat.data.Party;
 import me.majekdor.partychat.util.Bar;
@@ -12,6 +13,8 @@ import org.bukkit.entity.Player;
 import java.util.UUID;
 
 public class PartyAccept extends CommandParty {
+
+    private static boolean canceled = false;
 
     public static void execute(Player player) {
 
@@ -65,20 +68,33 @@ public class PartyAccept extends CommandParty {
                     sendMessageWithPrefix(player, m.getString("not-online")); return;
                 }
 
-                // Send messages
-                sendMessageWithPrefix(requester, (m.getString("you-join") + "")
-                        .replace("%partyName%", party.name));
-                for (UUID memberUUID : party.members) {
-                    Player member = Bukkit.getPlayer(memberUUID);
-                    if (member == null) continue;
-                    sendMessageWithPrefix(member, (m.getString("player-join") + "")
-                            .replace("%player%", requester.getDisplayName()));
-                }
+                // Run the event
+                eventFire(player, party);
 
-                // Put the player in the party
-                party.pendingJoinRequests.remove(requester);
-                Party.partyMap.put(requester.getUniqueId(), party);
-                party.members.add(requester.getUniqueId()); party.size++; return;
+                //  Give the event time to fire before proceeding
+                Bukkit.getScheduler().scheduleSyncDelayedTask(PartyChat.instance, () -> {
+                    if (canceled) { // Stop if event was canceled
+                        canceled = false;
+                        return;
+                    }
+                    // Send messages
+                    sendMessageWithPrefix(requester, (m.getString("you-join") + "")
+                            .replace("%partyName%", party.name));
+                    for (UUID memberUUID : party.members) {
+                        Player member = Bukkit.getPlayer(memberUUID);
+                        if (member == null) continue;
+                        sendMessageWithPrefix(member, (m.getString("player-join") + "")
+                                .replace("%player%", requester.getDisplayName()));
+                    }
+
+                    // Put the player in the party
+                    party.pendingJoinRequests.remove(requester);
+                    Party.partyMap.put(requester.getUniqueId(), party);
+                    party.members.add(requester.getUniqueId()); party.size++;
+                    if (c.getBoolean("party-save-on-update"))
+                        PartyChat.getDatabase().updateParty(party);
+                }, 2);
+                return;
             }
 
             // Player is in a party and /p accept has no use
@@ -97,20 +113,42 @@ public class PartyAccept extends CommandParty {
                 sendMessageWithPrefix(player, m.getString("no-invites")); return;
             }
 
-            // Send messages
-            for (UUID memberUUID : party.members) {
-                Player member = Bukkit.getPlayer(memberUUID);
-                if (member == null) continue;
-                sendMessageWithPrefix(member, (m.getString("player-join") + "")
-                        .replace("%player%", player.getDisplayName()));
-            }
-            sendMessageWithPrefix(player, (m.getString("you-join")  + "")
-                    .replace("%partyName%", party.name));
+            // Run the event
+            eventFire(player, party);
 
-            // Put the player in the party
-            party.pendingInvitations.remove(player);
-            Party.partyMap.put(player.getUniqueId(), party);
-            party.members.add(player.getUniqueId()); party.size++;
+            //  Give the event time to fire before proceeding
+            Party finalParty = party; // Variable must be final for lambda expression
+            Bukkit.getScheduler().scheduleSyncDelayedTask(PartyChat.instance, () -> {
+                if (canceled) { // Stop if event was canceled
+                    canceled = false;
+                    return;
+                }
+                // Send messages
+                for (UUID memberUUID : finalParty.members) {
+                    Player member = Bukkit.getPlayer(memberUUID);
+                    if (member == null) continue;
+                    sendMessageWithPrefix(member, (m.getString("player-join") + "")
+                            .replace("%player%", player.getDisplayName()));
+                }
+                sendMessageWithPrefix(player, (m.getString("you-join")  + "")
+                        .replace("%partyName%", finalParty.name));
+
+                // Put the player in the party
+                finalParty.pendingInvitations.remove(player);
+                Party.partyMap.put(player.getUniqueId(), finalParty);
+                finalParty.members.add(player.getUniqueId()); finalParty.size++;
+                if (c.getBoolean("party-save-on-update"))
+                    PartyChat.getDatabase().updateParty(finalParty);
+            }, 2);
         }
+    }
+
+    public static void eventFire(Player player, Party party) {
+        Bukkit.getScheduler().runTask(PartyChat.instance, () -> {
+            PlayerPartyJoinEvent ppje = new PlayerPartyJoinEvent(player, party);
+            Bukkit.getPluginManager().callEvent(ppje);
+            if (ppje.isCancelled())
+                canceled = true;
+        });
     }
 }

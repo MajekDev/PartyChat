@@ -9,6 +9,10 @@ import org.jetbrains.annotations.NotNull;
 
 public class PlayerPartyJoinEvent extends Event implements Cancellable {
 
+    /*
+    This event is fired when a player is joining a party. Not when the request to join is sent. Can be canceled.
+     */
+
     private final Player player;
     private final Party party;
     private boolean isCancelled;

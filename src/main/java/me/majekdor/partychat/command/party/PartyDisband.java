@@ -1,5 +1,6 @@
 package me.majekdor.partychat.command.party;
 
+import me.majekdor.partychat.PartyChat;
 import me.majekdor.partychat.command.CommandParty;
 import me.majekdor.partychat.data.Party;
 import org.bukkit.Bukkit;
@@ -31,6 +32,8 @@ public class PartyDisband extends CommandParty {
             if (member.getPlayer() != null)
                 sendMessageWithPrefix(member.getPlayer(), (m.getString("party-disbanded") + "")
                     .replace("%partyName%", party.name));
+            if (c.getBoolean("party-save-on-update"))
+                PartyChat.getDatabase().updateParty(party);
         }
     }
 }

@@ -51,23 +51,22 @@ public class PlaceholderAPI extends PlaceholderExpansion {
     @Override
     public String onRequest(OfflinePlayer player, @NotNull String identifier) {
 
-        // %partychat_active_parties%
+        // %partychat_active_parties% - get number of active parties
         if (identifier.equalsIgnoreCase("%partychat_active_parties%"))
             return Integer.toString((int) Party.partyMap.values().stream().distinct().count());
 
-        // %partychat_players_in_parties%
+        // %partychat_players_in_parties% - get the number of players in a party
         if (identifier.equalsIgnoreCase("%partychat_players_in_party%"))
             return Integer.toString(Party.partyMap.size());
 
-        // %partychat_persistent_parties%
+        // %partychat_persistent_parties% - whether or not persistent parties is enabled
         if (identifier.equalsIgnoreCase("%partychat_persistent_parties%"))
             return plugin.getConfig().getBoolean("persistent-parties") ? yes : no;
 
-        // %partychat_player_partyName%
+        // %partychat_player_partyName% - get the name of the party the player is in
         if (identifier.equalsIgnoreCase("%partychat_player_partyName%"))
             return Party.getParty(player.getUniqueId()).name == null ? "Not in a party" :
-                    Party.getParty(player.getUniqueId()).name;
-
+                    Party.getRawName(Party.getParty(player.getUniqueId()));
 
         return null;
     }

@@ -56,5 +56,8 @@ public class PartyLeave extends CommandParty {
                         .replace("%player%", Objects.requireNonNull(Bukkit.getOfflinePlayer(party.leader).getName())));
             }
         }
+
+        if (c.getBoolean("party-save-on-update"))
+            PartyChat.getDatabase().updateParty(party);
     }
 }

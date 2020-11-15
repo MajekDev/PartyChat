@@ -70,6 +70,8 @@ public class PartyCreate extends CommandParty {
             for (String partyCreated : m.getStringList("party-created")) {
                 sendMessageWithPrefix(player, (partyCreated).replace("%partyName%", partyName));
             }
+            if (c.getBoolean("party-save-on-update"))
+                PartyChat.getDatabase().updateParty(party);
         }, 2);
     }
 }

@@ -34,7 +34,7 @@ public final class PartyChat extends JavaPlugin {
     public static boolean hasUpdate = false;
     public static boolean debug;
     public static List<Player> serverStaff = new ArrayList<>();
-    private Database db;
+    private static Database db;
     public static String minecraftVersion;
     public static boolean disableGuis;
     public static boolean hasEssentials = false;
@@ -94,11 +94,11 @@ public final class PartyChat extends JavaPlugin {
 
         // Load parties if saved
         if (this.getConfig().getBoolean("persistent-parties")) {
-            this.db = new SQLite(this);
-            this.db.load();
-            this.db.getPartyNames();
-            this.db.getParties();
-            this.db.clearTable();
+            db = new SQLite(this);
+            db.load();
+            db.getPartyNames();
+            db.getParties();
+            db.clearTable();
             Bukkit.getConsoleSender().sendMessage("[PartyChat] Loading saved parties from config...");
         }
 
@@ -136,8 +136,11 @@ public final class PartyChat extends JavaPlugin {
         // Save parties if enabled
         if (this.getConfig().getBoolean("persistent-parties")) {
             for (Party party : Party.partyMap.values()) {
-                this.db.addParty(party.name, party.leader,
-                        Utils.serializeMembers(party.members), party.size, party.isPublic);
+                if (this.getConfig().getBoolean("party-save-on-update"))
+                    db.updateParty(party);
+                else
+                    db.addParty(party.name, party.leader,
+                            Utils.serializeMembers(party.members), party.size, party.isPublic);
             }
             Bukkit.getConsoleSender().sendMessage("[PartyChat] Saving active parties to config...");
         }
@@ -147,6 +150,10 @@ public final class PartyChat extends JavaPlugin {
 
     public static GuiHandler getGuiHandler() {
         return instance.guiHandler;
+    }
+
+    public static Database getDatabase() {
+        return db;
     }
 
     /**

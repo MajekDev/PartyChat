@@ -54,6 +54,31 @@ public abstract class Database {
         }
     }
 
+    public void updateParty(Party party) {
+        Connection conn = null;
+        PreparedStatement ps = null;
+        // Delete the current entry for the party
+        try {
+            conn = getSQLConnection();
+            ps = conn.prepareStatement("DELETE FROM parties WHERE name = '"+party.name+"';");
+            ps.executeUpdate();
+        } catch (SQLException ex) {
+            plugin.getLogger().log(Level.SEVERE, Errors.sqlConnectionExecute(), ex);
+        } finally {
+            try {
+                if (ps != null)
+                    ps.close();
+                if (conn != null)
+                    conn.close();
+            } catch (SQLException ex) {
+                plugin.getLogger().log(Level.SEVERE, Errors.sqlConnectionClose(), ex);
+            }
+        }
+        // Add the updated party information if the party wasn't deleted
+        if (Party.partyMap.containsValue(party))
+            addParty(party.name, party.leader, Utils.serializeMembers(party.members), party.size, party.isPublic);
+    }
+
     public void addParty(String name, UUID leader, String serializedMembers, Integer size, boolean isPublic) {
         Connection conn = null;
         PreparedStatement ps = null;
