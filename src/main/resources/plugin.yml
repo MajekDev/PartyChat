@@ -1,5 +1,5 @@
 name: PartyChat
-version: 3.2.2
+version: 3.2.3
 main: me.majekdor.partychat.PartyChat
 api-version: 1.16
 authors: [ Majekdor ]
