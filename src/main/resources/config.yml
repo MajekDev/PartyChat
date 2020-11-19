@@ -42,6 +42,10 @@ block-time: 60
 # This is set to true by default
 public-on-creation: true
 
+# Whether or not the party summon feature should be use
+# Set to true to disable /party summon
+disable-party-summon: false
+
 # Whether or not parties will save on restart
 # If this is enabled players will not be kicked from a party when the leave the server
 persistent-parties: false

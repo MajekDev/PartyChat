@@ -15,6 +15,12 @@ public class PartySummon extends CommandParty {
 
     public static void execute(Player player) {
 
+        // Check if the command is disabled via the config
+        if (c.getBoolean("disable-party-summon")) {
+            sendMessageWithPrefix(player, "&cThis subcommand is disabled. Contact a server administrator " +
+                    "if you believe this is an error."); return;
+        }
+
         // Check if the player is not in a party
         if (!Party.inParty(player)) {
             sendMessageWithPrefix(player, m.getString("not-in-party")); return;
