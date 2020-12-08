@@ -37,8 +37,10 @@ public class PartyCreate extends CommandParty {
         // Check to see if the admins want to block inappropriate party names
         if (c.getBoolean("block-inappropriate-names")) {
             for (String blockedWord : c.getStringList("blocked-names.wordlist")) {
-                if (partyName.equalsIgnoreCase(blockedWord))
-                    sendMessageWithPrefix(player, m.getString("inappropriate-name")); return;
+                if (partyName.contains(blockedWord)) {
+                    sendMessageWithPrefix(player, m.getString("inappropriate-name"));
+                    return;
+                }
             }
         }
 

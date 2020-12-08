@@ -79,7 +79,7 @@ public final class PartyChat extends JavaPlugin {
         String[] versionSplit = mcversion.split("_");
         minecraftVersion = versionSplit[1];
 
-        // Disable guis for versions below 1.12.2
+        // Disable guis for versions below 1.13
         if (Integer.parseInt(minecraftVersion) < 13)
             disableGuis = true;
         else disableGuis = this.getConfig().getBoolean("disable-guis");

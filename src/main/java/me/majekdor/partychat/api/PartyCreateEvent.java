@@ -9,8 +9,8 @@ import org.jetbrains.annotations.NotNull;
 
 public class PartyCreateEvent extends Event implements Cancellable {
 
-    /*
-    This event is fired when a party is created. Can be canceled.
+    /**
+     * This event is fired when a party is created. Can be canceled.
      */
 
     private final Player creator;

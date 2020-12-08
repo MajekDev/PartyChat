@@ -34,6 +34,9 @@ public class PartyLeave extends CommandParty {
         boolean partyDisbanded = party.size == 0;
         PartyChat.debug(player, leaveServer, partyDisbanded);
 
+        if (partyDisbanded)
+            return;
+
         for (UUID memberUUID : party.members) {
             Player member = Bukkit.getPlayer(memberUUID);
             if (member == null) continue;

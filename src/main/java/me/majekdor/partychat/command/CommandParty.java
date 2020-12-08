@@ -22,6 +22,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
+import java.util.logging.Level;
 import java.util.stream.Collectors;
 
 public class CommandParty implements CommandExecutor, TabCompleter {
@@ -161,5 +162,13 @@ public class CommandParty implements CommandExecutor, TabCompleter {
         assert prefix != null;
         message = message.replace("%prefix%", prefix);
         player.sendMessage(Chat.colorize(message));
+    }
+
+    /**
+     * Used internally - this should never be in use when an update is pushed
+     * @param string debug message
+     */
+    public static void debug(String string) {
+        PartyChat.getInstance().getLogger().log(Level.SEVERE, "INTERNAL DEBUG: " + string);
     }
 }
