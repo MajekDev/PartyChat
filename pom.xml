@@ -6,7 +6,7 @@
 
     <groupId>me.majekdor.partychat</groupId>
     <artifactId>PartyChat</artifactId>
-    <version>3.0.0</version>
+    <version>3.2.6</version>
     <packaging>jar</packaging>
 
     <name>PartyChat</name>
@@ -113,7 +113,7 @@
             <groupId>com.github.cryptomorin</groupId>
             <artifactId>XSeries</artifactId>
             <version>7.5.5</version>
-            <scope>provided</scope>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>me.clip</groupId>
@@ -138,11 +138,6 @@
             <artifactId>advancedban</artifactId>
             <version>2.1.7</version>
             <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.github.cryptomorin</groupId>
-            <artifactId>XSeries</artifactId>
-            <version>7.5.5</version>
         </dependency>
     </dependencies>
 </project>
