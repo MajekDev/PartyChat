@@ -146,6 +146,7 @@ public final class PartyChat extends JavaPlugin {
                     Bukkit.getConsoleSender().sendMessage("Psst... you're using Spigot, you should really try Paper =D" +
                             "\nhttps://papermc.io/downloads"), 60L); // 3 second delay
         }
+        // Yay!
     }
 
     @Override
