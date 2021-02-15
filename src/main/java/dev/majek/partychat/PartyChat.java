@@ -20,8 +20,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.util.*;
 import java.util.logging.Logger;
 
@@ -40,6 +39,7 @@ public final class PartyChat extends JavaPlugin {
     public static boolean hasEssentials = false;
     public static boolean hasLiteBans = false;
     public static boolean hasAdvancedBan = false;
+    public static boolean hasVault = false;
 
     public PartyChat() {
         instance = this;
@@ -196,6 +196,11 @@ public final class PartyChat extends JavaPlugin {
                 this.getServer().getPluginManager().getPlugin("Essentials") != null) {
             getLogger().info("Hooking into Essentials...");
             hasEssentials = true;
+        }
+        if (this.getServer().getPluginManager().isPluginEnabled("Vault") &&
+                this.getServer().getPluginManager().getPlugin("Vault") != null) {
+            getLogger().info("Hooking into Vault...");
+            hasVault = true;
         }
     }
 

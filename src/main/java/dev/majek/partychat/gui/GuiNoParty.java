@@ -4,6 +4,7 @@ import com.cryptomorin.xseries.XMaterial;
 import dev.dbassett.skullcreator.SkullCreator;
 import dev.majek.partychat.PartyChat;
 import dev.majek.partychat.command.party.PartyCreate;
+import dev.majek.partychat.hooks.Vault;
 import dev.majek.partychat.util.Chat;
 import net.wesjd.anvilgui.AnvilGUI;
 import org.bukkit.ChatColor;
@@ -51,7 +52,12 @@ public class GuiNoParty extends Gui {
 
         ItemStack head = new ItemStack(SkullCreator.itemFromUuid(p.getUniqueId()));
         meta = head.getItemMeta();
-        meta.setDisplayName(Chat.colorize("&r&b" + p.getDisplayName())); head.setItemMeta(meta);
+        String playerName;
+        if (PartyChat.hasVault)
+            playerName = Vault.getPlayerDisplayName(p);
+        else
+            playerName = p.getDisplayName();
+        meta.setDisplayName(Chat.colorize("&r&b" + playerName)); head.setItemMeta(meta);
         addLabel(1, head); lore.clear();
     }
 

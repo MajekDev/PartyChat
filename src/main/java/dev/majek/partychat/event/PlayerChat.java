@@ -5,6 +5,8 @@ import dev.majek.partychat.PartyChat;
 import dev.majek.partychat.command.CommandPartyChat;
 import dev.majek.partychat.data.Party;
 import dev.majek.partychat.data.Restrictions;
+import dev.majek.partychat.hooks.Essentials;
+import dev.majek.partychat.hooks.Vault;
 import dev.majek.partychat.util.Chat;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -29,8 +31,14 @@ public class PlayerChat implements Listener {
     public void onPlayerChat(AsyncPlayerChatEvent event) {
         Player player = event.getPlayer();
         if (Party.inParty(player) && CommandPartyChat.partyChat.get(player) && !fromCommandPartyChat) {
-            event.setCancelled(true); String message = event.getMessage();
+            event.setCancelled(true);
             Party party = Party.getParty(player);
+            String message = event.getMessage();
+            String format = event.getFormat();
+            if (PartyChat.debug) {
+                player.sendMessage("Format: " + format + " Message: " + message + " Party Name: " + party.name + " Display Name: " + player.getDisplayName());
+                Bukkit.getConsoleSender().sendMessage("Format: " + format + " Message: " + message + " Party Name: " + party.name);
+            }
             List<Player> messageReceived = new ArrayList<>(); // This is used so staff don't get the message twice
 
             // Check if the player is muted - don't allow chat if they are
@@ -44,6 +52,12 @@ public class PlayerChat implements Listener {
                 Bukkit.getConsoleSender().sendMessage(ChatColor.RED + "[PCSPY] [" + Party.getRawName(party) + ChatColor.RED + "] "
                         + player.getName() + ": " + message);
 
+            String playerName;
+            if (PartyChat.hasVault)
+                playerName = Vault.getPlayerDisplayName(player);
+            else
+                playerName = player.getDisplayName();
+
             // Send message to party members
             for (UUID memberUUID : party.members) {
                 Player member = Bukkit.getPlayer(memberUUID);
@@ -51,7 +65,7 @@ public class PlayerChat implements Listener {
                 messageReceived.add(member);
                 member.sendMessage(Chat.format((m.getString("message-format") + message)
                         .replace("%partyName%", party.name)
-                        .replace("%player%", player.getDisplayName())));
+                        .replace("%player%", playerName)));
             }
 
             // Send message to staff members

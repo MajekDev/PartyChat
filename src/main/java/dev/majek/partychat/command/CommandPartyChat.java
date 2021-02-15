@@ -2,6 +2,7 @@ package dev.majek.partychat.command;
 
 import dev.majek.partychat.PartyChat;
 import dev.majek.partychat.data.Party;
+import dev.majek.partychat.hooks.Vault;
 import dev.majek.partychat.util.Chat;
 import dev.majek.partychat.data.Restrictions;
 import org.bukkit.Bukkit;
@@ -74,6 +75,12 @@ public class CommandPartyChat implements CommandExecutor, TabCompleter {
 
             PartyChat.debug(player, "CommandPartyChat", partyChat.get(player), "Party"); // Debug
 
+            String playerName;
+            if (PartyChat.hasVault)
+                playerName = Vault.getPlayerDisplayName(player);
+            else
+                playerName = player.getDisplayName();
+
             // Send message to party members
             for (UUID memberUUID : party.members) {
                 Player member = Bukkit.getPlayer(memberUUID);
@@ -81,7 +88,7 @@ public class CommandPartyChat implements CommandExecutor, TabCompleter {
                 messageReceived.add(member);
                 member.sendMessage(Chat.format((m.getString("message-format") + message)
                         .replace("%partyName%", party.name)
-                        .replace("%player%", player.getDisplayName())));
+                        .replace("%player%", playerName)));
             }
 
             // Send message to staff members

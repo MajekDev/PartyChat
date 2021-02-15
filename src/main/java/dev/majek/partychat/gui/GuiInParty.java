@@ -5,6 +5,7 @@ import dev.dbassett.skullcreator.SkullCreator;
 import dev.majek.partychat.PartyChat;
 import dev.majek.partychat.command.party.*;
 import dev.majek.partychat.data.Party;
+import dev.majek.partychat.hooks.Vault;
 import dev.majek.partychat.util.Chat;
 import net.wesjd.anvilgui.AnvilGUI;
 import org.bukkit.Bukkit;
@@ -32,7 +33,12 @@ public class GuiInParty extends Gui {
 
         ItemStack head = new ItemStack(SkullCreator.itemFromUuid(p.getUniqueId()));
         ItemMeta meta = head.getItemMeta(); List<String> lore = new ArrayList<>();
-        meta.setDisplayName(Chat.colorize("&r&b" + p.getDisplayName())); head.setItemMeta(meta);
+        String playerName;
+        if (PartyChat.hasVault)
+            playerName = Vault.getPlayerDisplayName(p);
+        else
+            playerName = p.getDisplayName();
+        meta.setDisplayName(Chat.colorize("&r&b" + playerName)); head.setItemMeta(meta);
         addLabel(0, head);
         setLore(0, Chat.colorize("&7Current party: " + party.name));
 
