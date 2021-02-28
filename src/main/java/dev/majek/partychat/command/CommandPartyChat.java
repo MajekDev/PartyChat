@@ -2,6 +2,7 @@ package dev.majek.partychat.command;
 
 import dev.majek.partychat.PartyChat;
 import dev.majek.partychat.data.Party;
+import dev.majek.partychat.hooks.DiscordSRVListener;
 import dev.majek.partychat.hooks.Vault;
 import dev.majek.partychat.util.Chat;
 import dev.majek.partychat.data.Restrictions;
@@ -97,6 +98,10 @@ public class CommandPartyChat implements CommandExecutor, TabCompleter {
                     staff.sendMessage(Chat.format((m.getString("spy-format") + " " + message)
                             .replace("%partyName%", Chat.removeColorCodes(party.name))
                             .replace("%player%", Chat.removeColorCodes(player.getName()))));
+            }
+
+            if (PartyChat.getInstance().getConfig().getBoolean("messages-to-discordsrv") && PartyChat.hasDiscordSRV) {
+                DiscordSRVListener.sendMessage(player, message.toString());
             }
             return true;
         }

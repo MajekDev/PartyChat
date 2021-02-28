@@ -12,7 +12,6 @@ public class Bar {
 
     private static BossBar bar;
     private int taskID;
-    FileConfiguration m = PartyChat.messageData.getConfig();
 
     public void addPlayer(Player p) {
         bar.addPlayer(p);
@@ -22,9 +21,9 @@ public class Bar {
         bar.removePlayer(p);
     }
 
-    public void createBar() {
-        bar = Bukkit.createBossBar(Chat.colorize(m.getString("teleport-bar-text")), BarColor.BLUE, BarStyle.SOLID);
-        bar.setVisible(true); cast();
+    public void createBar(Integer delay) {
+        bar = Bukkit.createBossBar(Chat.colorize("&e&lTeleporting... Don't move!"), BarColor.BLUE, BarStyle.SOLID);
+        bar.setVisible(true); cast(delay);
     }
 
     public void removeBar() {
@@ -35,9 +34,9 @@ public class Bar {
         return bar;
     }
 
-    public void cast() {
+    public void cast(Integer delay) {
         taskID = Bukkit.getScheduler().scheduleSyncRepeatingTask(PartyChat.instance, new Runnable() {
-            double progress = 1.0; final double time = 1.0 / (3 * 20);
+            double progress = 1.0; final double time = 1.0 / (delay * 20);
             @Override
             public void run() {
                 bar.setProgress(progress);

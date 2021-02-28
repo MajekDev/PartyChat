@@ -21,7 +21,7 @@ use-permissions: false
 # Change whether or not all messages sent in PartyChat are logged to console
 console-log: true
 
-# Change whether or not the plugin formats hex color codes in normal chat
+# Change whether or not the plugin formats color codes in normal chat
 format-chat: true
 
 # Whether or not staff sees all PartyChat messages by default
@@ -45,6 +45,13 @@ public-on-creation: true
 # Whether or not the party summon feature should be use
 # Set to true to disable /party summon
 disable-party-summon: false
+
+# Delay (in seconds) before teleporting with party summon
+teleport-delay: 3
+
+# If this is enabled any message sent to any party chat will be sent to DiscordSRV's normal chat channel
+# This is intended for if that channel is staff only
+messages-to-discordsrv: false
 
 # Whether or not parties will save on restart
 # If this is enabled players will not be kicked from a party when the leave the server

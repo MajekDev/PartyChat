@@ -6,7 +6,7 @@
 
     <groupId>me.majekdor.partychat</groupId>
     <artifactId>PartyChat</artifactId>
-    <version>3.2.7</version>
+    <version>3.2.8</version>
     <packaging>jar</packaging>
 
     <name>PartyChat</name>
@@ -92,6 +92,10 @@
             <id>vault-repo</id>
             <url>http://nexus.hc.to/content/repositories/pub_releases</url>
         </repository>
+        <repository>
+            <id>Scarsz-Nexus</id>
+            <url>https://nexus.scarsz.me/content/groups/public/</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -152,6 +156,12 @@
             <groupId>net.milkbowl.vault</groupId>
             <artifactId>VaultAPI</artifactId>
             <version>1.6</version>
+            <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.discordsrv</groupId>
+            <artifactId>discordsrv</artifactId>
+            <version>1.21.1</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>

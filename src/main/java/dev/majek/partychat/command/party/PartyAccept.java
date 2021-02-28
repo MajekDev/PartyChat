@@ -24,7 +24,9 @@ public class PartyAccept extends CommandParty {
 
             // Check if the player has a pending summon request
             if (party.pendingSummons.contains(player)) {
-                bar = new Bar(); bar.createBar(); bar.addPlayer(player);
+                int delay = PartyChat.getInstance().getConfig().getInt("teleport-delay", 3);
+                bar = new Bar(); bar.createBar(delay);
+                bar.addPlayer(player);
                 Player leader = Bukkit.getPlayer(party.leader);
                 if (leader == null) {
                     sendMessageWithPrefix(player, m.getString("leader-offline")); return;
@@ -56,7 +58,7 @@ public class PartyAccept extends CommandParty {
                         }
                         bar.removePlayer(player); Party.noMove.remove(player);
                     }
-                }, 60L); return;
+                }, delay * 20L); return;
             }
 
             // Check if the player is trying to accept a join request

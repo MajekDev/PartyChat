@@ -8,6 +8,7 @@ import dev.majek.partychat.event.PlayerChat;
 import dev.majek.partychat.event.PlayerJoinLeave;
 import dev.majek.partychat.event.PlayerMove;
 import dev.majek.partychat.gui.GuiHandler;
+import dev.majek.partychat.hooks.DiscordSRVListener;
 import dev.majek.partychat.hooks.PlaceholderAPI;
 import dev.majek.partychat.sqlite.SQLite;
 import dev.majek.partychat.util.UpdateChecker;
@@ -40,6 +41,7 @@ public final class PartyChat extends JavaPlugin {
     public static boolean hasLiteBans = false;
     public static boolean hasAdvancedBan = false;
     public static boolean hasVault = false;
+    public static boolean hasDiscordSRV = false;
 
     public PartyChat() {
         instance = this;
@@ -202,6 +204,12 @@ public final class PartyChat extends JavaPlugin {
                 this.getServer().getPluginManager().getPlugin("Vault") != null) {
             getLogger().info("Hooking into Vault...");
             hasVault = true;
+        }
+        if (this.getServer().getPluginManager().isPluginEnabled("DiscordSRV") &&
+                this.getServer().getPluginManager().getPlugin("DiscordSRV") != null) {
+            getLogger().info("Hooking into DiscordSRV...");
+            hasDiscordSRV = true;
+            getServer().getPluginManager().registerEvents(new DiscordSRVListener(), this);
         }
     }
 

@@ -1,11 +1,11 @@
 name: PartyChat
-version: 3.2.6
+version: 3.2.8
 main: dev.majek.partychat.PartyChat
 api-version: 1.16
 authors: [ Majekdor ]
 description: Easily chat among your friends in a party without any commands.
 website: https://majek.dev/partychat
-softdepend: [PlaceholderAPI, Essentials, LiteBans, AdvancedBan]
+softdepend: [PlaceholderAPI, Essentials, LiteBans, AdvancedBan, Vault, DiscordSRV]
 commands:
   partychat:
     description: Toggle party chat or speak in party chat /pc <message>.
