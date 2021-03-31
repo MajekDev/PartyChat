@@ -1,0 +1,29 @@
+name: PartyChat
+version: ${project.version}
+main: dev.majek.pc.PartyChat
+api-version: 1.16
+prefix: PCv4
+authors: [ Majekdor ]
+description: Customizable chat plugin to talk with your friends in parties.
+website: https://majek.dev/partychat
+softdepend: [PlaceholderAPI, Essentials, LiteBans, AdvancedBan]
+commands:
+  partychat:
+    description: Toggle party chat or speak in party chat /pc <message>.
+    aliases: [pc]
+    usage: /partychat <message>
+  normalchat:
+    description: Send message to normal chat /nc <message>.
+    aliases: [nc]
+    usage: /normalchat <message>
+  party:
+    description: Party management commands.
+    aliases: [p]
+
+
+permissions:
+  partychat.admin:
+    description: Allows use of spy, edit, and reload commands.
+    default: op
+  partychat.use:
+    description: Allows use of PartyChat if use-permissions is enabled in the config.

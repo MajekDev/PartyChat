@@ -1,0 +1,121 @@
+# Command configuration. Here you can change the command name, usage, description, whether or not it's disabled,
+# it's cooldown, and it's aliases. Only party subcommands can be disabled, given cooldowns, and given aliases.
+# The /party help command pulls descriptions and usages from here.
+#
+# Notes:
+# The disabled field must be given either true or false.
+# The cooldown field must be given an integer in seconds.
+# You can have as many aliases as you like as long as they contain the right string list formatting.
+
+partychat:
+  usage: "/partychat [on|off|message]"
+  description: "Toggle your party chat on/off or send a message by appending it to the command."
+party:
+  usage: "/party <subcommand>"
+  description: "Use party subcommands to do things like leave your party or create a party."
+party-subcommands:
+  accept:
+    usage: "/party accept [player]"
+    description: "Accept a party invite, join request, or summon request."
+    disabled: false
+    cooldown: 0
+    aliases:
+      - ""
+  add:
+    usage: "/party add <player>"
+    description: "Invite a player to join a party."
+    disabled: false
+    cooldown: 0
+    aliases:
+      - "invite"
+  create:
+    usage: "/party create <name>"
+    description: "Create a new party with the given name."
+    disabled: false
+    cooldown: 60
+    aliases:
+      - ""
+  deny:
+    usage: "/party deny [player]"
+    description: "Deny a party invite, join request, or summon request."
+    disabled: false
+    cooldown: 0
+    aliases:
+      - "decline"
+  disband:
+    usage: "/party disband"
+    description: "Disband your current party, deleting it and kicking all members."
+    disabled: false
+    cooldown: 0
+    aliases:
+      - ""
+  help:
+    usage: "/party help [page]"
+    description: "View help page for party commands."
+    disabled: false
+    cooldown: 0
+    aliases:
+      - ""
+  info:
+    usage: "/party info"
+    description: "View information about the party you are in."
+    disabled: false
+    cooldown: 0
+    aliases:
+      - ""
+  join:
+    usage: "/party join <party>"
+    description: "Request to join a party."
+    disabled: false
+    cooldown: 60
+    aliases:
+      - ""
+  leave:
+    usage: "/party leave"
+    description: "Leave your current party."
+    disabled: false
+    cooldown: 0
+    aliases:
+      - ""
+  promote:
+    usage: "/party promote <player>"
+    description: "Promote a player in your party to party leader."
+    disabled: false
+    cooldown: 0
+    aliases:
+      - ""
+  remove:
+    usage: "/party remove <player>"
+    description: "Remove a player from your party."
+    disabled: false
+    cooldown: 0
+    aliases:
+      - "kick"
+  rename:
+    usage: "/party rename <name>"
+    description: "Rename your party to a different name."
+    disabled: false
+    cooldown: 60
+    aliases:
+      - ""
+  summon:
+    usage: "/party summon"
+    description: "Request that your party members teleport to your location."
+    disabled: false
+    cooldown: 300
+    aliases:
+      - "warp"
+  toggle:
+    usage: "/party toggle <public|private|friendly-fire> [allow|deny]"
+    description: "Toggle your party settings."
+    disabled: false
+    cooldown: 0
+    aliases:
+      - "settings"
+  version:
+    usage: "/party version"
+    description: "Get the current version of PartyChat."
+    disabled: false
+    cooldown: 0
+    aliases:
+      - ""

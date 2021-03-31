@@ -1,0 +1,88 @@
+# PartyChat by Majekdor | Created on 5/23/2020 | Updated 12/29/2020
+# Need help? https://github.com/Majekdor/PartyChat/wiki or join my Discord https://discord.gg/CGgvDUz
+
+# If set to false (default) everyone will have permission to use PartyChat
+# If set to true only players with the permission partychat.use will be able to use PartyChat
+use-permissions: false
+
+# Set the plugin language here. The language must be listed below in supported-languages
+# or the plugin will default to en_US.
+language: "en_US"
+
+# By default this list will only include the languages PartyChat ships with, but you can add your own languages.
+# Add your new language to this list, putting the filename without ".yml" and the file in PartyChat's Lang folder.
+supported-languages:
+  - "en_US"
+  - "es_MX"
+
+# If this is enabled parties will not be deleted unless all of the players leave or the leader runs /party disband
+# and the parties will be saved on server restart/reload
+persistent-parties: false
+
+# Whether or not the plugin blocks inappropriate party names.
+block-inappropriate-names: false
+
+# Whether or not the plugin blocks inappropriate words in party chat, this will not affect normal mc chat.
+block-inappropriate-chat: false
+
+# If the above is enabled PartyChat can block all words in the given file. It ships with "censor-words.txt" which
+# can be found in it's folder. Any file will work, just place the file in the plugin folder and put the filename
+# here. Words must be separated by line to be blocked, one word per line. If you don't want to use this set it to ""
+blocked-words-file: "censor-words.txt"
+
+# Add words you would like to block here.
+blocked-words:
+  - '%blocked%'
+  - '%words%'
+  - '%these%'
+  - '%are%'
+  - '%placeholders%'
+
+# Whether or not parties are public by default when created (Default: true)
+# If set to false new parties will automatically be private unless toggled
+public-on-creation: true
+
+# Whether or not parties should allow friendly fire between members
+# true -> allow | false -> deny
+default-friendly-fire: true
+
+# The maximum amount of characters allowed for a party name. This does not include color codes.
+max-name-length: 20
+
+# Disable guis if you don't want them
+# Note: this is ignored and guis are automatically disabled if you're running a version below 1.13.x
+disable-guis: false
+
+# Whether or not staff sees all PartyChat messages by default
+# This can be toggled with /pc spy
+auto-spy: true
+
+# Change whether or not all messages sent in PartyChat are logged to console
+console-log: true
+
+# By default anyone in the party can send an invite to someone else
+# If this is set to true only the leader can add players
+only-leader-can-add: false
+
+# The amount of time (in seconds) a player must stand still before teleporting from party summon
+summon-teleport-time: 3
+
+# The amount of time it takes a summon request to expire in seconds
+# Set to -1 for no expiration
+summon-expire-time: 60
+
+# The amount of time it takes a party invite to expire in seconds
+# Set to -1 for no expiration
+invite-expire-time: 60
+
+# The amount of time it takes a join request to expire in seconds
+# Set to -1 for no expiration
+join-expire-time: 60
+
+# The amount of time a player is blocked from trying to join a party after attempting to join once (in seconds)
+# Set to -1 to not block
+block-time: 300
+
+# Don't set to true unless you want players to see random messages or other undesirable behavior
+# If you have to turn this on you should probably contact the developer
+debug: false
