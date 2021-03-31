@@ -30,9 +30,10 @@ public class CommandNormalChat implements CommandExecutor, TabCompleter {
         Player player = (Player) sender;
 
         // Check if the admins wants to use permissions
-        if (c.getBoolean("use-permissions"))
-            if (!player.hasPermission("partychat-use")) {
-                player.sendMessage(Chat.format(m.getString("no-permission"))); return true;
+        // Ignore this whole section if they have admin perms
+        if (c.getBoolean("use-permissions") && !player.hasPermission("partychat.admin"))
+            if (!player.hasPermission("partychat.use")) {
+                CommandParty.sendMessageWithPrefix(player, m.getString("no-permission")); return true;
             }
 
         if (args.length == 0) {

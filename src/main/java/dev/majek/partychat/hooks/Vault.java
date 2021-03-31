@@ -12,6 +12,9 @@ public class Vault {
             PartyChat.getInstance().getLogger().severe("Couldn't hook into vault!");
             return null;
         }
-        return vaultChat.getPlayerPrefix(player) + player.getDisplayName() + vaultChat.getPlayerSuffix(player);
+        if (PartyChat.getInstance().getConfig().getBoolean("use-vault-chat"))
+            return vaultChat.getPlayerPrefix(player) + player.getDisplayName() + vaultChat.getPlayerSuffix(player);
+        else
+            return player.getDisplayName();
     }
 }

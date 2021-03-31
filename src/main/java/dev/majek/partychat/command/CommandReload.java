@@ -23,9 +23,7 @@ public class CommandReload implements CommandExecutor {
                  These first four are the only important lines
                  The rest is all formatting to look cool :D
                  */
-                PartyChat.instance.getPluginLoader().disablePlugin(PartyChat.instance);
                 sender.sendMessage(ChatColor.DARK_GRAY  + "[LOG]" + ChatColor.RED + " Disabling PartyChat plugin...");
-                PartyChat.instance.getPluginLoader().enablePlugin(PartyChat.instance);
                 PartyChat.instance.reloadConfig(); PartyChat.messageData.reloadConfig();
                 Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(PartyChat.instance, () ->
                         sender.sendMessage(ChatColor.DARK_GRAY  + "[LOG]" + ChatColor.GREEN  +

@@ -53,6 +53,9 @@ teleport-delay: 3
 # This is intended for if that channel is staff only
 messages-to-discordsrv: false
 
+# Whether or not to use Vault prefixes and suffixes
+use-vault-chat: true
+
 # Whether or not parties will save on restart
 # If this is enabled players will not be kicked from a party when the leave the server
 persistent-parties: false
