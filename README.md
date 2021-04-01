@@ -1,3 +1,17 @@
+[version]: https://img.shields.io/github/v/release/Majekdor/PartyChat?color=b&label=Download
+[download]: #installation
+[discord-invite]: https://discord.gg/CGgvDUz
+[discord-shield]: https://img.shields.io/discord/753727849860432076?color=%237289da
+[license]: https://github.com/Majekdor/PartyChat/blob/main/LICENSE
+[license-shield]: https://img.shields.io/github/license/Majekdor/PartyChat?color=%09%237f7f7f
+[ ![version][] ][download]
+[ ![discord-shield][] ][discord-invite]
+[ ![license-shield][] ][license]
+[![](https://jitpack.io/v/Majekdor/PartyChat.svg)](https://jitpack.io/#Majekdor/PartyChat)
+[![](https://jitci.com/gh/Majekdor/PartyChat/svg)](https://jitci.com/gh/Majekdor/PartyChat)
+[![](https://img.shields.io/spiget/rating/79295?color=%23ff781f&label=Spigot)](https://www.spigotmc.org/resources/partychat.79295/)
+
+<img align="right" src="https://raw.githubusercontent.com/Majekdor/PartyChat/main/partychat.png" height="200" width="200">
 <h1 align="center">PartyChat by Majekdor</h1>
 
 PartyChat is a party manager plugin for Spigot Minecraft servers. It allows players to create private parties to chat and interact with their friends. The plugin is fully customizable, all messages can be changed and/or translated into any language. There are many configuration options including the ability to add custom aliases for party sub commands.
@@ -66,6 +80,8 @@ This is where you'll be able to customize cooldowns for party subcommands such a
 
 If you can't find information on what you're looking for here, head on over to the [wiki](https://github.com/Majekdor/PartyChat/wiki). There you can find documentation on every command, permission node, and configuration option. You will also find tutorials on how to do things such as change the language, use `/partychat edit`, and much more.
 
+JavaDocs for the current release can be found [here](https://pc-docs.majek.dev).
+
 If you still can't find what you're looking for go ahead and join my [Discord](https://discord.gg/CGgvDUz) and I can try to help you and add documentation for your issue.
 
 ## API Usage
@@ -86,4 +102,4 @@ If you've found a bug within the plugin and would like to just make the changes 
 
 ## Donate
 
-I'm a full time college student who makes and supports these plugins in my free time (when I have any). As a long time supporter of open source, all of my plugins are free. If you enjoy my plugins and would like to support me, you can buy me coffee over on  [PayPal](https://paypal.com/paypalme/majekdor). Donationg of any amount of appreciated and a donation of $10 or more will get you the Supporter role in my [Discord](https://discord.gg/CGgvDUz)!
+I'm a full time college student who makes and supports these plugins in my free time (when I have any). As a long time supporter of open source, all of my plugins are free. If you enjoy my plugins and would like to support me, you can buy me coffee over on  [PayPal](https://paypal.com/paypalme/majekdor). Donations of any amount are appreciated and a donation of $10 or more will get you the Supporter role in my [Discord](https://discord.gg/CGgvDUz)!
