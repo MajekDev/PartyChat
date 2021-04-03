@@ -7,8 +7,6 @@ import dev.majek.pc.data.object.User;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-import java.util.stream.Collectors;
-
 public class PartyInfo extends PartyCommand {
 
     public PartyInfo() {
@@ -47,15 +45,13 @@ public class PartyInfo extends PartyCommand {
 
         // Build member list string
         StringBuilder memberList = new StringBuilder();
-        party.getMembers().stream().filter(member -> member.getPlayerID() != party.getLeader()).map(User::getUsername)
+        party.getMembers().stream().filter(member -> !member.getPlayerID().equals(party.getLeader())).map(User::getUsername)
                 .forEach(name -> memberList.append(name).append(", "));
         String cleanList = memberList.toString().trim().substring(0, memberList.toString().length() - 2);
 
         // Send message
         sendMessageWithEverything(player, "info-members", "%partyName%", party.getName(),
                 "%player%", Bukkit.getOfflinePlayer(party.getLeader()).getName(), cleanList);
-
-        player.sendMessage(party.getMembers().stream().map(User::getUsername).collect(Collectors.toList()).toString());
 
         return true;
     }

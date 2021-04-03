@@ -177,7 +177,7 @@ public class User extends Mechanic {
         Party party = PartyChat.getPartyHandler().getParty(getPartyID());
         if (party == null)
             return false;
-        return party.getLeader() == getPlayerID();
+        return party.getLeader().equals(getPlayerID());
     }
 
     @Nullable

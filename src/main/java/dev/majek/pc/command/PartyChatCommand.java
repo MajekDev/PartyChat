@@ -38,7 +38,7 @@ public class PartyChatCommand implements TabCompleter, CommandExecutor {
     /**
      * Refresh the main PartyChat config object used in this class and subclasses.
      */
-    public static void refreshMainConfig() {
+    public static void reload() {
         PartyChat.getCore().reloadConfig();
         mainConfig = PartyChat.getDataHandler().mainConfig;
     }
@@ -66,7 +66,10 @@ public class PartyChatCommand implements TabCompleter, CommandExecutor {
                 if (sender.hasPermission("partychat.admin") && args.length > 0) {
                     switch (args[0]) {
                         case "reload":
-                            PartyChat.getDataHandler().reloadConfigs();
+                            PartyChat.getDataHandler().reload();
+                            PartyCommand.reload();
+                            PartyChatCommand.reload();
+                            PartyChat.getCommandHandler().reload();
                             sendMessage(sender, "plugin-reloaded"); return true;
                         case "spy":
                             if (!(sender instanceof Player)) {
@@ -169,7 +172,9 @@ public class PartyChatCommand implements TabCompleter, CommandExecutor {
                                     e.printStackTrace();
                                 }
 
-                                PartyChat.getDataHandler().reloadConfigs();
+                                PartyChat.getDataHandler().reload();
+                                PartyCommand.reload();
+                                PartyChatCommand.reload();
                                 sendMessage(sender, "updated-value"); return true;
                             }
                             else if (args[2].equalsIgnoreCase("disabled")) {
@@ -217,7 +222,9 @@ public class PartyChatCommand implements TabCompleter, CommandExecutor {
                                         e.printStackTrace();
                                     }
 
-                                    PartyChat.getDataHandler().reloadConfigs();
+                                    PartyChat.getDataHandler().reload();
+                                    PartyCommand.reload();
+                                    PartyChatCommand.reload();
                                     sendMessage(sender, "updated-value");
                                 }  else {
                                     sendMessage(sender, "invalid-arg");

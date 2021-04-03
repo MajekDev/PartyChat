@@ -67,7 +67,7 @@ public class CommandHandler extends Mechanic {
         registerCommand(new PartyToggle());
     }
 
-    public void refreshCommands() {
+    public void reload() {
         commandMap.clear();
         registerCommands();
     }

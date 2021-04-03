@@ -24,6 +24,10 @@ commands:
 permissions:
   partychat.admin:
     description: Allows use of spy, edit, and reload commands.
+    children:
+      partychat.bypass: true
     default: op
   partychat.use:
     description: Allows use of PartyChat if use-permissions is enabled in the config.
+  partychat.bypass:
+    description: Allows players to use leader commands even if they aren't leader.

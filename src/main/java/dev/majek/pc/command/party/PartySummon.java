@@ -48,7 +48,8 @@ public class PartySummon extends PartyCommand {
                 continue;
             if (member.getPlayer() == player)
                 continue;
-            for (String string : PartyChat.getDataHandler().getConfigStringList(mainConfig, "summon-request")) {
+            for (String string : PartyChat.getDataHandler().getConfigStringList(PartyChat
+                    .getDataHandler().messages, "summon-request")) {
                 sendFormattedMessage(member.getPlayer(), string.replace("%prefix%", PartyChat.getDataHandler()
                         .getConfigString(PartyChat.getDataHandler().messages, "prefix"))
                         .replace("%player%", player.getDisplayName()));

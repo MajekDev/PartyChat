@@ -1,5 +1,6 @@
 package dev.majek.pc;
 
+import dev.majek.pc.api.PartyChatAPI;
 import dev.majek.pc.command.CommandHandler;
 import dev.majek.pc.data.*;
 import dev.majek.pc.gui.GuiHandler;
@@ -23,6 +24,7 @@ public final class PartyChat extends JavaPlugin {
     private final GuiHandler guiHandler;
     private final LanguageHandler languageHandler;
     private final PartyHandler partyHandler;
+    private final PartyChatAPI partyChatAPI;
 
     // Hooks
     public static boolean hasEssentials = false;
@@ -38,6 +40,7 @@ public final class PartyChat extends JavaPlugin {
         this.languageHandler = new LanguageHandler();
         this.guiHandler = new GuiHandler();
         this.partyHandler = new PartyHandler();
+        this.partyChatAPI = new PartyChatAPI();
     }
 
     @Override
@@ -144,6 +147,14 @@ public final class PartyChat extends JavaPlugin {
      */
     public static PartyHandler getPartyHandler() {
         return instance.partyHandler;
+    }
+
+    /**
+     * Get the PartyChat API. This class contains helpful API methods.
+     * @return PartyChatAPI
+     */
+    public static PartyChatAPI getAPI() {
+        return instance.partyChatAPI;
     }
 
     /**

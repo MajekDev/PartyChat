@@ -163,7 +163,7 @@ public class DataHandler extends Mechanic {
     /**
      * Reload config files to recognize changes. This is called on /pc reload
      */
-    public void reloadConfigs() {
+    public void reload() {
         PartyChat.getCore().reloadConfig();
         mainConfig = PartyChat.getCore().getConfig();
 
@@ -194,9 +194,6 @@ public class DataHandler extends Mechanic {
         }
         PartyChat.getLanguageHandler().getLanguage().getMessagesConfig().reloadConfig();
         messages = PartyChat.getLanguageHandler().getLanguage().getMessagesConfig().getConfig();
-        PartyCommand.refreshMainConfig();
-        PartyChatCommand.refreshMainConfig();
-        PartyChat.getCommandHandler().refreshCommands();
         PartyChat.log("Config and lang files were reloaded.");
     }
 

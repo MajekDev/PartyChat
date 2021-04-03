@@ -3,7 +3,6 @@ package dev.majek.pc.command.party;
 import dev.majek.pc.PartyChat;
 import dev.majek.pc.command.PartyCommand;
 import dev.majek.pc.data.object.Party;
-import dev.majek.pc.util.TextUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -67,9 +66,9 @@ public class PartyJoin extends PartyCommand {
         // Send messages
         for (String request : PartyChat.getDataHandler().getConfigStringList(PartyChat
                 .getDataHandler().messages, "request-join"))
-            TextUtils.sendFormatted(leader, request.replace("%player%", player.getDisplayName())
-                    .replace("%prefix%", PartyChat.getDataHandler().getConfigString(PartyChat
-                            .getDataHandler().messages, "other-format-prefix")));
+            sendFormattedMessage(leader, request.replace("%prefix%", PartyChat.getDataHandler()
+                    .getConfigString(PartyChat.getDataHandler().messages, "prefix"))
+                    .replace("%player%", player.getDisplayName()));
         sendMessage(player, "request-sent");
 
         party.addPendingJoinRequest(player);

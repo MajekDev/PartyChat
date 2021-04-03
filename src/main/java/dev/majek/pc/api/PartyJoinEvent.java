@@ -1,34 +1,34 @@
-package dev.majek.pc.event;
+package dev.majek.pc.api;
 
 import dev.majek.pc.data.object.Party;
+import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
-public class PartyDeleteEvent extends Event implements Cancellable {
+public class PartyJoinEvent extends Event implements Cancellable {
 
     private boolean cancelled;
-    private final boolean empty;
+    private final Player player;
     private final Party party;
     private static final HandlerList HANDLER_LIST = new HandlerList();
 
-    public PartyDeleteEvent(Party party) {
-        this.empty = party.getSize() == 0;
+    public PartyJoinEvent(Player player, Party party) {
+        this.player = player;
         this.party = party;
     }
 
     /**
-     * Whether or not the party is being deleted because it is empty. If the party is not empty then it is being
-     * deleted because the leader disbanded it.
-     * @return Whether or not the party is empty.
+     * Get the player who is joining the party.
+     * @return Joining player.
      */
-    public boolean isEmpty() {
-        return empty;
+    public Player getPlayer() {
+        return player;
     }
 
     /**
-     * Get the party that is being deleted.
-     * @return Party being deleted.
+     * Get the party the player is joining.
+     * @return Party player is joining.
      */
     public Party getParty() {
         return party;

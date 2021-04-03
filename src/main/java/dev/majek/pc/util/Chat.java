@@ -323,10 +323,14 @@ public class Chat {
 
             char c = string.charAt(i++);
 
+            // Ignore escaped brackets
+            if (string.charAt(i - 1) == '\\')
+                continue;
+
             // We've closed off a pair
             if (c == (curved ? ')' : '}'))
                 --depth;
-                // We've started a pair
+            // We've started a pair
             else if (c == (curved ? '(' : '{'))
                 ++depth;
         }

@@ -72,7 +72,7 @@ public class PartyPromote extends PartyCommand {
         }
 
         // Player is trying to promote themself :P
-        if (player == target) {
+        if (player == target && !player.hasPermission("partychat.bypass")) {
             sendMessage(player, "promote-self");
             return false;
         }

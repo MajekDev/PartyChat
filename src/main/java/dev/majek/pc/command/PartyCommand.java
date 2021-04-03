@@ -60,7 +60,7 @@ public abstract class PartyCommand extends Mechanic implements CommandExecutor, 
     /**
      * Refresh the main PartyChat config object used in this class and subclasses.
      */
-    public static void refreshMainConfig() {
+    public static void reload() {
         PartyChat.getCore().reloadConfig();
         mainConfig = PartyChat.getDataHandler().mainConfig;
     }
@@ -163,11 +163,11 @@ public abstract class PartyCommand extends Mechanic implements CommandExecutor, 
         if (args.length == 1) {
             // If you're not in a party or you're the party leader all subcommands will be available to tab complete
             // If you're just a party member then leader commands won't be shown
-            return (user.isLeader() || player.isOp()) ? TabCompleterBase.filterStartingWith(args[0],
+            return (user.isLeader() || player.hasPermission("partychat.bypass")) ? TabCompleterBase.filterStartingWith(args[0],
                     PartyChat.getCommandHandler().getLeaderCommandsAndAliases())
                     : TabCompleterBase.filterStartingWith(args[0], PartyChat
                     .getCommandHandler().getAllCommandsAndAliases());
-        } else if (args.length >= 3) {
+        } else if (args.length > 3) {
             return Collections.emptyList();
         } else {
             PartyCommand partyCommand = PartyChat.getCommandHandler().getCommand(args[0]);
@@ -176,24 +176,24 @@ public abstract class PartyCommand extends Mechanic implements CommandExecutor, 
             switch (partyCommand.getName()) {
                 case "accept":
                 case "deny":
-                    return user.isLeader() ? TabCompleterBase.filterStartingWith(args[1], PartyChat.getPartyHandler()
+                    return (user.isLeader() || player.hasPermission("partychat.bypass")) ? TabCompleterBase.filterStartingWith(args[1], PartyChat.getPartyHandler()
                             .getParty(player).getPendingInvitations().stream().map(Pair::getFirst)
                             .map(Player::getName)) : Collections.emptyList();
                 case "help":
                     return TabCompleterBase.filterStartingWith(args[1], Arrays.asList("1", "2"));
                 case "toggle":
                     if (args.length == 2)
-                        return user.isLeader() ? TabCompleterBase.filterStartingWith(args[1], Arrays
+                        return (user.isLeader() || player.hasPermission("partychat.bypass")) ? TabCompleterBase.filterStartingWith(args[1], Arrays
                                 .asList("private", "public", "friendly-fire")) : Collections.emptyList();
-                    else if (args.length == 3)
-                        return user.isLeader() ? TabCompleterBase.filterStartingWith(args[2], Arrays
+                    if (args.length == 3)
+                        return (user.isLeader() || player.hasPermission("partychat.bypass")) ? TabCompleterBase.filterStartingWith(args[2], Arrays
                                 .asList("allow", "deny")) : Collections.emptyList();
                 case "add":
                     return TabCompleterBase.getOnlinePlayers(args[1]).stream().filter(person -> person != null &&
                             !Restrictions.isVanished(Bukkit.getPlayerExact(person))).collect(Collectors.toList());
                 case "promote":
                 case "remove":
-                    return user.isLeader() ? TabCompleterBase.filterStartingWith(args[1], PartyChat.getPartyHandler()
+                    return (user.isLeader() || player.hasPermission("partychat.bypass")) ? TabCompleterBase.filterStartingWith(args[1], PartyChat.getPartyHandler()
                             .getParty(user).getMembers().stream().map(User::getUsername))
                             : Collections.emptyList();
                 case "join":
@@ -213,7 +213,7 @@ public abstract class PartyCommand extends Mechanic implements CommandExecutor, 
      */
     public boolean canUse(Player player) {
         User user = PartyChat.getDataHandler().getUser(player);
-        if (this.requiresLeader() && !user.isLeader()) {
+        if (this.requiresLeader() && !user.isLeader() && !player.hasPermission("partychat.bypass")) {
             if (!user.isInParty())
                 sendMessage(player, "not-in-party");
             else

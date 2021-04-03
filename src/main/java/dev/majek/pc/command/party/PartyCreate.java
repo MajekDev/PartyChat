@@ -4,7 +4,7 @@ import dev.majek.pc.PartyChat;
 import dev.majek.pc.command.PartyCommand;
 import dev.majek.pc.data.Restrictions;
 import dev.majek.pc.data.object.Party;
-import dev.majek.pc.event.PartyCreateEvent;
+import dev.majek.pc.api.PartyCreateEvent;
 import dev.majek.pc.util.Chat;
 import dev.majek.pc.util.TabCompleterBase;
 import org.bukkit.entity.Player;

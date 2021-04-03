@@ -5,7 +5,7 @@ import dev.majek.pc.command.PartyCommand;
 import dev.majek.pc.data.object.Bar;
 import dev.majek.pc.data.object.Party;
 import dev.majek.pc.data.object.User;
-import dev.majek.pc.event.PartyJoinEvent;
+import dev.majek.pc.api.PartyJoinEvent;
 import dev.majek.pc.util.Pair;
 import dev.majek.pc.util.Utils;
 import org.bukkit.Bukkit;
@@ -114,16 +114,11 @@ public class PartyAccept extends PartyCommand {
                         else {
                             player.teleport(safe);
                             sendMessage(player, "teleported");
-
-                            // Give player temporary invulnerability to keep them safe
-                            player.setInvulnerable(true);
-                            Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(PartyChat.instance, () ->
-                                    player.setInvulnerable(false), 60L); // 3 second delay
                         }
                         bar.removePlayer(player);
                         user.setNoMove(false);
                     }
-                }, teleportDelay);
+                }, teleportDelay * 20L);
 
                 return true;
             }
@@ -132,7 +127,7 @@ public class PartyAccept extends PartyCommand {
             else if (party.getPendingJoinRequests().size() > 0) {
 
                 // Only leaders can accept join requests
-                if (player.getUniqueId() != party.getLeader()) {
+                if (!user.isLeader()) {
                     sendMessage(player, "in-party"); return false;
                 }
 

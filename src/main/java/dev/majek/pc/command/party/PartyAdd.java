@@ -5,7 +5,6 @@ import dev.majek.pc.command.PartyCommand;
 import dev.majek.pc.data.object.Party;
 import dev.majek.pc.data.object.User;
 import dev.majek.pc.util.Pair;
-import dev.majek.pc.util.TextUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -68,8 +67,8 @@ public class PartyAdd extends PartyCommand {
         // Passed all checks, send messages
         for (String message : PartyChat.getDataHandler().getConfigStringList(PartyChat
                 .getDataHandler().messages, "invite-message")) {
-            TextUtils.sendFormatted(invited, (message).replace("%prefix%", PartyChat.getDataHandler()
-                    .getConfigString(PartyChat.getDataHandler().messages, "other-format-prefix"))
+            sendFormattedMessage(invited, message.replace("%prefix%", PartyChat.getDataHandler()
+                    .getConfigString(PartyChat.getDataHandler().messages, "prefix"))
                     .replace("%partyName%", party.getRawName())
                     .replace("%player%", player.getDisplayName()));
         }

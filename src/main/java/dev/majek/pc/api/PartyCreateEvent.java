@@ -1,4 +1,4 @@
-package dev.majek.pc.event;
+package dev.majek.pc.api;
 
 import dev.majek.pc.data.object.Party;
 import org.bukkit.entity.Player;
@@ -6,29 +6,29 @@ import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
-public class PartyJoinEvent extends Event implements Cancellable {
+public class PartyCreateEvent extends Event implements Cancellable {
 
     private boolean cancelled;
-    private final Player player;
+    private final Player creator;
     private final Party party;
     private static final HandlerList HANDLER_LIST = new HandlerList();
 
-    public PartyJoinEvent(Player player, Party party) {
-        this.player = player;
+    public PartyCreateEvent(Player creator, Party party) {
+        this.creator = creator;
         this.party = party;
     }
 
     /**
-     * Get the player who is joining the party.
-     * @return Joining player.
+     * Get the player who is creating the party.
+     * @return Party creator.
      */
-    public Player getPlayer() {
-        return player;
+    public Player getCreator() {
+        return creator;
     }
 
     /**
-     * Get the party the player is joining.
-     * @return Party player is joining.
+     * Get the party that is being created.
+     * @return Party being created.
      */
     public Party getParty() {
         return party;
