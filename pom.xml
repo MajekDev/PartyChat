@@ -18,6 +18,14 @@
     </properties>
     <url>https://majek.dev/partychat</url>
 
+    <distributionManagement>
+        <repository>
+            <id>majek-repo</id>
+            <name>Majekdor repository</name>
+            <url>https://repo.majek.dev/releases/</url>
+        </repository>
+    </distributionManagement>
+
     <reporting>
         <plugins>
             <plugin>
@@ -95,6 +103,10 @@
             <url>https://papermc.io/repo/repository/maven-public/</url>
         </repository>
         <repository>
+            <id>codemc-snapshots</id>
+            <url>https://repo.codemc.io/repository/maven-snapshots/</url>
+        </repository>
+        <repository>
             <id>sonatype</id>
             <url>https://oss.sonatype.org/content/groups/public/</url>
         </repository>
@@ -109,11 +121,6 @@
         <repository>
             <id>placeholderapi</id>
             <url>https://repo.extendedclip.com/content/repositories/placeholderapi/</url>
-        </repository>
-        <repository>
-            <id>github</id>
-            <name>GitHub DevLeoko Apache Maven Packages</name>
-            <url>https://maven.pkg.github.com/DevLeoko/AdvancedBan</url>
         </repository>
     </repositories>
 
@@ -138,15 +145,9 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>com.github.WesJD.AnvilGUI</groupId>
+            <groupId>net.wesjd</groupId>
             <artifactId>anvilgui</artifactId>
-            <version>5d0f592c63</version>
-        </dependency>
-        <dependency>
-            <groupId>com.github.cryptomorin</groupId>
-            <artifactId>XSeries</artifactId>
-            <version>7.9.1.1</version>
-            <scope>compile</scope>
+            <version>1.5.0-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>me.clip</groupId>
@@ -166,12 +167,14 @@
             <version>0.3.4</version>
             <scope>provided</scope>
         </dependency>
+        <!--
         <dependency>
             <groupId>me.leoko.advancedban</groupId>
             <artifactId>AdvancedBan</artifactId>
             <version>2.1.7</version>
             <scope>provided</scope>
         </dependency>
+        -->
         <dependency>
             <groupId>com.squareup.okhttp3</groupId>
             <artifactId>okhttp</artifactId>

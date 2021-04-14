@@ -1,7 +1,7 @@
 package dev.majek.pc.hooks;
 
 import dev.majek.pc.PartyChat;
-import me.leoko.advancedban.manager.PunishmentManager;
+//import me.leoko.advancedban.manager.PunishmentManager;
 
 import java.util.UUID;
 import java.util.logging.Level;
@@ -14,6 +14,7 @@ public class AdvanceBan {
      * @param uuid player's unique id
      * @return true if muted
      */
+    /*
     public static boolean isAdvanceBanMuted(UUID uuid) {
         try {
             if (PartyChat.hasAdvancedBan)
@@ -25,6 +26,7 @@ public class AdvanceBan {
         }
         return false;
     }
+     */
 
     /**
      * Check if the player is banned by AdvancedBan
@@ -32,6 +34,7 @@ public class AdvanceBan {
      * @param uuid player's unique id
      * @return true if banned
      */
+    /*
     public static boolean isAdvanceBanBanned(UUID uuid) {
         try {
             if (PartyChat.hasEssentials)
@@ -43,5 +46,6 @@ public class AdvanceBan {
         }
         return false;
     }
+     */
 
 }

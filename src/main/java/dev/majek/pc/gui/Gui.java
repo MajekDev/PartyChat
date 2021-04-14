@@ -130,4 +130,8 @@ public abstract class Gui {
         return stack == null ? null : stack.clone();
     }
 
+    public String getConfigString(String path) {
+        return PartyChat.getDataHandler().getConfigString(PartyChat.getDataHandler().messages, path);
+    }
+
 }

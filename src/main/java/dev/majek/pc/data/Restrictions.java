@@ -21,8 +21,8 @@ public class Restrictions {
             return Essentials.isEssentialsMuted(player.getUniqueId());
         if (PartyChat.hasLiteBans)
             return LiteBans.isLiteBansMuted(player.getUniqueId(), player.getAddress().getHostString());
-        if (PartyChat.hasAdvancedBan)
-            return AdvanceBan.isAdvanceBanMuted(player.getUniqueId());
+        //if (PartyChat.hasAdvancedBan)
+            //return AdvanceBan.isAdvanceBanMuted(player.getUniqueId());
         return Vanilla.isVanillaBanned(player.getUniqueId());
     }
 
@@ -38,8 +38,8 @@ public class Restrictions {
             return Essentials.isEssentialsBanned(player.getUniqueId());
         if (PartyChat.hasLiteBans)
             return LiteBans.isLiteBansBanned(player.getUniqueId(), player.getAddress().getHostString());
-        if (PartyChat.hasAdvancedBan)
-            return AdvanceBan.isAdvanceBanBanned(player.getUniqueId());
+        //if (PartyChat.hasAdvancedBan)
+            //return AdvanceBan.isAdvanceBanBanned(player.getUniqueId());
         return false;
     }
 

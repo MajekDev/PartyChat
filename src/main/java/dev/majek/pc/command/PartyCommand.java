@@ -6,7 +6,6 @@ import dev.majek.pc.data.object.Cooldown;
 import dev.majek.pc.data.object.Party;
 import dev.majek.pc.data.Restrictions;
 import dev.majek.pc.data.object.User;
-import dev.majek.pc.mechanic.Mechanic;
 import dev.majek.pc.util.*;
 import net.kyori.adventure.text.serializer.bungeecord.BungeeComponentSerializer;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
@@ -25,7 +24,7 @@ import java.util.stream.Collectors;
 /**
  * This class handles all /party commands and subcommands.
  */
-public abstract class PartyCommand extends Mechanic implements CommandExecutor, TabCompleter {
+public abstract class PartyCommand implements CommandExecutor, TabCompleter {
 
     private final String name;
     private final String usage;
@@ -63,13 +62,6 @@ public abstract class PartyCommand extends Mechanic implements CommandExecutor, 
     public static void reload() {
         PartyChat.getCore().reloadConfig();
         mainConfig = PartyChat.getDataHandler().mainConfig;
-    }
-
-    @Override
-    @SuppressWarnings("ConstantConditions")
-    public void onStartup() {
-        PartyChat.getCore().getCommand("party").setExecutor(this);
-        PartyChat.getCore().getCommand("party").setTabCompleter(this);
     }
 
     /**

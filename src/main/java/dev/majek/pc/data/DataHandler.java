@@ -1,8 +1,6 @@
 package dev.majek.pc.data;
 
 import dev.majek.pc.PartyChat;
-import dev.majek.pc.command.PartyChatCommand;
-import dev.majek.pc.command.PartyCommand;
 import dev.majek.pc.data.object.User;
 import dev.majek.pc.data.storage.ConfigUpdater;
 import dev.majek.pc.data.object.Language;
