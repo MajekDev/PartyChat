@@ -44,15 +44,17 @@ public class PartySummon extends PartyCommand {
 
         // Send summons to all members
         for (User member : party.getMembers()) {
+            PartyChat.log(member.getUsername() + " " + member.isOnline());
             if (!member.isOnline())
                 continue;
             if (member.getPlayer() == player)
                 continue;
+            PartyChat.log("sent to member");
             for (String string : PartyChat.getDataHandler().getConfigStringList(PartyChat
                     .getDataHandler().messages, "summon-request")) {
                 sendFormattedMessage(member.getPlayer(), string.replace("%prefix%", PartyChat.getDataHandler()
                         .getConfigString(PartyChat.getDataHandler().messages, "prefix"))
-                        .replace("%player%", player.getDisplayName()));
+                        .replace("%player%", user.getNickname()));
             }
             party.addPendingSummons(member.getPlayer());
             int timeout = PartyChat.getDataHandler().getConfigInt(mainConfig, "summon-expire-time");

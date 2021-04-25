@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
+import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 
@@ -20,7 +21,7 @@ public class PartyLeaveEvent extends Event implements Cancellable {
     public PartyLeaveEvent(Player player, Party party, Player newLeader) {
         this.player = player;
         this.party = party;
-        this.isLeader = party.getLeader() == player.getUniqueId();
+        this.isLeader = party.getLeader().getPlayerID().equals(player.getUniqueId());
         this.newLeader = newLeader;
     }
 
@@ -77,7 +78,7 @@ public class PartyLeaveEvent extends Event implements Cancellable {
     }
 
     @Override
-    public HandlerList getHandlers() {
+    public @NotNull HandlerList getHandlers() {
         return HANDLER_LIST;
     }
 

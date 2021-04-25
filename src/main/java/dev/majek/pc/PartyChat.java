@@ -2,16 +2,21 @@ package dev.majek.pc;
 
 import dev.majek.pc.api.PartyChatAPI;
 import dev.majek.pc.command.CommandHandler;
+import dev.majek.pc.command.PartyCommand;
 import dev.majek.pc.data.*;
 import dev.majek.pc.gui.GuiHandler;
 import dev.majek.pc.hooks.PlaceholderAPI;
 import dev.majek.pc.mechanic.MechanicHandler;
 import dev.majek.pc.util.Chat;
+import net.dv8tion.jda.api.JDA;
+import net.dv8tion.jda.api.JDABuilder;
+import net.dv8tion.jda.api.entities.TextChannel;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import javax.security.auth.login.LoginException;
 import java.util.logging.Level;
 
 public final class PartyChat extends JavaPlugin {
@@ -30,6 +35,9 @@ public final class PartyChat extends JavaPlugin {
     public static boolean hasEssentials = false;
     public static boolean hasLiteBans = false;
     public static boolean hasAdvancedBan = false;
+    public static boolean hasVault = false;
+
+    private static JDA jda = null;
 
     public PartyChat() {
         // DO NOT CHANGE THE ORDER OF THESE
@@ -81,6 +89,32 @@ public final class PartyChat extends JavaPlugin {
             log("Hooking into Essentials...");
             hasEssentials = true;
         }
+        if (this.getServer().getPluginManager().isPluginEnabled("Vault") &&
+                this.getServer().getPluginManager().getPlugin("Vault") != null) {
+            log("Hooking into Vault...");
+            hasVault = true;
+        }
+
+        // Attempt to connect to Discord if enabled
+        if (getDataHandler().getConfigBoolean(getDataHandler().mainConfig, "log-to-discord")) {
+            try {
+                jda = JDABuilder.createDefault(getDataHandler().getConfigString(getDataHandler().mainConfig,
+                        "discord-bot-token")).build();
+                PartyChat.log("Successfully connected to Discord.");
+            } catch (LoginException ex) {
+                StringBuilder error = new StringBuilder();
+                error.append(ex.getClass().getName()).append(": ").append(ex.getMessage()).append('\n');
+                for (StackTraceElement ste : ex.getStackTrace())
+                    error.append("    at ").append(ste.toString()).append('\n');
+                String errorString = error.toString();
+                PartyChat.error("There was an error hooking into Discord!");
+                PartyChat.error(errorString);
+                ex.printStackTrace();
+            }
+        }
+
+        // Set message type we'll use based on server software and version
+        PartyCommand.sendFormattedMessage(Bukkit.getConsoleSender(), "[PCv4] Testing message type...");
 
         Bukkit.getScheduler().scheduleSyncDelayedTask(instance, () -> getDataHandler().postStartup(), 40L);
 
@@ -164,6 +198,14 @@ public final class PartyChat extends JavaPlugin {
     public static void log(Object object) {
         instance.getLogger().log(Level.INFO, object.toString());
         getDataHandler().logToFile(object.toString(), "INFO");
+    }
+
+    public static void logToDiscord(String message) {
+        TextChannel channel = jda.getTextChannelById(getDataHandler().getConfigString(getDataHandler().mainConfig,
+                "discord-logging-channel-id"));
+        if (channel == null)
+            throw new RuntimeException("Unable to send message to Discord server!");
+        channel.sendMessage(message).queue();
     }
 
     /**

@@ -17,7 +17,12 @@ supported-languages:
 
 # If this is enabled parties will not be deleted unless all of the players leave or the leader runs /party disband
 # and the parties will be saved on server restart/reload
-persistent-parties: false
+persistent-parties: true
+
+# Discord logging settings. This will allow you to log messages sent to party chat in a specific discord channel
+log-to-discord: false
+discord-bot-token: ""
+discord-logging-channel-id: ""
 
 # Whether or not the plugin blocks inappropriate party names.
 block-inappropriate-names: false
@@ -52,6 +57,15 @@ max-name-length: 20
 # Disable guis if you don't want them
 # Note: this is ignored and guis are automatically disabled if you're running a version below 1.13.x
 disable-guis: false
+
+# If enabled, and the server runs Vault, PartyChat will use player's Vault prefixes and suffixes in their names
+use-vault-names: true
+
+# Change whether or not the plugin formats color codes in normal chat
+format-chat: false
+
+# Change whether or not display name will be shown. If false the plugin will use the player's username
+use-displaynames: true
 
 # Whether or not staff sees all PartyChat messages by default
 # This can be toggled with /pc spy

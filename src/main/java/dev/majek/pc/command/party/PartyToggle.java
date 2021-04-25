@@ -43,11 +43,18 @@ public class PartyToggle extends PartyCommand {
 
         // Apply toggles
         if (args[1].equalsIgnoreCase("public")) {
-            sendMessage(player, "toggle-public");
-            party.setPublic(true);
-        } else if (args[1].equalsIgnoreCase("private")) {
-            sendMessage(player, "toggle-private");
-            party.setPublic(false);
+            if (args.length == 2) {
+                sendMessageWithReplacement(player, "public-party-status", "%status%",
+                        party.isPublic() ? "public" : "private");
+            } else {
+                if (args[2].equalsIgnoreCase("true")) {
+                    sendMessage(player, "toggle-public");
+                    party.setPublic(true);
+                } else if (args[2].equalsIgnoreCase("false")) {
+                    sendMessage(player, "toggle-private");
+                    party.setPublic(false);
+                }
+            }
         } else if (args[1].equalsIgnoreCase("friendly-fire")) {
             if (args.length == 2) {
                 sendMessageWithReplacement(player, "friendly-fire-status", "%status%",

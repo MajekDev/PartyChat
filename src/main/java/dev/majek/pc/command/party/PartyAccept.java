@@ -56,7 +56,7 @@ public class PartyAccept extends PartyCommand {
                 Player member = memberUser.getPlayer();
                 if (member == null)
                     continue;
-                sendMessageWithReplacement(member, "player-join", "%player%", player.getDisplayName());
+                sendMessageWithReplacement(member, "player-join", "%player%", user.getNickname());
             }
             sendMessageWithReplacement(player, "you-join", "%partyName%", party.getName());
 
@@ -89,7 +89,7 @@ public class PartyAccept extends PartyCommand {
                 bar.createBar(teleportDelay); bar.addPlayer(player);
 
                 // Get the party leader
-                Player leader = Bukkit.getPlayer(party.getLeader());
+                Player leader = party.getLeader().getPlayer();
                 if (leader == null) {
                     sendMessage(player, "leader-offline"); return false;
                 }
@@ -97,9 +97,10 @@ public class PartyAccept extends PartyCommand {
                 // Get ready to teleport, send messages
                 if (party.getSize() <= 5)
                     sendMessageWithReplacement(leader, "teleport-accepted",
-                            "%player%", player.getDisplayName());
+                            "%player%", user.getNickname());
                 sendMessage(player, "teleport-prepare");
-                party.removePendingSummons(player); user.setNoMove(true);
+                party.removePendingSummons(player);
+                user.setNoMove(true);
 
                 // Delay the teleport.
                 Bukkit.getScheduler().scheduleSyncDelayedTask(PartyChat.getCore(), () -> {
@@ -157,7 +158,7 @@ public class PartyAccept extends PartyCommand {
                 // Send messages
                 sendMessageWithReplacement(toAccept, "you-join", "%partyName%", party.getName());
                 party.getMembers().stream().map(User::getPlayer).filter(Objects::nonNull).forEach(member ->
-                        sendMessageWithReplacement(member, "player-join", "%player%", toAccept.getDisplayName()));
+                        sendMessageWithReplacement(member, "player-join", "%player%", newUser.getNickname()));
 
                 // Put the player in the party
                 party.removePendingJoinRequest(toAccept);

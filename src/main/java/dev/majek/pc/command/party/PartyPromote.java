@@ -45,10 +45,10 @@ public class PartyPromote extends PartyCommand {
             return false;
         }
 
-        return execute(player, args[1]);
+        return execute(player, args[1], false);
     }
 
-    public static boolean execute(Player player, String newLeader) {
+    public static boolean execute(Player player, String newLeader, boolean fromGUI) {
         User user = PartyChat.getDataHandler().getUser(player);
         Party party = user.getParty();
 
@@ -63,26 +63,30 @@ public class PartyPromote extends PartyCommand {
         // Make sure the specified player is in the party
         Player target = Bukkit.getPlayerExact(newLeader);
         if (target == null) {
-            sendMessage(player, "not-online");
+            if (!fromGUI)
+                sendMessage(player, "not-online");
             return false;
         }
         if (!(party.getMembers().stream().map(User::getPlayer).collect(Collectors.toList()).contains(target))) {
-            sendMessage(player, "player-not-in-party");
+            if (!fromGUI)
+                sendMessage(player, "player-not-in-party");
             return false;
         }
 
         // Player is trying to promote themself :P
         if (player == target && !player.hasPermission("partychat.bypass")) {
-            sendMessage(player, "promote-self");
+            if (!fromGUI)
+                sendMessage(player, "promote-self");
             return false;
         }
 
         // Promote player
-        party.setLeader(target.getUniqueId());
-        sendMessageWithReplacement(target, "you-promoted", "%player%", player.getDisplayName());
-        party.getMembers().stream().map(User::getPlayer).filter(Objects::nonNull).filter(p -> p.getUniqueId()
-                != party.getLeader()).forEach(member -> sendMessageWithReplacement(member, "new-leader",
-                "%player%", target.getDisplayName()));
+        party.setLeader(PartyChat.getDataHandler().getUser(target));
+        sendMessageWithReplacement(target, "you-promoted", "%player%", user.getNickname());
+        party.getMembers().stream().map(User::getPlayer).filter(Objects::nonNull).filter(p ->
+                !p.getUniqueId().equals(party.getLeader().getPlayerID())).forEach(member ->
+                sendMessageWithReplacement(member, "new-leader", "%player%",
+                        PartyChat.getDataHandler().getUser(target).getNickname()));
 
         // Update the database if persistent parties is enabled
         if (PartyChat.getDataHandler().persistentParties)

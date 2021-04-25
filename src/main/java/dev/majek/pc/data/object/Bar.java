@@ -13,15 +13,15 @@ public class Bar {
     private static BossBar bar;
     private int taskID;
 
-    public void addPlayer(Player p) {
-        bar.addPlayer(p);
+    public void addPlayer(Player player) {
+        bar.addPlayer(player);
     }
 
-    public void removePlayer(Player p) {
-        bar.removePlayer(p);
+    public void removePlayer(Player player) {
+        bar.removePlayer(player);
     }
 
-    public void createBar(Integer delay) {
+    public void createBar(int delay) {
         bar = Bukkit.createBossBar(Chat.applyColorCodes(PartyChat.getDataHandler().getConfigString(PartyChat.getDataHandler()
                 .messages, "teleport-bar-text")), BarColor.BLUE, BarStyle.SOLID);
         bar.setVisible(true); cast(delay);
@@ -35,7 +35,7 @@ public class Bar {
         return bar;
     }
 
-    public void cast(Integer delay) {
+    public void cast(int delay) {
         taskID = Bukkit.getScheduler().scheduleSyncRepeatingTask(PartyChat.instance, new Runnable() {
             double progress = 1.0; final double time = 1.0 / (delay * 20);
             @Override

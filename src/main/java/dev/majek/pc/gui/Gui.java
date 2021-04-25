@@ -1,6 +1,7 @@
 package dev.majek.pc.gui;
 
 import dev.majek.pc.PartyChat;
+import dev.majek.pc.util.Chat;
 import dev.majek.pc.util.Pair;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -15,6 +16,7 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public abstract class Gui {
 
@@ -54,16 +56,23 @@ public abstract class Gui {
     protected void setItem(int slot, Material material, String name, String... lore) {
         ItemStack stack = new ItemStack(material);
         ItemMeta meta = stack.getItemMeta();
-        meta.setDisplayName(ChatColor.RESET + name + ChatColor.RESET);
+        meta.setDisplayName(ChatColor.RESET + Chat.applyColorCodes(name) + ChatColor.RESET);
         meta.setLore(Arrays.asList(lore));
         stack.setItemMeta(meta);
         inv.setItem(slot, stack);
     }
 
+    protected void setDisplayName(int slot, String name) {
+        ItemStack stack = inv.getItem(slot);
+        ItemMeta meta = stack.getItemMeta();
+        meta.setDisplayName(Chat.applyColorCodes(name));
+        stack.setItemMeta(meta);
+    }
+
     protected void setLore(int slot, String... lore) {
         ItemStack stack = inv.getItem(slot);
         ItemMeta meta = stack.getItemMeta();
-        meta.setLore(Arrays.asList(lore));
+        meta.setLore(Arrays.stream(lore).map(Chat::applyColorCodes).collect(Collectors.toList()));
         stack.setItemMeta(meta);
     }
 
@@ -130,7 +139,7 @@ public abstract class Gui {
         return stack == null ? null : stack.clone();
     }
 
-    public String getConfigString(String path) {
+    public static String getConfigString(String path) {
         return PartyChat.getDataHandler().getConfigString(PartyChat.getDataHandler().messages, path);
     }
 

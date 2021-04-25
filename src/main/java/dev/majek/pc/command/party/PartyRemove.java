@@ -74,7 +74,7 @@ public class PartyRemove extends PartyCommand {
         }
 
         // Player is trying to remove leader
-        if (user.getPlayerID() == party.getLeader()) {
+        if (user.equals(party.getLeader())) {
             sendMessage(player, "remove-leader");
             return false;
         }
@@ -84,7 +84,7 @@ public class PartyRemove extends PartyCommand {
         target.setInParty(false);
 
         if (target.isOnline() && target.getPlayer() != null)
-            sendMessageWithReplacement(target.getPlayer(), "you-removed", "%player%", player.getDisplayName());
+            sendMessageWithReplacement(target.getPlayer(), "you-removed", "%player%", user.getNickname());
 
         party.getMembers().stream().map(User::getPlayer).filter(Objects::nonNull).forEach(member ->
                 sendMessageWithReplacement(member, "player-removed", "%player%", target.getUsername()));

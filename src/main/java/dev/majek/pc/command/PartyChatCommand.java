@@ -84,7 +84,7 @@ public class PartyChatCommand implements TabCompleter, CommandExecutor {
                         case "bugreport":
                             sendMessage(sender, "getting-log");
                             StringBuilder contentBuilder = new StringBuilder();
-                            contentBuilder.append("Log file for ").append(java.time.LocalDate.now().toString())
+                            contentBuilder.append("Log file for ").append(java.time.LocalDate.now())
                                     .append(" submitted by ").append(sender.getName()).append("\n")
                                     .append("Server Software: ").append(Bukkit.getVersion()).append("\n")
                                     .append("PartyChat Version: ").append(PartyChat.instance.getDescription().getVersion())
@@ -97,12 +97,13 @@ public class PartyChatCommand implements TabCompleter, CommandExecutor {
                             }
                             contentBuilder.append("\nEnd of file.");
                             String toPaste = contentBuilder.toString();
-                            final MediaType PLAIN_TEXT_TYPE = MediaType.parse("text/plain; charset=utf-8");
+
+                            final MediaType PLAIN_TEXT_TYPE = MediaType.parse("text/log; charset=utf-8");
                             final OkHttpClient client = new OkHttpClient();
 
                             Request request = new Request.Builder()
-                                    .url("https://paste.majek.dev/documents")
-                                    .post(RequestBody.create(PLAIN_TEXT_TYPE, toPaste))
+                                    .url("https://bytebin.lucko.me/post")
+                                    .post(RequestBody.create(toPaste, PLAIN_TEXT_TYPE))
                                     .build();
 
                             try (Response response = client.newCall(request).execute()) {
@@ -110,9 +111,11 @@ public class PartyChatCommand implements TabCompleter, CommandExecutor {
 
                                 JSONParser parser = new JSONParser();
                                 JSONObject json = (JSONObject) parser.parse(Objects.requireNonNull(response.body()).string());
+                                String url = "https://paste.lucko.me/" + json.get("key");
                                 sendMessageWithReplacement(sender, "bug-report", "%link%",
-                                        "https://paste.majek.dev/" + json.get("key"));
+                                        "${url,&b" + url + "," + url + "}");
                             }
+
                             return true;
                         case "edit":
                             if (args.length == 1) {
@@ -287,29 +290,9 @@ public class PartyChatCommand implements TabCompleter, CommandExecutor {
                 for (String arg : args) {
                     message.append(arg).append(" ");
                 }
-                // This is used so staff don't get the message twice
-                List<Player> messageReceived = new ArrayList<>();
 
-                // Log message to console if that's enabled
-                if (PartyChat.getDataHandler().getConfigBoolean(mainConfig, "console-log"))
-                    sendMessageWithEverything(Bukkit.getConsoleSender(), "spy-format", "%partyName%",
-                            Chat.removeColorCodes(party.getName()), "%player%", player.getName(), message.toString());
+                PartyChat.getPartyHandler().sendMessageToPartyChat(party, user, message.toString());
 
-                // Send message to party members
-                party.getMembers().stream().map(User::getPlayer).filter(Objects::nonNull).forEach(member -> {
-                    sendMessageWithEverything(member, "message-format", "%partyName%",
-                            party.getName(), "%player%", player.getDisplayName(), message.toString());
-                    messageReceived.add(member);
-                });
-
-                // Send message to server staff
-                PartyChat.getDataHandler().getUserMap().values().stream().filter(User::isSpyToggle).map(User::getPlayer)
-                        .filter(Objects::nonNull).filter(staff -> !messageReceived.contains(staff))
-                        .forEach(staff -> sendMessageWithEverything(staff, "spy-format",
-                                "%partyName%", Chat.removeColorCodes(party.getName()), "%player%",
-                                player.getName(), message.toString()));
-
-                PartyChat.getDataHandler().addToUserMap(user);
                 return true;
             }
         } catch (Exception ex) {

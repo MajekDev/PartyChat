@@ -36,7 +36,8 @@ public class PartyAdd extends PartyCommand {
 
     public static boolean execute(Player player, String name) {
 
-        Party party = PartyChat.getPartyHandler().getParty(PartyChat.getDataHandler().getUser(player));
+        User user = PartyChat.getDataHandler().getUser(player);
+        Party party = user.getParty();
 
         // This should never happen, but I want to know if it does
         if (party == null) {
@@ -56,9 +57,11 @@ public class PartyAdd extends PartyCommand {
             sendMessage(player, "add-self"); return false;
         }
 
+        User invitedUser = PartyChat.getDataHandler().getUser(invited);
+
         // Check if the player is trying to invite someone who is already in the party
-        for (User user : party.getMembers()) {
-            Player member = user.getPlayer();
+        for (User partyMember : party.getMembers()) {
+            Player member = partyMember.getPlayer();
             if (member == invited) {
                 sendMessage(player, "player-in-party"); return false;
             }
@@ -70,12 +73,12 @@ public class PartyAdd extends PartyCommand {
             sendFormattedMessage(invited, message.replace("%prefix%", PartyChat.getDataHandler()
                     .getConfigString(PartyChat.getDataHandler().messages, "prefix"))
                     .replace("%partyName%", party.getRawName())
-                    .replace("%player%", player.getDisplayName()));
+                    .replace("%player%", user.getNickname()));
         }
-        sendMessageWithReplacement(player, "invite-sent", "%player%", invited.getDisplayName());
-        Player leader = Bukkit.getPlayer(party.getLeader());
+        sendMessageWithReplacement(player, "invite-sent", "%player%", invitedUser.getNickname());
+        Player leader = party.getLeader().getPlayer();
         if (leader != null && leader.isOnline() && player != leader)
-            sendMessageWithReplacement(leader, "invite-sent", "%player%", invited.getDisplayName());
+            sendMessageWithReplacement(leader, "invite-sent", "%player%", invitedUser.getNickname());
         party.addPendingInvitation(invited, player);
 
         // Check after the expire time if the player still hasn't accepted or declined

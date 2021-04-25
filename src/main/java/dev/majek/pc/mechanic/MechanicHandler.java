@@ -38,6 +38,9 @@ public class MechanicHandler implements Listener {
         // Feature mechanics
         registerMechanic(new User());
         registerMechanic(new PvPEvent());
+        registerMechanic(new PlayerChat());
+        registerMechanic(new PlayerMove());
+        registerMechanic(new PlayerQuit());
 
         PartyChat.log("Finished registering mechanics.");
     }

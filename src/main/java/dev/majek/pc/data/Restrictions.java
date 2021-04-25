@@ -17,13 +17,14 @@ public class Restrictions {
      */
     @SuppressWarnings("ConstantConditions")
     public static boolean isMuted(Player player) {
+        boolean muted = false;
         if (PartyChat.hasEssentials)
-            return Essentials.isEssentialsMuted(player.getUniqueId());
+            muted = Essentials.isEssentialsMuted(player.getUniqueId());
         if (PartyChat.hasLiteBans)
-            return LiteBans.isLiteBansMuted(player.getUniqueId(), player.getAddress().getHostString());
+            muted = LiteBans.isLiteBansMuted(player.getUniqueId(), player.getAddress().getHostString());
         //if (PartyChat.hasAdvancedBan)
-            //return AdvanceBan.isAdvanceBanMuted(player.getUniqueId());
-        return Vanilla.isVanillaBanned(player.getUniqueId());
+            //muted = AdvanceBan.isAdvanceBanMuted(player.getUniqueId());
+        return muted;
     }
 
     /**
@@ -34,13 +35,14 @@ public class Restrictions {
      */
     @SuppressWarnings("ConstantConditions")
     public static boolean isBanned(Player player) {
+        boolean banned = false;
         if (PartyChat.hasEssentials)
-            return Essentials.isEssentialsBanned(player.getUniqueId());
+            banned = Essentials.isEssentialsBanned(player.getUniqueId());
         if (PartyChat.hasLiteBans)
-            return LiteBans.isLiteBansBanned(player.getUniqueId(), player.getAddress().getHostString());
+            banned = LiteBans.isLiteBansBanned(player.getUniqueId(), player.getAddress().getHostString());
         //if (PartyChat.hasAdvancedBan)
-            //return AdvanceBan.isAdvanceBanBanned(player.getUniqueId());
-        return false;
+            //banned = AdvanceBan.isAdvanceBanBanned(player.getUniqueId());
+        return banned;
     }
 
     /**
@@ -50,7 +52,7 @@ public class Restrictions {
      * @return true if vanished
      */
     public static boolean isVanished(Player player) {
-        return Vanilla.isVanished(player);
+        return Vanilla.isVanished(player) || (PartyChat.hasEssentials && Essentials.isEssentialsVanished(player.getUniqueId()));
     }
 
     public static boolean containsCensoredWord(String string) {

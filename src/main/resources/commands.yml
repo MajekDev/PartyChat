@@ -8,11 +8,15 @@
 # You can have as many aliases as you like as long as they contain the right string list formatting.
 
 partychat:
-  usage: "/partychat [on|off|message]"
-  description: "Toggle your party chat on/off or send a message by appending it to the command."
+  usage: /partychat [on|off|message]
+  description: Toggle your party chat on/off or send a message by appending it to the command.
+  aliases:
+    - 'pc'
 party:
-  usage: "/party <subcommand>"
-  description: "Use party subcommands to do things like leave your party or create a party."
+  usage: /party <subcommand>
+  description: Use party subcommands to do things like leave your party or create a party.
+  aliases:
+    - 'p'
 party-subcommands:
   accept:
     usage: "/party accept [player]"

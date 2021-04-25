@@ -5,7 +5,9 @@ import dev.majek.pc.data.object.Party;
 import dev.majek.pc.data.object.User;
 import dev.majek.pc.data.storage.JSONConfig;
 import dev.majek.pc.mechanic.Mechanic;
+import dev.majek.pc.util.Chat;
 import dev.majek.pc.util.Utils;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.ParseException;
@@ -13,11 +15,11 @@ import org.json.simple.parser.ParseException;
 import javax.annotation.Nullable;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
+
+import static dev.majek.pc.command.PartyCommand.sendMessage;
+import static dev.majek.pc.command.PartyCommand.sendMessageWithEverything;
 
 public class PartyHandler extends Mechanic {
 
@@ -67,7 +69,8 @@ public class PartyHandler extends Mechanic {
         }
         for (Object key : fileContents.keySet()) {
             JSONObject partyJSON = (JSONObject) fileContents.get(key);
-            List<UUID> memberIDs = Utils.deserializeMembers(partyJSON.get("memberIDs").toString());
+            List<UUID> memberIDs = Utils.deserializeMembers(partyJSON.get("memberIDs").toString()).stream()
+                    .filter(uuid -> !uuid.toString().equals(partyJSON.get("leaderID").toString())).collect(Collectors.toList());
             List<User> members = memberIDs.stream().map(User::new).collect(Collectors.toList());
             Party party = new Party(
                     partyJSON.get("name").toString(),
@@ -88,7 +91,7 @@ public class PartyHandler extends Mechanic {
     public void saveParty(Party party) {
         JSONObject partyMeta = new JSONObject();
         partyMeta.put("name", party.getName());
-        partyMeta.put("leaderID", party.getLeader().toString());
+        partyMeta.put("leaderID", party.getLeader().getPlayerID().toString());
         partyMeta.put("memberIDs", Utils.serializeMembers(party.getMembers().stream()
                 .map(User::getPlayerID).collect(Collectors.toList())));
         partyMeta.put("isPublic", String.valueOf(party.isPublic()));
@@ -148,6 +151,10 @@ public class PartyHandler extends Mechanic {
         return partyMap.get(PartyChat.getDataHandler().getUser(player).getPartyID());
     }
 
+    public List<Party> getParties() {
+        return new ArrayList<>(partyMap.values());
+    }
+
     /**
      * Get main party map.
      */
@@ -170,5 +177,44 @@ public class PartyHandler extends Mechanic {
      */
     public void removeFromPartyMap(UUID uuid) {
         partyMap.remove(uuid);
+    }
+
+    public void sendMessageToPartyChat(Party party, User sender, String message) {
+
+        // Check for inappropriate words
+        if (PartyChat.getDataHandler().getConfigBoolean(PartyChat.getDataHandler().mainConfig, "block-inappropriate-chat")) {
+            if (Restrictions.containsCensoredWord(message)) {
+                sendMessage(sender, "inappropriate-message");
+                return;
+            }
+        }
+
+        // This is used so staff don't get the message twice
+        List<Player> messageReceived = new ArrayList<>();
+
+        // Log message to console if that's enabled
+        if (PartyChat.getDataHandler().getConfigBoolean(PartyChat.getDataHandler().mainConfig, "console-log"))
+            sendMessageWithEverything(Bukkit.getConsoleSender(), "spy-format", "%partyName%",
+                    Chat.removeColorCodes(party.getName()), "%player%", sender.getUsername(), message);
+
+        // Send message to party members
+        party.getMembers().stream().map(User::getPlayer).filter(Objects::nonNull).forEach(member -> {
+            sendMessageWithEverything(member, "message-format", "%partyName%",
+                    party.getName(), "%player%", sender.getNickname(), message);
+            messageReceived.add(member);
+        });
+
+        // Send message to server staff
+        PartyChat.getDataHandler().getUserMap().values().stream().filter(User::isSpyToggle).map(User::getPlayer)
+                .filter(Objects::nonNull).filter(staff -> !messageReceived.contains(staff))
+                .forEach(staff -> sendMessageWithEverything(staff, "spy-format",
+                        "%partyName%", Chat.removeColorCodes(party.getRawName()), "%player%",
+                        sender.getUsername(), message));
+
+        if (PartyChat.getDataHandler().getConfigBoolean(PartyChat.getDataHandler().mainConfig, "log-to-discord")) {
+            PartyChat.logToDiscord(Chat.removeColorCodes(PartyChat.getDataHandler().getConfigString(PartyChat
+                    .getDataHandler().messages, "message-format").replace("%partyName%", party.getName())
+                    .replace("%player%", sender.getNickname()) + message));
+        }
     }
 }

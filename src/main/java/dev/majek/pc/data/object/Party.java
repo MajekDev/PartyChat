@@ -15,7 +15,7 @@ public class Party {
     private UUID                                id;
     private boolean                             isPublic;
     private boolean                             friendlyFire;
-    private UUID                                leader;
+    private User                                leader;
     private final List<User>                    members;
     private final List<Player>                  pendingJoinRequests;
     private final List<Pair<Player, Player>>    pendingInvitations;
@@ -30,7 +30,7 @@ public class Party {
     public Party(Player leader, String partyName) {
         this.name = partyName;
         this.id = UUID.randomUUID();
-        this.leader = leader.getUniqueId();
+        this.leader = new User(leader);
         this.members = new CopyOnWriteArrayList<>();
         this.members.add(PartyChat.getDataHandler().getUser(leader));
         this.isPublic = PartyChat.getDataHandler().getConfigBoolean(
@@ -54,11 +54,15 @@ public class Party {
     public Party(String partyName, String leaderUUID, List<User> members, Boolean isPublic, Boolean friendlyFire) {
         this.name = partyName;
         this.id = UUID.randomUUID();
-        this.leader = UUID.fromString(leaderUUID);
+        User leader = new User(UUID.fromString(leaderUUID));
+        this.leader = leader;
+        leader.setPartyID(this.id);
+        PartyChat.getDataHandler().addToUserMap(leader);
         if (members == null)
             this.members = new CopyOnWriteArrayList<>();
         else
             this.members = new CopyOnWriteArrayList<>(members);
+        this.members.add(leader);
         this.isPublic = isPublic;
         this.friendlyFire = friendlyFire;
         this.pendingInvitations = new CopyOnWriteArrayList<>();
@@ -178,7 +182,7 @@ public class Party {
      * Get the unique id of the party leader.
      * @return Party leader's unique id.
      */
-    public UUID getLeader() {
+    public User getLeader() {
         return leader;
     }
 
@@ -186,7 +190,7 @@ public class Party {
      * Set a new party leader.
      * @param leader New leader's unique id.
      */
-    public void setLeader(UUID leader) {
+    public void setLeader(User leader) {
         this.leader = leader;
     }
 

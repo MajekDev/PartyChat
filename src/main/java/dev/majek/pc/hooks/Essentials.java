@@ -52,4 +52,26 @@ public class Essentials {
         return false;
     }
 
+    /**
+     * Check if the player is vanished by Essentials
+     *
+     * @param uuid player's unique id
+     * @return true if vanished
+     */
+    @SuppressWarnings("ConstantConditions")
+    public static boolean isEssentialsVanished(UUID uuid) {
+        try {
+            if (PartyChat.hasEssentials) {
+                com.earth2me.essentials.Essentials essentials = (com.earth2me.essentials.Essentials)
+                        Bukkit.getPluginManager().getPlugin("Essentials");
+                return essentials.getUser(uuid).isVanished();
+            }
+            return false;
+        } catch (Exception ex) {
+            PartyChat.instance.getLogger().log(Level.SEVERE, "Error checking if player is vanished by Essentials:");
+            ex.printStackTrace();
+        }
+        return false;
+    }
+
 }

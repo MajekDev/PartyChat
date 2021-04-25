@@ -1,6 +1,5 @@
 package dev.majek.pc.util;
 
-import dev.majek.pc.PartyChat;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.event.ClickEvent;
@@ -9,11 +8,7 @@ import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
-import org.json.JSONException;
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -152,7 +147,7 @@ public class Chat {
     }
 
     /**
-     * Parse any JSON for {@link Chat#format(JSONObject)} and {@link MiniJSON} and send the
+     * Parse any JSON for {@link MiniJSON} and send the
      * formatted string as a component to the CommandSender.
      *
      * @param sender The CommandSender to send the Component to.
@@ -163,7 +158,7 @@ public class Chat {
     }
 
     /**
-     * Parse JSON for {@link Chat#format(JSONObject)} and {@link MiniJSON} within the provided message.
+     * Parse JSON for {@link MiniJSON} within the provided message.
      *
      * @param message The message to parse.
      * @return Component from the provided string.
@@ -175,119 +170,34 @@ public class Chat {
         TextComponent.Builder finalComponent = Component.text();
         String previousColor = "";
         while (message.contains("$")) {
+            if (message.indexOf("$") != 0) {
+                if (message.charAt(message.indexOf("$") - 1) == '\\') {
+                    message = StringUtils.replaceOnce(message, "\\$", "%dollaSignPlaceholder%");
+                    continue;
+                }
+            }
             int JSONSectionStart = message.indexOf("$");
-            PartyChat.log("Length: " + message.length() + " Start: " + JSONSectionStart);
-            // TODO: Fix issue with index out of bounds if $ is at the end of the message
-            String jsonString = getEnclosed(JSONSectionStart + 1, message).getFirst();
+            String jsonString;
+            if (message.length() == JSONSectionStart + 1)
+                jsonString = null;
+            else
+                jsonString = getEnclosed(JSONSectionStart + 1, message).getFirst();
             // If there is incorrect syntax go to the next
             if (jsonString == null) {
-                message = StringUtils.replaceOnce(message, "$", "");
+                message = StringUtils.replaceOnce(message, "$", "\\$");
                 continue;
             }
-            finalComponent.append(getComponentText(previousColor + message.substring(0, JSONSectionStart)));
+            finalComponent.append(getComponentText(previousColor + message.substring(0, JSONSectionStart).replace("%dollaSignPlaceholder%", "$")));
             previousColor = getColorCodes(message.substring(0, JSONSectionStart));
-            boolean parsed = false;
-            if (isJson(jsonString)) {
-                finalComponent.append(format(jsonString));
-                parsed = true;
-            }
-            if (!parsed) {
-                MiniJSON miniJSON = new MiniJSON(jsonString);
-                if (miniJSON.isValidMiniJSON())
-                    finalComponent.append(miniJSON.getComponent());
-            }
+
+            MiniJSON miniJSON = new MiniJSON(jsonString);
+            if (miniJSON.isValidMiniJSON())
+                finalComponent.append(miniJSON.getComponent());
+
             message = message.substring(getEnclosed(JSONSectionStart + 1, message).getSecond());
         }
-        finalComponent.append(getComponentText(previousColor + message));
+        finalComponent.append(getComponentText(previousColor + message.replace("%dollaSignPlaceholder%", "$")));
         return finalComponent.asComponent();
-    }
-
-    /**
-     * Take a valid {@link JSONObject} in the correct <a href="http://google.com">format</a>
-     * and convert it to a {@link Component} ready to send to a {@link CommandSender}.
-     *
-     * @param jsonObject The valid {@link JSONObject}.
-     * @return Valid {@link Component}.
-     * @throws InvalidJSONException If one of the {@link JSONObject}s in the {@link JSONArray} does
-     * not contain the "base-text" key.
-     */
-    public static Component format(JSONObject jsonObject) {
-        // Get the array of message parts
-        JSONArray array = (JSONArray) jsonObject.get("message-parts");
-
-        // Obviously if the array is null then the syntax was incorrect
-        if (array == null)
-            throw new InvalidJSONException("Incorrect syntax in JSON Object passed through Chat#format");
-
-        // Build and empty main component and iterate through the message parts adding to it
-        TextComponent.Builder mainComponent = Component.empty().toBuilder();
-        for (Object object : array) {
-            JSONObject messagePartJson = (JSONObject) object;
-
-            // Obviously if the message section is null then the syntax was incorrect
-            if (messagePartJson == null)
-                throw new InvalidJSONException("Incorrect syntax in JSON Object passed through Chat#format");
-
-            // All parts of the message must at least have base text
-            if (!messagePartJson.containsKey("base-text"))
-                throw new InvalidJSONException("All JSON Objects passed through Chat#format must " +
-                        "contain base-text for each message part.");
-
-            // Create a new component builder for this part of the message and give it the base text
-            TextComponent.Builder messagePart = getComponentText(messagePartJson.get("base-text").toString());
-
-            // Apply hover text to this part of the message if there is any
-            if (messagePartJson.containsKey("hover-text")) {
-                messagePart.hoverEvent(HoverEvent
-                        .showText(getComponentText(messagePartJson.get("hover-text").toString())));
-            }
-
-            // We can only have one click event per section
-            boolean haveClickEvent = false;
-
-            // Add the command to run to this part of the message's component
-            if (messagePartJson.containsKey("run-command")) {
-                messagePart.clickEvent(ClickEvent.runCommand(messagePartJson.get("run-command").toString()));
-                haveClickEvent = true;
-            }
-
-            // Add the command to suggest to this part of the message's component
-            if (messagePartJson.containsKey("suggest-command") && !haveClickEvent) {
-                messagePart.clickEvent(ClickEvent.suggestCommand(messagePartJson.get("suggest-command").toString()));
-                haveClickEvent = true;
-            }
-
-            // Add the url to open to this part of the message's component
-            if (messagePartJson.containsKey("open-url") && !haveClickEvent) {
-                messagePart.clickEvent(ClickEvent.openUrl(messagePartJson.get("open-url").toString()));
-                haveClickEvent = true;
-            }
-
-            // Add the text to copy to clipboard to this part of the message's component
-            if (messagePartJson.containsKey("copy-to-clipboard") && !haveClickEvent) {
-                messagePart.clickEvent(ClickEvent.copyToClipboard(messagePartJson.get("copy-to-clipboard").toString()));
-            }
-
-            // Add this part of the message to the main component
-            mainComponent.append(messagePart.build());
-        }
-        return mainComponent.asComponent();
-    }
-
-    /**
-     * Take a string containing valid JSON, parse it, and send it to {@link Chat#format(JSONObject)}.
-     *
-     * @param jsonString The correctly formatted string to parse into a {@link JSONObject}.
-     * @return Valid {@link Component}.
-     * @throws InvalidJSONException If one of the jsonString is invalid JSON.
-     */
-    public static Component format(String jsonString) {
-        try {
-            JSONObject jsonObject = (JSONObject) new JSONParser().parse(jsonString);
-            return format(jsonObject);
-        } catch (ParseException e) {
-            throw new InvalidJSONException("Incorrect syntax in JSON Object passed through Chat#format");
-        }
     }
 
     /**
@@ -336,25 +246,6 @@ public class Chat {
         }
         // Return the stuff inside the brackets, and the index of the char after the last bracket
         return new Pair<>(string.substring(start, i), i);
-    }
-
-    /**
-     * Check if a string is valid JSON.
-     *
-     * @param Json The string to check.
-     * @return Whether or not the JSON is valid.
-     */
-    public static boolean isJson(String Json) {
-        try {
-            new org.json.JSONObject(Json);
-        } catch (JSONException ex) {
-            try {
-                new org.json.JSONArray(Json);
-            } catch (JSONException ex1) {
-                return false;
-            }
-        }
-        return true;
     }
 
     /**
@@ -441,15 +332,6 @@ public class Chat {
                     component.clickEvent(ClickEvent.suggestCommand(functionText2));
             }
             return component.asComponent();
-        }
-    }
-
-    /**
-     * Thrown if there is invalid syntax in the JSON Object for {@link Chat#format(JSONObject)}.
-     */
-    public static class InvalidJSONException extends RuntimeException {
-        public InvalidJSONException(String exception) {
-            super(exception);
         }
     }
 

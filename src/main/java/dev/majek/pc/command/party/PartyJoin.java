@@ -3,7 +3,6 @@ package dev.majek.pc.command.party;
 import dev.majek.pc.PartyChat;
 import dev.majek.pc.command.PartyCommand;
 import dev.majek.pc.data.object.Party;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 public class PartyJoin extends PartyCommand {
@@ -56,7 +55,7 @@ public class PartyJoin extends PartyCommand {
             sendMessage(player, "join-wait"); return false;
         }
 
-        Player leader = Bukkit.getPlayer(party.getLeader());
+        Player leader = party.getLeader().getPlayer();
 
         // Make sure the leader is online
         if (leader == null) {
@@ -68,7 +67,7 @@ public class PartyJoin extends PartyCommand {
                 .getDataHandler().messages, "request-join"))
             sendFormattedMessage(leader, request.replace("%prefix%", PartyChat.getDataHandler()
                     .getConfigString(PartyChat.getDataHandler().messages, "prefix"))
-                    .replace("%player%", player.getDisplayName()));
+                    .replace("%player%", PartyChat.getDataHandler().getUser(player).getNickname()));
         sendMessage(player, "request-sent");
 
         party.addPendingJoinRequest(player);

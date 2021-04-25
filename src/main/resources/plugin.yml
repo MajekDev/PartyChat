@@ -1,7 +1,7 @@
 name: PartyChat
 version: ${project.version}
 main: dev.majek.pc.PartyChat
-api-version: 1.16
+api-version: 1.13
 prefix: PCv4
 authors: [ Majekdor ]
 description: Customizable chat plugin to talk with your friends in parties.
@@ -10,15 +10,9 @@ softdepend: [PlaceholderAPI, Essentials, LiteBans, AdvancedBan]
 commands:
   partychat:
     description: Toggle party chat or speak in party chat /pc <message>.
-    aliases: [pc]
     usage: /partychat <message>
-  normalchat:
-    description: Send message to normal chat /nc <message>.
-    aliases: [nc]
-    usage: /normalchat <message>
   party:
     description: Party management commands.
-    aliases: [p]
 
 
 permissions:

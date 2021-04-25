@@ -1,11 +1,14 @@
 package dev.majek.pc.command;
 
 import dev.majek.pc.PartyChat;
+import dev.majek.pc.command.party.PartyVersion;
 import dev.majek.pc.data.DataHandler;
 import dev.majek.pc.data.object.Cooldown;
 import dev.majek.pc.data.object.Party;
 import dev.majek.pc.data.Restrictions;
 import dev.majek.pc.data.object.User;
+import dev.majek.pc.gui.GuiInParty;
+import dev.majek.pc.gui.GuiNoParty;
 import dev.majek.pc.util.*;
 import net.kyori.adventure.text.serializer.bungeecord.BungeeComponentSerializer;
 import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
@@ -87,6 +90,7 @@ public abstract class PartyCommand implements CommandExecutor, TabCompleter {
                     sendMessage(sender, "no-console"); return true;
                 }
                 Player player = (Player) sender;
+                User user = PartyChat.getDataHandler().getUser(player);
 
                 // Check if the admins wants to use permissions
                 // Ignore this whole section if they have admin perms
@@ -117,6 +121,15 @@ public abstract class PartyCommand implements CommandExecutor, TabCompleter {
                         Map<PartyCommand, Cooldown> newMap = new HashMap<>();
                         newMap.put(partyCommand, new Cooldown(partyCommand));
                         cooldownMap.put(player, newMap);
+                    }
+                } else {
+                    if (!PartyChat.getDataHandler().disableGuis) {
+                        if (user.isInParty())
+                            new GuiInParty().openGui(player);
+                        else
+                            new GuiNoParty().openGui(player);
+                    } else {
+                        PartyVersion.execute(player);
                     }
                 }
             }
@@ -155,8 +168,8 @@ public abstract class PartyCommand implements CommandExecutor, TabCompleter {
         if (args.length == 1) {
             // If you're not in a party or you're the party leader all subcommands will be available to tab complete
             // If you're just a party member then leader commands won't be shown
-            return (user.isLeader() || player.hasPermission("partychat.bypass")) ? TabCompleterBase.filterStartingWith(args[0],
-                    PartyChat.getCommandHandler().getLeaderCommandsAndAliases())
+            return (user.isLeader() || player.hasPermission("partychat.bypass")) ? TabCompleterBase
+                    .filterStartingWith(args[0], PartyChat.getCommandHandler().getLeaderCommandsAndAliases())
                     : TabCompleterBase.filterStartingWith(args[0], PartyChat
                     .getCommandHandler().getAllCommandsAndAliases());
         } else if (args.length > 3) {
@@ -168,24 +181,33 @@ public abstract class PartyCommand implements CommandExecutor, TabCompleter {
             switch (partyCommand.getName()) {
                 case "accept":
                 case "deny":
-                    return (user.isLeader() || player.hasPermission("partychat.bypass")) ? TabCompleterBase.filterStartingWith(args[1], PartyChat.getPartyHandler()
+                    return (user.isLeader() || player.hasPermission("partychat.bypass")) ? TabCompleterBase
+                            .filterStartingWith(args[1], PartyChat.getPartyHandler()
                             .getParty(player).getPendingInvitations().stream().map(Pair::getFirst)
                             .map(Player::getName)) : Collections.emptyList();
                 case "help":
                     return TabCompleterBase.filterStartingWith(args[1], Arrays.asList("1", "2"));
                 case "toggle":
                     if (args.length == 2)
-                        return (user.isLeader() || player.hasPermission("partychat.bypass")) ? TabCompleterBase.filterStartingWith(args[1], Arrays
-                                .asList("private", "public", "friendly-fire")) : Collections.emptyList();
+                        return (user.isLeader() || player.hasPermission("partychat.bypass")) ? TabCompleterBase
+                                .filterStartingWith(args[1], Arrays.asList("public", "friendly-fire"))
+                                : Collections.emptyList();
                     if (args.length == 3)
-                        return (user.isLeader() || player.hasPermission("partychat.bypass")) ? TabCompleterBase.filterStartingWith(args[2], Arrays
+                        if (args[1].equalsIgnoreCase("public"))
+                            return (user.isLeader() || player.hasPermission("partychat.bypass")) ?
+                                    TabCompleterBase.filterStartingWith(args[2], Arrays
+                                    .asList("true", "false")) : Collections.emptyList();
+                        else
+                            return (user.isLeader() || player.hasPermission("partychat.bypass")) ?
+                                    TabCompleterBase.filterStartingWith(args[2], Arrays
                                 .asList("allow", "deny")) : Collections.emptyList();
                 case "add":
                     return TabCompleterBase.getOnlinePlayers(args[1]).stream().filter(person -> person != null &&
                             !Restrictions.isVanished(Bukkit.getPlayerExact(person))).collect(Collectors.toList());
                 case "promote":
                 case "remove":
-                    return (user.isLeader() || player.hasPermission("partychat.bypass")) ? TabCompleterBase.filterStartingWith(args[1], PartyChat.getPartyHandler()
+                    return (user.isLeader() || player.hasPermission("partychat.bypass")) ? TabCompleterBase
+                            .filterStartingWith(args[1], PartyChat.getPartyHandler()
                             .getParty(user).getMembers().stream().map(User::getUsername))
                             : Collections.emptyList();
                 case "join":
@@ -212,7 +234,7 @@ public abstract class PartyCommand implements CommandExecutor, TabCompleter {
                 sendMessage(player, "not-leader");
             return false;
         } else if (cooldownMap.get(player) != null && cooldownMap.get(player).containsKey(this)
-                && !cooldownMap.get(player).get(this).isFinished()) {
+                && !cooldownMap.get(player).get(this).isFinished() && !player.hasPermission("partychat.bypass")) {
             sendMessageWithReplacement(player, "cooldown", "%time%", TimeInterval
                     .formatTime(cooldownMap.get(player).get(this)
                             .getTimeRemaining() * 1000L, false));
@@ -307,6 +329,11 @@ public abstract class PartyCommand implements CommandExecutor, TabCompleter {
         message = message.replace(target1, replacement1).replace(target2, replacement2) + toAdd;
         message = message.replace("%prefix%", prefix);
         sendFormattedMessage(sender, message);
+    }
+
+    public static void sendMessage(User user, String path) {
+        if (user.isOnline())
+            sendMessage(user.getPlayer(), path);
     }
 
     public static void runTaskLater(int delay, Runnable task) {

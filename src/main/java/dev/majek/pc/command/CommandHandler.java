@@ -3,8 +3,10 @@ package dev.majek.pc.command;
 import dev.majek.pc.PartyChat;
 import dev.majek.pc.command.party.*;
 import dev.majek.pc.mechanic.Mechanic;
+import org.bukkit.command.Command;
+import org.bukkit.command.CommandMap;
 
-import javax.annotation.Nullable;
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -23,12 +25,36 @@ public class CommandHandler extends Mechanic {
     @SuppressWarnings("ConstantConditions")
     public void onStartup() {
 
+        // Set aliases
+        try {
+            final Field bukkitCommandMap = PartyChat.getCore().getServer().getClass().getDeclaredField("commandMap");
+
+            bukkitCommandMap.setAccessible(true);
+            CommandMap commandMap = (CommandMap) bukkitCommandMap.get(PartyChat.getCore().getServer());
+
+            Command partyCommand = PartyChat.getCore().getCommand("party");
+            partyCommand.unregister(commandMap);
+            partyCommand.setAliases(PartyChat.getDataHandler().getConfigStringList(PartyChat.getDataHandler().commandConfig, "party.aliases"));
+
+            Command partyChatCommand = PartyChat.getCore().getCommand("partychat");
+            partyChatCommand.unregister(commandMap);
+            partyChatCommand.setAliases(PartyChat.getDataHandler().getConfigStringList(PartyChat.getDataHandler().commandConfig, "partychat.aliases"));
+
+            commandMap.register("partychat", partyCommand);
+            commandMap.register("partychat", partyChatCommand);
+            Map<String, Command> shit = commandMap.getKnownCommands();
+            //for (String string : shit.keySet()) {
+            //    PartyChat.log(string + ": " + shit.get(string).getAliases());
+            //}
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            e.printStackTrace();
+        }
+
         // Register /party subcommands
         registerCommands();
 
         PartyChat.getCore().getCommand("partychat").setExecutor(new PartyChatCommand());
         PartyChat.getCore().getCommand("partychat").setTabCompleter(new PartyChatCommand());
-
     }
 
     @SuppressWarnings("ConstantConditions")
@@ -38,7 +64,6 @@ public class CommandHandler extends Mechanic {
         PartyChat.getCore().getCommand("party").setTabCompleter(command);
     }
 
-    @Nullable
     public PartyCommand getCommand(String name) {
         PartyCommand command = commandMap.get(name);
         if (command == null)
@@ -65,6 +90,7 @@ public class CommandHandler extends Mechanic {
         registerCommand(new PartyRename());
         registerCommand(new PartySummon());
         registerCommand(new PartyToggle());
+        registerCommand(new PartyVersion());
     }
 
     public void reload() {

@@ -39,19 +39,19 @@ public class PartyInfo extends PartyCommand {
         // If the player is in the party by themself -> leader
         if (party.getSize() == 1) {
             sendMessageWithEverything(player, "info-leader", "%partyName%", party.getName(),
-                    "", "", Bukkit.getOfflinePlayer(party.getLeader()).getName());
+                    "", "", party.getLeader().getUsername());
             return true;
         }
 
         // Build member list string
         StringBuilder memberList = new StringBuilder();
-        party.getMembers().stream().filter(member -> !member.getPlayerID().equals(party.getLeader())).map(User::getUsername)
+        party.getMembers().stream().filter(member -> !member.equals(party.getLeader())).map(User::getUsername)
                 .forEach(name -> memberList.append(name).append(", "));
         String cleanList = memberList.toString().trim().substring(0, memberList.toString().length() - 2);
 
         // Send message
         sendMessageWithEverything(player, "info-members", "%partyName%", party.getName(),
-                "%player%", Bukkit.getOfflinePlayer(party.getLeader()).getName(), cleanList);
+                "%player%", party.getLeader().getUsername(), cleanList);
 
         return true;
     }

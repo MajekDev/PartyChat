@@ -2,6 +2,7 @@ package dev.majek.pc.hooks;
 
 import dev.majek.pc.PartyChat;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 import org.bukkit.metadata.MetadataValue;
 
@@ -16,14 +17,8 @@ public class Vanilla {
      * @param player the player to check
      * @return true if vanished
      */
-    @SuppressWarnings("ConstantConditions")
     public static boolean isVanished(Player player) {
         try {
-            if (PartyChat.hasEssentials) {
-                com.earth2me.essentials.Essentials essentials = (com.earth2me.essentials.Essentials)
-                        Bukkit.getPluginManager().getPlugin("Essentials");
-                return essentials.getVanishedPlayers().contains(player.getName());
-            }
 
             for (MetadataValue meta: player.getMetadata("vanished")) {
                 if (meta.asBoolean())

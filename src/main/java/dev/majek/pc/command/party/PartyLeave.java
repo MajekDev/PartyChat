@@ -4,12 +4,10 @@ import dev.majek.pc.PartyChat;
 import dev.majek.pc.command.PartyCommand;
 import dev.majek.pc.data.object.Party;
 import dev.majek.pc.data.object.User;
-import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
 import java.util.Objects;
 import java.util.Random;
-import java.util.stream.Collectors;
 
 public class PartyLeave extends PartyCommand {
 
@@ -52,19 +50,18 @@ public class PartyLeave extends PartyCommand {
 
         if (!partyDisbanded) {
             party.getMembers().stream().map(User::getPlayer).filter(Objects::nonNull).forEach(member ->
-                    sendMessageWithReplacement(member, "player-leave", "%player%", player.getDisplayName()));
+                    sendMessageWithReplacement(member, "player-leave", "%player%", user.getNickname()));
 
             // Check if the player who left was the leader
-            if (user.getPlayerID().equals(party.getLeader())) {
+            if (user.equals(party.getLeader())) {
                 Random random  = new Random(); // Assign a new random leader
-                party.setLeader(party.getMembers().stream().map(User::getPlayerID)
-                        .collect(Collectors.toList()).get(random.nextInt(party.getSize())));
-                Player leader = Bukkit.getPlayer(party.getLeader());
+                party.setLeader(party.getMembers().get(random.nextInt(party.getSize())));
+                Player leader = party.getLeader().getPlayer();
                 if (leader != null)
                     sendMessage(leader, "you-leader");
-                party.getMembers().stream().map(User::getPlayer).filter(Objects::nonNull).filter(p -> p.getUniqueId()
-                        != party.getLeader()).forEach(member -> sendMessageWithReplacement(member, "new-leader",
-                        "%player%", Bukkit.getOfflinePlayer(party.getLeader()).getName()));
+                party.getMembers().stream().map(User::getPlayer).filter(Objects::nonNull).filter(p ->
+                        !user.equals(party.getLeader())).forEach(member -> sendMessageWithReplacement(member, "new-leader",
+                        "%player%", party.getLeader().getUsername()));
             }
         }
         // Update the database if persistent parties is enabled

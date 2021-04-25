@@ -41,11 +41,11 @@ public class PartyDeny extends PartyCommand {
             }
 
             // Send messages
-            Player leader = Bukkit.getPlayer(party.getLeader());
+            Player leader = party.getLeader().getPlayer();
             if (leader != null && leader.isOnline())
-                sendMessageWithReplacement(leader, "decline-join", "%player%", player.getDisplayName());
+                sendMessageWithReplacement(leader, "decline-join", "%player%", user.getNickname());
             if (inviter != null && inviter.isOnline() && inviter != leader)
-                sendMessageWithReplacement(inviter, "decline-join", "%player%", player.getDisplayName());
+                sendMessageWithReplacement(inviter, "decline-join", "%player%", user.getNickname());
             sendMessage(player, "you-decline");
 
             party.removePendingInvitation(player);
@@ -62,14 +62,14 @@ public class PartyDeny extends PartyCommand {
                         "code here: https://discord.gg/CGgvDUz");
                 sendMessage(player, "error"); return false;
             }
-            Player leader = Bukkit.getPlayer(party.getLeader());
+            Player leader = party.getLeader().getPlayer();
 
             // Check if the player has a pending summon request
             if (party.getPendingSummons().contains(player)) {
                 sendMessage(player, "teleport-denied-player");
                 if (leader != null && leader.isOnline() && player != leader)
                     sendMessageWithReplacement(leader, "teleport-denied",
-                            "%player%", player.getDisplayName());
+                            "%player%", user.getNickname());
                 party.removePendingSummons(player);
                 return true;
             }
@@ -78,7 +78,7 @@ public class PartyDeny extends PartyCommand {
             else if (party.getPendingJoinRequests().size() > 0) {
 
                 // Only leaders can deny join requests
-                if (player.getUniqueId() != party.getLeader()) {
+                if (!player.getUniqueId().equals(party.getLeader().getPlayerID())) {
                     sendMessage(player, "in-party"); return false;
                 }
 
@@ -106,7 +106,7 @@ public class PartyDeny extends PartyCommand {
 
                 // Send messages
                 sendMessage(toDeny, "join-denied");
-                sendMessageWithReplacement(player, "deny-join", "%player%", player.getDisplayName());
+                sendMessageWithReplacement(player, "deny-join", "%player%", user.getNickname());
 
                 party.removePendingJoinRequest(toDeny);
 

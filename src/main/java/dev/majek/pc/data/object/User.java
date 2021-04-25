@@ -1,6 +1,7 @@
 package dev.majek.pc.data.object;
 
 import dev.majek.pc.PartyChat;
+import dev.majek.pc.hooks.Vault;
 import dev.majek.pc.mechanic.Mechanic;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -16,6 +17,7 @@ public class User extends Mechanic {
     private UUID      playerID;
     private Player    player;
     private String    username;
+    private String    nickname;
     private boolean   isOnline;
     private UUID      partyID;
     private boolean   inParty;
@@ -34,6 +36,8 @@ public class User extends Mechanic {
         this.playerID = player.getUniqueId();
         this.player = player;
         this.username = player.getName();
+        this.nickname = PartyChat.getDataHandler().useVault ? Vault.getPlayerDisplayName(player)
+                : PartyChat.getDataHandler().useDisplayNames ? player.getDisplayName() : player.getName();
         this.isOnline = true;
         this.partyID = null;
         this.inParty = false;
@@ -53,6 +57,7 @@ public class User extends Mechanic {
         this.playerID = uuid;
         this.player = null;
         this.username = Bukkit.getOfflinePlayer(uuid).getName();
+        this.nickname = null;
         this.isOnline = false;
         this.partyID = null;
         this.inParty = true;
@@ -69,11 +74,14 @@ public class User extends Mechanic {
             return;
         }
         User user = PartyChat.getDataHandler().getUser(event.getPlayer());
+        user.setNickname(PartyChat.getDataHandler().useVault ? Vault.getPlayerDisplayName(event.getPlayer())
+                : PartyChat.getDataHandler().useDisplayNames ? event.getPlayer().getDisplayName() : event.getPlayer().getName());
         user.setPlayer(event.getPlayer());
         user.setStaff(event.getPlayer().hasPermission("partychat.admin"));
         user.setSpyToggle(event.getPlayer().hasPermission("partychat.admin") && PartyChat.getDataHandler()
                 .getConfigBoolean(PartyChat.getDataHandler().mainConfig, "auto-spy"));
         user.setNoMove(false);
+        user.setOnline(true);
         PartyChat.getDataHandler().addToUserMap(user);
     }
 
@@ -104,6 +112,14 @@ public class User extends Mechanic {
 
     public String getUsername() {
         return username;
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 
     public boolean isOnline() {
@@ -177,7 +193,7 @@ public class User extends Mechanic {
         Party party = PartyChat.getPartyHandler().getParty(getPartyID());
         if (party == null)
             return false;
-        return party.getLeader().equals(getPlayerID());
+        return party.getLeader().getPlayerID().equals(getPlayerID());
     }
 
     @Nullable
