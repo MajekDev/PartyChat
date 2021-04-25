@@ -7,8 +7,7 @@
 [ ![version][] ][download]
 [ ![discord-shield][] ][discord-invite]
 [ ![license-shield][] ][license]
-[![](https://jitpack.io/v/Majekdor/PartyChat.svg)](https://jitpack.io/#Majekdor/PartyChat)
-[![](https://jitci.com/gh/Majekdor/PartyChat/svg)](https://jitci.com/gh/Majekdor/PartyChat)
+[![](https://img.shields.io/jenkins/build?jobUrl=https%3A%2F%2Fci.majek.dev%2Fjob%2FPartyChat)](https://ci.majek.dev/job/PartyChat)
 [![](https://img.shields.io/spiget/rating/79295?color=%23ff781f&label=Spigot)](https://www.spigotmc.org/resources/partychat.79295/)
 
 <img align="right" src="https://raw.githubusercontent.com/Majekdor/PartyChat/main/partychat.png" height="200" width="200">
@@ -80,7 +79,7 @@ This is where you'll be able to customize cooldowns for party subcommands such a
 
 If you can't find information on what you're looking for here, head on over to the [wiki](https://github.com/Majekdor/PartyChat/wiki). There you can find documentation on every command, permission node, and configuration option. You will also find tutorials on how to do things such as change the language, use `/partychat edit`, and much more.
 
-JavaDocs for the current release can be found [here](https://pc-docs.majek.dev).
+JavaDocs for the current release can be found [here](https://javadocs.majek.dev/PartyChat).
 
 If you still can't find what you're looking for go ahead and join my [Discord](https://discord.gg/CGgvDUz) and I can try to help you and add documentation for your issue.
 
