@@ -24,7 +24,8 @@ public class PartyInfo extends PartyCommand {
 
         // Make sure player is in a party
         if (!PartyChat.getDataHandler().getUser(player).isInParty()) {
-            sendMessage(player, "not-in-party"); return false;
+            sendMessage(player, "not-in-party");
+            return false;
         }
 
         Party party = user.getParty();
@@ -33,7 +34,8 @@ public class PartyInfo extends PartyCommand {
         if (party == null) {
             PartyChat.error("Error: PC-INF_1 | The plugin is fine, but please report this error " +
                     "code here: https://discord.gg/CGgvDUz");
-            sendMessage(player, "error"); return false;
+            sendMessage(player, "error");
+            return false;
         }
 
         // If the player is in the party by themself -> leader

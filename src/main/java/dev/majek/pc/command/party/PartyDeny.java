@@ -32,12 +32,14 @@ public class PartyDeny extends PartyCommand {
             for (Party check : PartyChat.getPartyHandler().getPartyMap().values())
                 for (Pair<Player, Player> players : check.getPendingInvitations())
                     if (players.getFirst() == player) {
-                        party = check; inviter = players.getSecond(); break;
+                        party = check; inviter = players.getSecond();
+                        break;
                     }
 
             // Player has no pending invitations
             if (party == null) {
-                sendMessage(player, "no-invites"); return false;
+                sendMessage(player, "no-invites");
+                return false;
             }
 
             // Send messages
@@ -60,7 +62,8 @@ public class PartyDeny extends PartyCommand {
             if (party == null) {
                 PartyChat.error("Error: PC-DNY_1 | The plugin is fine, but please report this error " +
                         "code here: https://discord.gg/CGgvDUz");
-                sendMessage(player, "error"); return false;
+                sendMessage(player, "error");
+                return false;
             }
             Player leader = party.getLeader().getPlayer();
 
@@ -79,7 +82,8 @@ public class PartyDeny extends PartyCommand {
 
                 // Only leaders can deny join requests
                 if (!player.getUniqueId().equals(party.getLeader().getPlayerID())) {
-                    sendMessage(player, "in-party"); return false;
+                    sendMessage(player, "in-party");
+                    return false;
                 }
 
                 Player toDeny;
@@ -88,12 +92,14 @@ public class PartyDeny extends PartyCommand {
                     if (party.getPendingJoinRequests().size() == 1) {
                         toDeny = party.getPendingJoinRequests().get(0);
                     } else {
-                        sendMessage(player, "specify-player"); return false;
+                        sendMessage(player, "specify-player");
+                        return false;
                     }
                 } else {
                     toDeny = Bukkit.getPlayer(args[1]);
                     if (!party.getPendingJoinRequests().contains(toDeny)) {
-                        sendMessage(player, "no-request"); return false;
+                        sendMessage(player, "no-request");
+                        return false;
                     }
                 }
 
@@ -101,7 +107,8 @@ public class PartyDeny extends PartyCommand {
                 if (toDeny == null) {
                     PartyChat.error("Error: PC-DNY_2 | The plugin is fine, but please report this error " +
                             "code here: https://discord.gg/CGgvDUz");
-                    sendMessage(player, "error"); return false;
+                    sendMessage(player, "error");
+                    return false;
                 }
 
                 // Send messages
@@ -112,7 +119,8 @@ public class PartyDeny extends PartyCommand {
 
                 return true;
             } else {
-                sendMessage(player, "no-usage"); return false;
+                sendMessage(player, "no-usage");
+                return false;
             }
         }
     }

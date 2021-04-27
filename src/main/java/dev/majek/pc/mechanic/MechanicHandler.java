@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * This class handles all game mechanics and registers it's sub classes.
+ * Handles all game mechanics and registers it's sub classes.
  */
 public class MechanicHandler implements Listener {
 

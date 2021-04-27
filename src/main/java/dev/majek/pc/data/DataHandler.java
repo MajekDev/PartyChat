@@ -13,6 +13,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -24,7 +25,7 @@ import java.util.logging.Level;
 import java.util.stream.Stream;
 
 /**
- * This class handles all plugin data storage, config file access, and the main config file.
+ * Handles all plugin data storage, config file access, and the main config file.
  */
 public class DataHandler extends Mechanic {
 
@@ -74,11 +75,6 @@ public class DataHandler extends Mechanic {
             File oldMessages = new File(instance.getDataFolder(), "messages.yml");
             if (oldMessages.exists())
                 oldMessages.renameTo(new File(instance.getDataFolder(), "messages-old.yml"));
-            try {
-                Thread.sleep(1000L);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
         }
     }
 
@@ -111,6 +107,7 @@ public class DataHandler extends Mechanic {
 
         reload(false);
 
+        // Migrate database parties to json parties if necessary
         if (!migrated) {
             File oldDatabase = new File(instance.getDataFolder(), "parties.db");
             if (oldDatabase.exists()) {
@@ -129,6 +126,9 @@ public class DataHandler extends Mechanic {
         PartyChat.log("Finished updating config and lang files.");
     }
 
+    /**
+     * Set message config file a little after startup.
+     */
     public void postStartup() {
         // Set the message config file based on language from main config
         messages = PartyChat.getLanguageHandler().getLanguage().getMessagesConfig().getConfig();
@@ -361,22 +361,45 @@ public class DataHandler extends Mechanic {
         }
     }
 
+    /**
+     * Get PartyChat user from map.
+     * @param player The player to get a user from.
+     * @return User from player.
+     */
     public User getUser(Player player) {
         return userMap.get(player.getUniqueId());
     }
 
+    /**
+     * Get PartyChat user from map. May be null if uuid hasn't joined or been in a party.
+     * @param uuid The unique id to get a user from.
+     * @return User from unique id.
+     */
+    @Nullable
     public User getUser(UUID uuid) {
         return userMap.get(uuid);
     }
 
+    /**
+     * Get PartyChat's user map. Unique ids are tied to {@link User}s.
+     * @return UserMap
+     */
     public Map<UUID, User> getUserMap() {
         return userMap;
     }
 
+    /**
+     * Add a user to the user map.
+     * @param user User to add.
+     */
     public void addToUserMap(User user) {
         userMap.put(user.getPlayerID(), user);
     }
 
+    /**
+     * Remove a user from the user map.
+     * @param user User to remove.
+     */
     public void removeFromUserMap(User user) {
         userMap.remove(user.getPlayerID());
     }

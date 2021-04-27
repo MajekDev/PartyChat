@@ -8,21 +8,36 @@ import dev.majek.pc.gui.GuiHandler;
 import dev.majek.pc.hooks.PlaceholderAPI;
 import dev.majek.pc.mechanic.MechanicHandler;
 import dev.majek.pc.util.Chat;
+import dev.majek.pc.util.UpdateChecker;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.TextChannel;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.Response;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.Nullable;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 
 import javax.security.auth.login.LoginException;
+import java.io.IOException;
+import java.util.Objects;
 import java.util.logging.Level;
 
+/**
+ * Main plugin class. All handlers should be obtained from here.
+ * @author Majekdor
+ */
 public final class PartyChat extends JavaPlugin {
 
-    // Class reference
-    public static PartyChat instance;
+    //    <--- Handlers --->
+    private static PartyChat instance;
     private final DataHandler dataHandler;
     private final MechanicHandler mechanicHandler;
     private final CommandHandler commandHandler;
@@ -31,13 +46,29 @@ public final class PartyChat extends JavaPlugin {
     private final PartyHandler partyHandler;
     private final PartyChatAPI partyChatAPI;
 
-    // Hooks
+    //    <--- Hooks --->
+    /**
+     * True if PartyChat is hooked into Essentials.
+     */
     public static boolean hasEssentials = false;
+    /**
+     * True if PartyChat is hooked into LiteBans.
+     */
     public static boolean hasLiteBans = false;
-    public static boolean hasAdvancedBan = false;
+    /**
+     * AdvancedBan has presented a lot of issues and is currently deprecated. PartyChat will not hook into it.
+     */
+    @Deprecated
+    public static boolean hasAdvancedBan;
+    /**
+     * True if PartyChat is hooked into Vault.
+     */
     public static boolean hasVault = false;
 
+    //    <--- Other --->
     private static JDA jda = null;
+    public static boolean hasUpdate = false;
+    private static String showcaseMessage = "";
 
     public PartyChat() {
         // DO NOT CHANGE THE ORDER OF THESE
@@ -62,7 +93,7 @@ public final class PartyChat extends JavaPlugin {
         Bukkit.getConsoleSender().sendMessage(Chat.applyColorCodes("    &b____   &e___             "));
         Bukkit.getConsoleSender().sendMessage(Chat.applyColorCodes("   &b(  _ \\ &e/ __)     &2PartyChat &9v" + pdf.getVersion()));
         Bukkit.getConsoleSender().sendMessage(Chat.applyColorCodes("    &b)___/&e( (__      &7Detected Minecraft &9"  + minecraftVersion));
-        Bukkit.getConsoleSender().sendMessage(Chat.applyColorCodes("   &b(__)   &e\\___)     &7Last updated &912/29/2020 &7by &bMajekdor"));
+        Bukkit.getConsoleSender().sendMessage(Chat.applyColorCodes("   &b(__)   &e\\___)     &7Last updated &94/26/2021 &7by &bMajekdor"));
         Bukkit.getConsoleSender().sendMessage(Chat.applyColorCodes(""));
 
         // Register listeners and game mechanics
@@ -78,11 +109,6 @@ public final class PartyChat extends JavaPlugin {
                 this.getServer().getPluginManager().getPlugin("LiteBans") != null) {
             log("Hooking into LiteBans...");
             hasLiteBans = true;
-        }
-        if (this.getServer().getPluginManager().isPluginEnabled("AdvancedBan") &&
-                this.getServer().getPluginManager().getPlugin("AdvancedBan") != null) {
-            log("Hooking into AdvancedBans...");
-            hasAdvancedBan = true;
         }
         if (this.getServer().getPluginManager().isPluginEnabled("Essentials") &&
                 this.getServer().getPluginManager().getPlugin("Essentials") != null) {
@@ -102,6 +128,7 @@ public final class PartyChat extends JavaPlugin {
                         "discord-bot-token")).build();
                 PartyChat.log("Successfully connected to Discord.");
             } catch (LoginException ex) {
+                jda = null;
                 StringBuilder error = new StringBuilder();
                 error.append(ex.getClass().getName()).append(": ").append(ex.getMessage()).append('\n');
                 for (StackTraceElement ste : ex.getStackTrace())
@@ -113,9 +140,35 @@ public final class PartyChat extends JavaPlugin {
             }
         }
 
+        // Get PartyChat showcase message from majek.dev
+        final OkHttpClient client = new OkHttpClient();
+        Request request = new Request.Builder().url("https://majek.dev/pluginresponse").get().build();
+        try (Response response = client.newCall(request).execute()) {
+            if (!response.isSuccessful()) throw new IOException("Unexpected code " + response);
+
+            JSONParser parser = new JSONParser();
+            JSONObject json = (JSONObject) parser.parse(Objects.requireNonNull(response.body()).string());
+            showcaseMessage = json.get("partychat").toString();
+        } catch (ParseException | IOException ignored) { }
+
+        // Send showcase message to console if there is one
+        if (showcaseMessage.length() != 0)
+            PartyChat.log(ChatColor.BLUE + showcaseMessage);
+
+        // Check for PartyChat update
+        UpdateChecker updateChecker = new UpdateChecker(this, 79295);
+        if (updateChecker.isBehindSpigot()) {
+            hasUpdate = true;
+            log("There is a new update available! " +
+                    "Download it here: https://www.spigotmc.org/resources/partychat.79295/");
+        } else if (updateChecker.isAheadOfSpigot()) {
+            log("Ooh a beta tester. Thank you!");
+        }
+
         // Set message type we'll use based on server software and version
         PartyCommand.sendFormattedMessage(Bukkit.getConsoleSender(), "[PCv4] Testing message type...");
 
+        // Run post startup method from data handler
         Bukkit.getScheduler().scheduleSyncDelayedTask(instance, () -> getDataHandler().postStartup(), 40L);
 
         Bukkit.getScheduler().scheduleSyncDelayedTask(instance, () ->
@@ -192,6 +245,23 @@ public final class PartyChat extends JavaPlugin {
     }
 
     /**
+     * Get the PartyChat JDA connection if it exists.
+     * @return JDA
+     */
+    @Nullable
+    public static JDA getJDA() {
+        return jda;
+    }
+
+    /**
+     * Get the showcase message for PartyChat if there is one.
+     * @return Showcase Message
+     */
+    public static String getShowcaseMessage() {
+        return showcaseMessage;
+    }
+
+    /**
      * Log an object to console.
      * @param object The object to log.
      */
@@ -200,6 +270,10 @@ public final class PartyChat extends JavaPlugin {
         getDataHandler().logToFile(object.toString(), "INFO");
     }
 
+    /**
+     * Log a message to the Discord channel defined in the config.yml
+     * @param message The message to log.
+     */
     public static void logToDiscord(String message) {
         TextChannel channel = jda.getTextChannelById(getDataHandler().getConfigString(getDataHandler().mainConfig,
                 "discord-logging-channel-id"));

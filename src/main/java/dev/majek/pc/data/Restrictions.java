@@ -7,6 +7,9 @@ import dev.majek.pc.hooks.LiteBans;
 import dev.majek.pc.hooks.Vanilla;
 import org.bukkit.entity.Player;
 
+/**
+ * Handles checking if a player is banned, muted, vanished, etc.
+ */
 public class Restrictions {
 
     /**

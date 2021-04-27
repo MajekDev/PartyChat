@@ -7,7 +7,7 @@ import dev.majek.pc.mechanic.Mechanic;
 import java.util.*;
 
 /**
- * This class handles all plugin languages and their config files.
+ * Handles all plugin languages and their config files.
  */
 public class LanguageHandler extends Mechanic {
 
@@ -41,17 +41,25 @@ public class LanguageHandler extends Mechanic {
     }
 
     /**
-     * Get the current plugin language.
+     * Get the current plugin {@link Language}.
      * @return Language.
      */
     public Language getLanguage() {
         return language;
     }
 
+    /**
+     * Set the plugin {@link Language}.
+     * @param language The new language.
+     */
     public void setLanguage(Language language) {
         this.language = language;
     }
 
+    /**
+     * Get the plugin's map of {@link Language}s.
+     * @return LangMap
+     */
     public Map<String, Language> getLangMap() {
         return langMap;
     }

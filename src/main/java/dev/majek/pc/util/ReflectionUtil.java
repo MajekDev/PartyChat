@@ -9,6 +9,9 @@ import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Useful utility for accessing net.minecraft.server or org.bukkit.craftbukkit classes/methods/fields.
+ */
 public class ReflectionUtil {
 
     /*

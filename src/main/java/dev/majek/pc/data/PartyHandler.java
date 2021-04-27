@@ -1,6 +1,8 @@
 package dev.majek.pc.data;
 
 import dev.majek.pc.PartyChat;
+import dev.majek.pc.api.PartyChatEvent;
+import dev.majek.pc.api.PartyCreateEvent;
 import dev.majek.pc.data.object.Party;
 import dev.majek.pc.data.object.User;
 import dev.majek.pc.data.storage.JSONConfig;
@@ -21,6 +23,9 @@ import java.util.stream.Collectors;
 import static dev.majek.pc.command.PartyCommand.sendMessage;
 import static dev.majek.pc.command.PartyCommand.sendMessageWithEverything;
 
+/**
+ * Handles party saving, loading, and storage.
+ */
 public class PartyHandler extends Mechanic {
 
     private final Map<UUID, Party> partyMap;
@@ -58,6 +63,9 @@ public class PartyHandler extends Mechanic {
         }
     }
 
+    /**
+     * Load parties from JSON file storage.
+     */
     public void loadParties() {
         JSONObject fileContents;
         try {
@@ -87,6 +95,10 @@ public class PartyHandler extends Mechanic {
         }
     }
 
+    /**
+     * Save a party to the JSON file storage.
+     * @param party Party so save.
+     */
     @SuppressWarnings("unchecked")
     public void saveParty(Party party) {
         JSONObject partyMeta = new JSONObject();
@@ -108,6 +120,10 @@ public class PartyHandler extends Mechanic {
         }
     }
 
+    /**
+     * Delete a party from the JSON file storage.
+     * @param party Party to delete.
+     */
     public void deleteParty(Party party) {
         party.getMembers().forEach(member -> {
             member.setInParty(false);
@@ -136,21 +152,40 @@ public class PartyHandler extends Mechanic {
         return false;
     }
 
+    /**
+     * Get a party from a {@link User}. May be null if the user is not in a party.
+     * @param user User to get party from.
+     * @return Party, if it exists.
+     */
     @Nullable
     public Party getParty(User user) {
         return partyMap.get(user.getPartyID());
     }
 
+    /**
+     * Get a party from a party unique id. May be null if the party doesn't exist.
+     * @param uuid Party's unique id.
+     * @return Party, if it exists.
+     */
     @Nullable
     public Party getParty(UUID uuid) {
         return partyMap.get(uuid);
     }
 
+    /**
+     * Get a party from a player. May be null if the player is not in a party.
+     * @param player Player to get party from.
+     * @return Party, if it exists.
+     */
     @Nullable
     public Party getParty(Player player) {
         return partyMap.get(PartyChat.getDataHandler().getUser(player).getPartyID());
     }
 
+    /**
+     * Get a list of all active parties.
+     * @return All active parties.
+     */
     public List<Party> getParties() {
         return new ArrayList<>(partyMap.values());
     }
@@ -179,11 +214,25 @@ public class PartyHandler extends Mechanic {
         partyMap.remove(uuid);
     }
 
+    /**
+     * Send a message to a party. This will fire the {@link PartyChatEvent}.
+     * @param party The party to send the message to.
+     * @param sender The {@link User} sending the message.
+     * @param message The message being sent.
+     */
     public void sendMessageToPartyChat(Party party, User sender, String message) {
+
+        // Run PartyChatEvent
+        PartyChatEvent event = new PartyChatEvent(sender.getPlayer(), party, message);
+        PartyChat.getCore().getServer().getPluginManager().callEvent(event);
+        if (event.isCancelled())
+            return;
+
+        String finalMessage = event.getMessage();
 
         // Check for inappropriate words
         if (PartyChat.getDataHandler().getConfigBoolean(PartyChat.getDataHandler().mainConfig, "block-inappropriate-chat")) {
-            if (Restrictions.containsCensoredWord(message)) {
+            if (Restrictions.containsCensoredWord(finalMessage)) {
                 sendMessage(sender, "inappropriate-message");
                 return;
             }
@@ -195,12 +244,12 @@ public class PartyHandler extends Mechanic {
         // Log message to console if that's enabled
         if (PartyChat.getDataHandler().getConfigBoolean(PartyChat.getDataHandler().mainConfig, "console-log"))
             sendMessageWithEverything(Bukkit.getConsoleSender(), "spy-format", "%partyName%",
-                    Chat.removeColorCodes(party.getName()), "%player%", sender.getUsername(), message);
+                    Chat.removeColorCodes(party.getName()), "%player%", sender.getUsername(), finalMessage);
 
         // Send message to party members
         party.getMembers().stream().map(User::getPlayer).filter(Objects::nonNull).forEach(member -> {
             sendMessageWithEverything(member, "message-format", "%partyName%",
-                    party.getName(), "%player%", sender.getNickname(), message);
+                    party.getName(), "%player%", sender.getNickname(), finalMessage);
             messageReceived.add(member);
         });
 
@@ -209,12 +258,13 @@ public class PartyHandler extends Mechanic {
                 .filter(Objects::nonNull).filter(staff -> !messageReceived.contains(staff))
                 .forEach(staff -> sendMessageWithEverything(staff, "spy-format",
                         "%partyName%", Chat.removeColorCodes(party.getRawName()), "%player%",
-                        sender.getUsername(), message));
+                        sender.getUsername(), finalMessage));
 
-        if (PartyChat.getDataHandler().getConfigBoolean(PartyChat.getDataHandler().mainConfig, "log-to-discord")) {
+        if (PartyChat.getDataHandler().getConfigBoolean(PartyChat.getDataHandler().mainConfig, "log-to-discord")
+                && PartyChat.getJDA() != null) {
             PartyChat.logToDiscord(Chat.removeColorCodes(PartyChat.getDataHandler().getConfigString(PartyChat
                     .getDataHandler().messages, "message-format").replace("%partyName%", party.getName())
-                    .replace("%player%", sender.getNickname()) + message));
+                    .replace("%player%", sender.getNickname()) + finalMessage));
         }
     }
 }

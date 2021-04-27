@@ -22,12 +22,12 @@ public class LiteBans {
         try {
             muted = false;
             if (PartyChat.hasLiteBans) {
-                Bukkit.getScheduler().runTaskAsynchronously(PartyChat.instance, () ->
+                Bukkit.getScheduler().runTaskAsynchronously(PartyChat.getCore(), () ->
                         muted = Database.get().isPlayerMuted(uuid, ipAddress));
             }
             return muted;
         } catch (Exception ex) {
-            PartyChat.instance.getLogger().log(Level.SEVERE, "Error checking if player is muted by LiteBans:");
+            PartyChat.error( "Error checking if player is muted by LiteBans:");
             ex.printStackTrace();
             return false;
         }
@@ -46,12 +46,12 @@ public class LiteBans {
         try {
             banned = false;
             if (PartyChat.hasLiteBans) {
-                Bukkit.getScheduler().runTaskAsynchronously(PartyChat.instance, () ->
+                Bukkit.getScheduler().runTaskAsynchronously(PartyChat.getCore(), () ->
                         banned = Database.get().isPlayerBanned(uuid, ipAddress));
             }
             return banned;
         } catch (Exception ex) {
-            PartyChat.instance.getLogger().log(Level.SEVERE, "Error checking if player is banned by LiteBans:");
+            PartyChat.error("Error checking if player is banned by LiteBans:");
             ex.printStackTrace();
             return false;
         }

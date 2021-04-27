@@ -35,7 +35,8 @@ public class PartyLeave extends PartyCommand {
         if (party == null) {
             PartyChat.error("Error: PC-LEV_1 | The plugin is fine, but please report this error " +
                     "code here: https://discord.gg/CGgvDUz");
-            sendMessage(player, "error"); return false;
+            sendMessage(player, "error");
+            return false;
         }
 
         if (!leftServer)
@@ -60,8 +61,8 @@ public class PartyLeave extends PartyCommand {
                 if (leader != null)
                     sendMessage(leader, "you-leader");
                 party.getMembers().stream().map(User::getPlayer).filter(Objects::nonNull).filter(p ->
-                        !user.equals(party.getLeader())).forEach(member -> sendMessageWithReplacement(member, "new-leader",
-                        "%player%", party.getLeader().getUsername()));
+                        !user.equals(party.getLeader())).forEach(member -> sendMessageWithReplacement(member,
+                        "new-leader", "%player%", party.getLeader().getUsername()));
             }
         }
         // Update the database if persistent parties is enabled

@@ -1,5 +1,6 @@
 package dev.majek.pc.api;
 
+import dev.majek.pc.PartyChat;
 import dev.majek.pc.data.object.Party;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;

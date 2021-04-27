@@ -42,7 +42,8 @@ public class PartyAccept extends PartyCommand {
 
             // Player has no pending invitations
             if (party == null) {
-                sendMessage(player, "no-invites"); return false;
+                sendMessage(player, "no-invites");
+                return false;
             }
 
             // Run PartyJoinEvent
@@ -78,7 +79,8 @@ public class PartyAccept extends PartyCommand {
             if (party == null) {
                 PartyChat.error("Error: PC-ACPT_1 | The plugin is fine, but please report this error " +
                         "code here: https://discord.gg/CGgvDUz");
-                sendMessage(player, "error"); return false;
+                sendMessage(player, "error");
+                return false;
             }
 
             // Check if the player has a pending summon request
@@ -86,12 +88,16 @@ public class PartyAccept extends PartyCommand {
                 // Create teleport bar
                 Bar bar = new Bar();
                 int teleportDelay = PartyChat.getDataHandler().getConfigInt(mainConfig, "summon-teleport-time");
-                bar.createBar(teleportDelay); bar.addPlayer(player);
+                teleportDelay = Math.max(teleportDelay, 0); // Make sure > 0
+                teleportDelay = Math.min(teleportDelay, 60); // Majek sure < 60
+                bar.createBar(teleportDelay);
+                bar.addPlayer(player);
 
                 // Get the party leader
                 Player leader = party.getLeader().getPlayer();
                 if (leader == null) {
-                    sendMessage(player, "leader-offline"); return false;
+                    sendMessage(player, "leader-offline");
+                    return false;
                 }
 
                 // Get ready to teleport, send messages
@@ -129,7 +135,8 @@ public class PartyAccept extends PartyCommand {
 
                 // Only leaders can accept join requests
                 if (!user.isLeader()) {
-                    sendMessage(player, "in-party"); return false;
+                    sendMessage(player, "in-party");
+                    return false;
                 }
 
                 Player toAccept;
@@ -138,12 +145,14 @@ public class PartyAccept extends PartyCommand {
                     if (party.getPendingJoinRequests().size() == 1) {
                         toAccept = party.getPendingJoinRequests().get(0);
                     } else {
-                        sendMessage(player, "specify-player"); return false;
+                        sendMessage(player, "specify-player");
+                        return false;
                     }
                 } else {
                     toAccept = Bukkit.getPlayer(args[1]);
                     if (!party.getPendingJoinRequests().contains(toAccept) || toAccept == null) {
-                        sendMessage(player, "no-request"); return false;
+                        sendMessage(player, "no-request");
+                        return false;
                     }
                 }
 
@@ -172,7 +181,8 @@ public class PartyAccept extends PartyCommand {
 
                 return true;
             } else {
-                sendMessage(player, "no-usage"); return false;
+                sendMessage(player, "no-usage");
+                return false;
             }
         }
     }

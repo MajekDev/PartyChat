@@ -1,5 +1,5 @@
-# Command configuration. Here you can change the command name, usage, description, whether or not it's disabled,
-# it's cooldown, and it's aliases. Only party subcommands can be disabled, given cooldowns, and given aliases.
+# Command configuration. Here you can change the command name, usage, description, whether or not its disabled,
+# its cooldown, and it's aliases. Only party subcommands can be disabled, given cooldowns, and given aliases.
 # The /party help command pulls descriptions and usages from here.
 #
 # Notes:

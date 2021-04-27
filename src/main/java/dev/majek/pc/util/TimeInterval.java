@@ -1,5 +1,8 @@
 package dev.majek.pc.util;
 
+/**
+ * Time stuffs.
+ */
 public enum TimeInterval {
 
     SECOND(1, "second", "s"),

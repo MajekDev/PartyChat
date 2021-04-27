@@ -25,7 +25,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 /**
- * This class handles all /party commands and subcommands.
+ * Handles all /party commands and subcommands.
  */
 public abstract class PartyCommand implements CommandExecutor, TabCompleter {
 
@@ -206,10 +206,9 @@ public abstract class PartyCommand implements CommandExecutor, TabCompleter {
                             !Restrictions.isVanished(Bukkit.getPlayerExact(person))).collect(Collectors.toList());
                 case "promote":
                 case "remove":
-                    return (user.isLeader() || player.hasPermission("partychat.bypass")) ? TabCompleterBase
-                            .filterStartingWith(args[1], PartyChat.getPartyHandler()
-                            .getParty(user).getMembers().stream().map(User::getUsername))
-                            : Collections.emptyList();
+                    return ((user.isLeader() || player.hasPermission("partychat.bypass")) && user.isInParty())
+                            ? TabCompleterBase.filterStartingWith(args[1], PartyChat.getPartyHandler()
+                            .getParty(user).getMembers().stream().map(User::getUsername)) : Collections.emptyList();
                 case "join":
                     return TabCompleterBase.filterStartingWith(args[1], PartyChat.getPartyHandler().getPartyMap()
                             .values().stream().distinct().filter(Party::isPublic).map(Party::getRawName));

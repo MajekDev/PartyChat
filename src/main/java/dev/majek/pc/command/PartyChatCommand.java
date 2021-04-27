@@ -28,6 +28,9 @@ import java.util.stream.Stream;
 
 import static dev.majek.pc.command.PartyCommand.*;
 
+/**
+ * Handles all /partychat commands and subcommands.
+ */
 public class PartyChatCommand implements TabCompleter, CommandExecutor {
 
     /**
@@ -44,7 +47,6 @@ public class PartyChatCommand implements TabCompleter, CommandExecutor {
     }
 
     @Override
-    @SuppressWarnings("deprecation")
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command,
                              @NotNull String label, @NotNull String[] args) {
         String commandString = "/" + command.getName() + " " + String.join(" ", args);
@@ -87,7 +89,7 @@ public class PartyChatCommand implements TabCompleter, CommandExecutor {
                             contentBuilder.append("Log file for ").append(java.time.LocalDate.now())
                                     .append(" submitted by ").append(sender.getName()).append("\n")
                                     .append("Server Software: ").append(Bukkit.getVersion()).append("\n")
-                                    .append("PartyChat Version: ").append(PartyChat.instance.getDescription().getVersion())
+                                    .append("PartyChat Version: ").append(PartyChat.getCore().getDescription().getVersion())
                                     .append("\n\n");
                             try (Stream<String> stream = Files.lines(Paths.get(PartyChat.getDataHandler()
                                     .getTodaysLog().toURI()), StandardCharsets.UTF_8)) {

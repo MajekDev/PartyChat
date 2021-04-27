@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
- * This class handles registering active GUIs and managing inventory events.
+ * Handles registering active GUIs and managing inventory events.
  */
 public class GuiHandler extends Mechanic {
 
@@ -19,10 +19,19 @@ public class GuiHandler extends Mechanic {
         this.activeGuis = new CopyOnWriteArrayList<>();
     }
 
+
+    /**
+     * Add a {@link Gui} to the list of active GUIs.
+     * @param gui The GUI to add.
+     */
     public void registerActiveGui(Gui gui) {
         activeGuis.add(gui);
     }
 
+    /**
+     * Remove a {@link Gui} from the list of active GUIs.
+     * @param gui The GUI to remove.
+     */
     public void removeActiveGui(Gui gui) {
         activeGuis.remove(gui);
     }

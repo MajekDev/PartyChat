@@ -25,7 +25,8 @@ public class PartyDisband extends PartyCommand {
         if (party == null) {
             PartyChat.error("Error: PC-DIS_1 | The plugin is fine, but please report this error " +
                     "code here: https://discord.gg/CGgvDUz");
-            sendMessage(player, "error"); return false;
+            sendMessage(player, "error");
+            return false;
         }
 
         // Disband the party

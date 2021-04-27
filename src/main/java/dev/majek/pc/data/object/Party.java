@@ -9,6 +9,9 @@ import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+/**
+ * A party. Storing things such as members, the leader, and party config options.
+ */
 public class Party {
 
     private String                              name;
@@ -102,17 +105,6 @@ public class Party {
     public UUID getId() {
         return id;
     }
-
-    /**
-     * Set the party's id.
-     * Note: This is listed as deprecated because it should never really be used.
-     * @param id The id.
-     */
-    @Deprecated
-    public void setId(UUID id) {
-        this.id = id;
-    }
-
 
     /**
      * Get a list of the party member's unique ids.

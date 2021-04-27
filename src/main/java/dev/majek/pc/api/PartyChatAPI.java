@@ -24,7 +24,8 @@ public class PartyChatAPI {
     }
 
     /**
-     * Create a new party with a party name and user as the leader. This will not trigger {@link PartyCreateEvent}.
+     * Create a new party with a party name and user as the leader.
+     * This is a manual creation and will not trigger {@link PartyCreateEvent}.
      *
      * @param name The name of the party.
      * @param leader The {@link User} who will be leader.
@@ -53,7 +54,7 @@ public class PartyChatAPI {
      * @return The {@link Party} the {@link User} is in, if in one.
      */
     @Nullable
-    public Party getParty(User user) {
+    public Party getParty(@NotNull User user) {
         return PartyChat.getPartyHandler().getPartyMap().get(user.getPartyID());
     }
 
@@ -65,7 +66,7 @@ public class PartyChatAPI {
      * @return The {@link Party}, if it exists.
      */
     @Nullable
-    public Party getParty(UUID party) {
+    public Party getParty(@NotNull UUID party) {
         return PartyChat.getPartyHandler().getPartyMap().get(party);
     }
 

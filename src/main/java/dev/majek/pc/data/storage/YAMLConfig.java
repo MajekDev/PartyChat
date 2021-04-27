@@ -10,6 +10,9 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.logging.Level;
 
+/**
+ * Used for YAML configuration files.
+ */
 public class YAMLConfig {
     private final JavaPlugin plugin;
     private FileConfiguration dataConfig = null;

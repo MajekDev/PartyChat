@@ -20,12 +20,14 @@ public class PartyJoin extends PartyCommand {
 
         // Check if the player is already in a party
         if (PartyChat.getDataHandler().getUser(player).isInParty()) {
-            sendMessage(player, "in-party"); return false;
+            sendMessage(player, "in-party");
+            return false;
         }
 
         // Player needs to specify a party to join
         if (args.length == 1) {
-            sendMessage(player, "specify-party"); return false;
+            sendMessage(player, "specify-party");
+            return false;
         }
         return execute(player, args[1]);
     }
@@ -35,31 +37,36 @@ public class PartyJoin extends PartyCommand {
         Party findParty = null;
         for (Party check : PartyChat.getPartyHandler().getPartyMap().values())
             if (check.getRawName().equalsIgnoreCase(partyName)) {
-                findParty = check; break;
+                findParty = check;
+                break;
             }
 
         // Make sure the specified party exists
         if (findParty == null) {
-            sendMessage(player, "unknown-party"); return false;
+            sendMessage(player, "unknown-party");
+            return false;
         }
 
         Party party = findParty;
 
         // Make sure the party is public
         if (!party.isPublic()) {
-            sendMessage(player, "party-private"); return false;
+            sendMessage(player, "party-private");
+            return false;
         }
 
         // Check if the player is blocked from joining the party
         if (party.getBlockedPlayers().contains(player)) {
-            sendMessage(player, "join-wait"); return false;
+            sendMessage(player, "join-wait");
+            return false;
         }
 
         Player leader = party.getLeader().getPlayer();
 
         // Make sure the leader is online
         if (leader == null) {
-            sendMessage(player, "leader-offline"); return false;
+            sendMessage(player, "leader-offline");
+            return false;
         }
 
         // Send messages

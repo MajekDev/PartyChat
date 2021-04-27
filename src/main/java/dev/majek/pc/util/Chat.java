@@ -17,7 +17,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * Class that handles all color codes (formatting/removing) within strings and parsing Strings into
+ * Handles all color codes (formatting/removing) within strings and parsing Strings into
  * {@link Component}s with fancy formatting like hover and click events.
  */
 public class Chat {

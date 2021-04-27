@@ -15,6 +15,9 @@ import java.util.UUID;
 import java.util.logging.Level;
 import java.util.stream.Collectors;
 
+/**
+ * Legacy PartyChat database for persistent party storage.
+ */
 public abstract class Database {
 
     PartyChat plugin;

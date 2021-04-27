@@ -19,6 +19,9 @@ import java.util.HashMap;
 import java.util.UUID;
 import java.util.logging.Level;
 
+/**
+ * Handles fetching and caching player skulls for easier use in GUIs.
+ */
 public class SkullCache {
 
     /**

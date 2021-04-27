@@ -1,4 +1,4 @@
-# PartyChat by Majekdor | Created on 5/23/2020 | Updated 12/29/2020
+# PartyChat by Majekdor | Created on 5/23/2020 | Updated 4/25/2021
 # Need help? https://github.com/Majekdor/PartyChat/wiki or join my Discord https://discord.gg/CGgvDUz
 
 # If set to false (default) everyone will have permission to use PartyChat
@@ -31,7 +31,7 @@ block-inappropriate-names: false
 block-inappropriate-chat: false
 
 # If the above is enabled PartyChat can block all words in the given file. It ships with "censor-words.txt" which
-# can be found in it's folder. Any file will work, just place the file in the plugin folder and put the filename
+# can be found in its folder. Any file will work, just place the file in the plugin folder and put the filename
 # here. Words must be separated by line to be blocked, one word per line. If you don't want to use this set it to ""
 blocked-words-file: "censor-words.txt"
 
@@ -52,6 +52,7 @@ public-on-creation: true
 default-friendly-fire: true
 
 # The maximum amount of characters allowed for a party name. This does not include color codes.
+# Set to -1 for no max length
 max-name-length: 20
 
 # Disable guis if you don't want them

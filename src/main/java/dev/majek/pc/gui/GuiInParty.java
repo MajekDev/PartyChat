@@ -146,7 +146,7 @@ public class GuiInParty extends Gui {
     }
 
     private void tryAgain(User user) {
-        Bukkit.getScheduler().scheduleSyncDelayedTask(PartyChat.instance, () -> leaveParty(user, true), 5L);
+        Bukkit.getScheduler().scheduleSyncDelayedTask(PartyChat.getCore(), () -> leaveParty(user, true), 5L);
     }
 
     private void renameParty(User user) {

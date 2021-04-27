@@ -6,6 +6,9 @@ import dev.majek.pc.PartyChat;
 import java.util.UUID;
 import java.util.logging.Level;
 
+/**
+ * Currently unused. AdvancedBan has been annoyingly finicky.
+ */
 public class AdvanceBan {
 
     /**

@@ -42,6 +42,7 @@ inappropriate-message: '%prefix% &cThat message is inappropriate.'
 info-leader: '%prefix% &b&l%partyName% &7- Leader: &b'
 info-members: '%prefix% &b&l%partyName% &7- Leader: &b%player% &7Members: &b'
 invalid-arg: '%prefix% &cOne of your arguments was invalid. See the wiki for how to use /pc edit.'
+invalid-page: '%prefix% &cInvalid page number. Must be between 1 and %max%.'
 invite-sent: '%prefix% &7Party invite sent to &b%player%&7.'
 join-denied: '%prefix% &7Your join request was denied.'
 join-wait: '%prefix% &7Please wait a minute before requesting to join again.'
@@ -112,6 +113,18 @@ you-leader: '%prefix% &7You are now the leader of the party.'
 you-leave: '%prefix% &7You have left &b&l%partyName%&7.'
 you-promoted: '%prefix% &b%player% &7has promoted you to party leader.'
 you-removed: '%prefix% &b%player% &7has removed you from the party.'
+
+# Party help strings (description and usage are pulled from commands.yml)
+header: '%prefix% &7Help'
+page: 'Page'
+description: 'Description'
+usage: 'Usage'
+prev: 'Prev'
+previous-page: '&eClick to view the previous page'
+no-previous-page: '&eNo previous page'
+next: 'Next'
+next-page: '&eClick to view the next page'
+no-next-page: '&eNo next page'
 
 # Multi-line messages
 party-created:

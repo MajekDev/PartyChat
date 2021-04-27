@@ -2,8 +2,12 @@ package dev.majek.pc.command.party;
 
 import dev.majek.pc.PartyChat;
 import dev.majek.pc.command.PartyCommand;
+import dev.majek.pc.util.Paginate;
 import dev.majek.pc.util.Utils;
 import org.bukkit.entity.Player;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class PartyHelp extends PartyCommand {
 
@@ -18,20 +22,29 @@ public class PartyHelp extends PartyCommand {
     @Override
     public boolean execute(Player player, String[] args, boolean leftServer) {
 
-        // Send help messages
-        if (args.length == 1 || args[1].equalsIgnoreCase("1")) {
-            StringBuilder builder = new StringBuilder();
-            builder.append("&f[${hover,&8Prev,&7No previous page.}&f] &b&lParty&e&lChat &7Help &f[${hover,&8Next,&7No next page.}&f]");
-            for (PartyCommand partyCommand : PartyChat.getCommandHandler().getCommands()) {
-                builder.append("\n&9&l").append(Utils.capitalize(partyCommand.getName())).append(" &8» ")
-                        .append("${hover,&7Description,").append(partyCommand.getDescription())
-                        .append("}${hover, &7Usage,").append(partyCommand.getUsage()).append("}");
-            }
-            sendFormattedMessage(player, builder.toString());
+        // Build list of lines
+        List<String> lines = new ArrayList<>();
+        for (PartyCommand partyCommand : PartyChat.getCommandHandler().getCommands()) {
+            String line = "&9&l" + Utils.capitalize(partyCommand.getName()) + " &8»" + "${hover,&7 " + PartyChat
+                    .getDataHandler().getConfigString(PartyChat.getDataHandler().messages, "description") + ","
+                    + partyCommand.getDescription() + "}${hover, &7" + PartyChat.getDataHandler()
+                    .getConfigString(PartyChat.getDataHandler().messages, "usage") + "," +
+                    partyCommand.getUsage() + "}";
+            lines.add(line);
+        }
+
+        // Create pagination from the lines
+        Paginate paginate = new Paginate(lines, PartyChat.getDataHandler().getConfigString(PartyChat.getDataHandler()
+                .messages, "header").replace("%prefix%", PartyChat.getDataHandler().getConfigString(PartyChat
+                .getDataHandler().messages, "prefix")), 8, "party help ");
+        String toSend = args.length == 1 ? paginate.getPage(1) : paginate.getPage(Integer.parseInt(args[1]));
+
+        if (toSend == null) {
+            sendMessageWithReplacement(player, "invalid-page", "%max%", String.valueOf(paginate.getMaxPage()));
             return true;
-        } else if (args[1].equalsIgnoreCase("2")) {
-            return true;
-        } else
-            return false;
+        }
+
+        sendFormattedMessage(player, toSend);
+        return true;
     }
 }

@@ -27,7 +27,7 @@ public class Vanilla {
 
             return false;
         } catch (Exception ex) {
-            PartyChat.instance.getLogger().log(Level.SEVERE, "Error checking if player is vanished:");
+            PartyChat.error("Error checking if player is vanished:");
             ex.printStackTrace();
         }
         return false;

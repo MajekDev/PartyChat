@@ -8,6 +8,9 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Collections;
 
+/**
+ * A language setup in the config with a file ready.
+ */
 public class Language {
 
     private YAMLConfig messagesConfig;

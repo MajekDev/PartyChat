@@ -12,6 +12,9 @@ import org.bukkit.event.player.PlayerQuitEvent;
 import javax.annotation.Nullable;
 import java.util.UUID;
 
+/**
+ * A PartyChat user. Constructed when a player joins or is loaded from party JSON storage.
+ */
 public class User extends Mechanic {
 
     private UUID      playerID;

@@ -24,7 +24,7 @@ public class Essentials {
             }
             return false;
         } catch (Exception ex) {
-            PartyChat.instance.getLogger().log(Level.SEVERE, "Error checking if player is muted by Essentials:");
+            PartyChat.error("Error checking if player is muted by Essentials:");
             ex.printStackTrace();
         }
         return false;
@@ -46,7 +46,7 @@ public class Essentials {
             }
             return false;
         } catch (Exception ex) {
-            PartyChat.instance.getLogger().log(Level.SEVERE, "Error checking if player is banned by Essentials:");
+            PartyChat.error("Error checking if player is banned by Essentials:");
             ex.printStackTrace();
         }
         return false;
@@ -68,7 +68,7 @@ public class Essentials {
             }
             return false;
         } catch (Exception ex) {
-            PartyChat.instance.getLogger().log(Level.SEVERE, "Error checking if player is vanished by Essentials:");
+            PartyChat.error("Error checking if player is vanished by Essentials:");
             ex.printStackTrace();
         }
         return false;

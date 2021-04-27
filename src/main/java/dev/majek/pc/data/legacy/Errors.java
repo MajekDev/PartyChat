@@ -1,5 +1,8 @@
 package dev.majek.pc.data.legacy;
 
+/**
+ * Database error messages.
+ */
 public class Errors {
     public static String sqlConnectionExecute(){
         return "Couldn't execute MySQL statement: ";

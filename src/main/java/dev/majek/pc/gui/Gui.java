@@ -18,6 +18,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+/**
+ * Used for constructing GUIs for a player to see and interact with.
+ */
 public abstract class Gui {
 
     public static final Runnable NO_ACTION = () -> { };

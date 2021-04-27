@@ -55,8 +55,8 @@ public class PartyCreate extends PartyCommand {
         }
 
         // Check if the party name exceeds the character limit defined in the config file
-        if (Chat.removeColorCodes(name).length() > PartyChat.getDataHandler()
-                .getConfigInt(mainConfig, "max-name-length")) {
+        int max = PartyChat.getDataHandler().getConfigInt(mainConfig, "max-name-length");
+        if (Chat.removeColorCodes(name).length() > max && max > 0) {
             sendMessage(player, "name-too-long");
             return false;
         }

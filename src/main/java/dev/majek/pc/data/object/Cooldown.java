@@ -4,6 +4,9 @@ import dev.majek.pc.PartyChat;
 import dev.majek.pc.command.PartyCommand;
 import org.bukkit.scheduler.BukkitRunnable;
 
+/**
+ * Represents the amount of time between running commands.
+ */
 public class Cooldown {
 
     private int timeRemaining;

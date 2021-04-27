@@ -23,12 +23,14 @@ public class PartyAdd extends PartyCommand {
 
         // Make sure the player is actually in a party
         if (!PartyChat.getDataHandler().getUser(player).isInParty()) {
-            sendMessage(player, "not-in-party"); return false;
+            sendMessage(player, "not-in-party");
+            return false;
         }
 
         // Make sure the player specifies the player they wish to invite
         if (args.length == 1) {
-            sendMessage(player, "specify-player"); return false;
+            sendMessage(player, "specify-player");
+            return false;
         }
 
         return execute(player, args[1]);
@@ -43,18 +45,21 @@ public class PartyAdd extends PartyCommand {
         if (party == null) {
             PartyChat.error("Error: PC-ADD_1 | The plugin is fine, but please report this error " +
                     "code here: https://discord.gg/CGgvDUz");
-            sendMessage(player, "error"); return false;
+            sendMessage(player, "error");
+            return false;
         }
 
         // Try to get specified player to invite
         Player invited = Bukkit.getPlayer(name);
         if (invited == null) {
-            sendMessage(player, "not-online"); return false;
+            sendMessage(player, "not-online");
+            return false;
         }
 
         // Player did /party add <their name>
         if (invited == player) {
-            sendMessage(player, "add-self"); return false;
+            sendMessage(player, "add-self");
+            return false;
         }
 
         User invitedUser = PartyChat.getDataHandler().getUser(invited);
@@ -63,7 +68,8 @@ public class PartyAdd extends PartyCommand {
         for (User partyMember : party.getMembers()) {
             Player member = partyMember.getPlayer();
             if (member == invited) {
-                sendMessage(player, "player-in-party"); return false;
+                sendMessage(player, "player-in-party");
+                return false;
             }
         }
 
