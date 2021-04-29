@@ -1,0 +1,15 @@
+version: 2
+updates:
+- package-ecosystem: maven
+  directory: "/"
+  schedule:
+    interval: daily
+    time: "10:00"
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: net.dv8tion:JDA
+    versions:
+    - 4.2.1_261
+  - dependency-name: me.lucko:adventure-platform-bukkit
+    versions:
+    - 4.7.0
