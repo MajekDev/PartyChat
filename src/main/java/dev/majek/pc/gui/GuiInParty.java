@@ -132,9 +132,11 @@ public class GuiInParty extends Gui {
                     .onClose(player -> PartyChat.getCommandHandler().getCommand("leave").execute(player, new String[0], false))
                     .onComplete((player, text) -> {
                         text = text.replaceAll("\\s","");
-                        boolean completed = PartyPromote.execute(user.getPlayer(), text, true);
-                        if (!completed)
-                            tryAgain(user);
+                        if (PartyChat.getCommandHandler().getCommand("promote").isEnabled()) {
+                            boolean completed = PartyPromote.execute(user.getPlayer(), text, true);
+                            if (!completed)
+                                tryAgain(user);
+                        }
                         return AnvilGUI.Response.close();
                     })
                     .text(getConfigString("anvil-username"))
@@ -160,7 +162,8 @@ public class GuiInParty extends Gui {
                 .onClose(player -> {})
                 .onComplete((player, text) -> {
                     text = text.replaceAll("\\s","-");
-                    PartyRename.execute(user.getPlayer(), text);
+                    if (PartyChat.getCommandHandler().getCommand("rename").isEnabled())
+                        PartyRename.execute(user.getPlayer(), text);
                     return AnvilGUI.Response.close();
                 })
                 .text(getConfigString("anvil-party-name"))
@@ -181,7 +184,8 @@ public class GuiInParty extends Gui {
                 .onClose(player -> {})
                 .onComplete((player, text) -> {
                     text = text.replaceAll("\\s","");
-                    PartyAdd.execute(user.getPlayer(), text);
+                    if (PartyChat.getCommandHandler().getCommand("add").isEnabled())
+                        PartyAdd.execute(user.getPlayer(), text);
                     return AnvilGUI.Response.close();
                 })
                 .text(getConfigString("anvil-username"))
@@ -192,22 +196,26 @@ public class GuiInParty extends Gui {
     }
 
     private void togglePublic(User user) {
-        Objects.requireNonNull(user.getParty()).setPublic(true);
+        if (PartyChat.getCommandHandler().getCommand("toggle").isEnabled())
+            Objects.requireNonNull(user.getParty()).setPublic(true);
         populateInventory(user.getPlayer());
     }
 
     private void togglePrivate(User user) {
-        Objects.requireNonNull(user.getParty()).setPublic(false);
+        if (PartyChat.getCommandHandler().getCommand("toggle").isEnabled())
+            Objects.requireNonNull(user.getParty()).setPublic(false);
         populateInventory(user.getPlayer());
     }
 
     private void summonParty(User user) {
         Objects.requireNonNull(user.getPlayer()).closeInventory();
-        PartyChat.getCommandHandler().getCommand("summon").execute(user.getPlayer(), new String[0], false);
+        if (PartyChat.getCommandHandler().getCommand("summon").isEnabled())
+            PartyChat.getCommandHandler().getCommand("summon").execute(user.getPlayer(), new String[0], false);
     }
 
     private void disbandParty(User user) {
         Objects.requireNonNull(user.getPlayer()).closeInventory();
-        PartyChat.getCommandHandler().getCommand("disband").execute(user.getPlayer(), new String[0], false);
+        if (PartyChat.getCommandHandler().getCommand("summon").isEnabled())
+            PartyChat.getCommandHandler().getCommand("disband").execute(user.getPlayer(), new String[0], false);
     }
 }

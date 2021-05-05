@@ -32,7 +32,8 @@ public class GuiJoinParty extends Gui {
             Party party = parties.get(i + page * 45);
             ItemStack leaderHead = SkullCache.getSkull(party.getLeader().getPlayerID());
             addActionItem(i, leaderHead, () -> {
-                PartyJoin.execute(player, party.getRawName());
+                if (PartyChat.getCommandHandler().getCommand("join").isEnabled())
+                    PartyJoin.execute(player, party.getRawName());
                 player.closeInventory();
             });
             setDisplayName(i, party.getName());

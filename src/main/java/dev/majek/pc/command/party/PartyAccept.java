@@ -29,6 +29,10 @@ public class PartyAccept extends PartyCommand {
 
         User user = PartyChat.getDataHandler().getUser(player);
 
+        // Throw in another check to account for GUI calls
+        if (!canUse(player))
+            return false;
+
         // Player is not in a party
         if (!user.isInParty()) {
 

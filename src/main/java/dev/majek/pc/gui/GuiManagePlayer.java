@@ -77,11 +77,13 @@ public class GuiManagePlayer extends Gui {
 
     private void removePlayer(User leader, User target) {
         Objects.requireNonNull(leader.getPlayer()).closeInventory();
-        PartyRemove.execute(leader.getPlayer(), target.getUsername());
+        if (PartyChat.getCommandHandler().getCommand("remove").isEnabled())
+            PartyRemove.execute(leader.getPlayer(), target.getUsername());
     }
 
     private void promotePlayer(User leader, User target) {
         Objects.requireNonNull(leader.getPlayer()).closeInventory();
-        PartyPromote.execute(leader.getPlayer(), target.getUsername(), false);
+        if (PartyChat.getCommandHandler().getCommand("promote").isEnabled())
+            PartyPromote.execute(leader.getPlayer(), target.getUsername(), false);
     }
 }

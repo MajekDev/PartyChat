@@ -65,7 +65,8 @@ public class GuiNoParty extends Gui {
                 .onClose(player -> {})
                 .onComplete((player, text) -> {
                     text = text.replaceAll("\\s","-");
-                    PartyCreate.execute(user.getPlayer(), text);
+                    if (PartyChat.getCommandHandler().getCommand("create").isEnabled())
+                        PartyCreate.execute(user.getPlayer(), text);
                     return AnvilGUI.Response.close();
                 })
                 .text(getConfigString("anvil-party-name"))

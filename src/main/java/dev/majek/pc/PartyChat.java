@@ -5,7 +5,7 @@ import dev.majek.pc.command.CommandHandler;
 import dev.majek.pc.command.PartyCommand;
 import dev.majek.pc.data.*;
 import dev.majek.pc.gui.GuiHandler;
-import dev.majek.pc.hooks.PlaceholderAPI;
+import dev.majek.pc.hooks.PAPI;
 import dev.majek.pc.mechanic.MechanicHandler;
 import dev.majek.pc.util.Chat;
 import dev.majek.pc.util.UpdateChecker;
@@ -64,6 +64,10 @@ public final class PartyChat extends JavaPlugin {
      * True if PartyChat is hooked into Vault.
      */
     public static boolean hasVault = false;
+    /**
+     * True if PartyChat is hooked into PlaceholderAPI.
+     */
+    public static boolean hasPapi = false;
 
     //    <--- Other --->
     private static JDA jda = null;
@@ -103,7 +107,8 @@ public final class PartyChat extends JavaPlugin {
         if (this.getServer().getPluginManager().isPluginEnabled("PlaceholderAPI") &&
                 this.getServer().getPluginManager().getPlugin("PlaceholderAPI") != null) {
             log("Hooking into PlaceholderAPI...");
-            new PlaceholderAPI(this).register();
+            new PAPI(this).register();
+            hasPapi = true;
         }
         if (this.getServer().getPluginManager().isPluginEnabled("LiteBans") &&
                 this.getServer().getPluginManager().getPlugin("LiteBans") != null) {

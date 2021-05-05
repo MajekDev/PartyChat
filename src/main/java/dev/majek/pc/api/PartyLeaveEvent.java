@@ -9,6 +9,10 @@ import org.jetbrains.annotations.NotNull;
 
 import javax.annotation.Nullable;
 
+/**
+ * Not working yet.
+ */
+@Deprecated
 public class PartyLeaveEvent extends Event implements Cancellable {
 
     private boolean cancelled;

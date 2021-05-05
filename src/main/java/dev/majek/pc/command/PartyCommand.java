@@ -249,18 +249,18 @@ public abstract class PartyCommand implements CommandExecutor, TabCompleter {
     public static void sendFormattedMessage(CommandSender sender, String message) {
         if (PartyChat.getDataHandler().messageType == null) {
             try {
-                sender.sendMessage(Chat.parseExpression(Chat.applyColorCodes(message)));
+                sender.sendMessage(Chat.parseExpression(sender, Chat.applyColorCodes(message)));
                 PartyChat.getDataHandler().messageType = DataHandler.MessageType.COMPONENT;
                 PartyChat.getDataHandler().logToFile("Set message type to Component", "INFO");
             } catch (NoSuchMethodError error) {
                 try {
                     sender.spigot().sendMessage(BungeeComponentSerializer.get().serialize(Chat
-                            .parseExpression(Chat.applyColorCodes(message))));
+                            .parseExpression(sender, Chat.applyColorCodes(message))));
                     PartyChat.getDataHandler().messageType = DataHandler.MessageType.BASECOMPONENT;
                     PartyChat.getDataHandler().logToFile("Set message type to BaseComponent", "INFO");
                 } catch (NoSuchMethodError error1) {
                     sender.sendMessage(Chat.applyColorCodes(LegacyComponentSerializer.legacyAmpersand()
-                            .serialize(Chat.parseExpression(Chat.applyColorCodes(message)))));
+                            .serialize(Chat.parseExpression(sender, Chat.applyColorCodes(message)))));
                     PartyChat.getDataHandler().messageType = DataHandler.MessageType.RAW;
                     PartyChat.getDataHandler().logToFile("Set message type to raw", "INFO");
                 }
@@ -268,16 +268,16 @@ public abstract class PartyCommand implements CommandExecutor, TabCompleter {
         } else {
             switch (PartyChat.getDataHandler().messageType) {
                 case COMPONENT:
-                    sender.sendMessage(Chat.parseExpression(Chat.applyColorCodes(message)));
+                    sender.sendMessage(Chat.parseExpression(sender, Chat.applyColorCodes(message)));
                     break;
                 case BASECOMPONENT:
                     sender.spigot().sendMessage(BungeeComponentSerializer.get().serialize(Chat
-                            .parseExpression(Chat.applyColorCodes(message))));
+                            .parseExpression(sender, Chat.applyColorCodes(message))));
                     break;
                 case RAW:
                 default:
                     sender.sendMessage(Chat.applyColorCodes(LegacyComponentSerializer.legacyAmpersand()
-                            .serialize(Chat.parseExpression(Chat.applyColorCodes(message)))));
+                            .serialize(Chat.parseExpression(sender, Chat.applyColorCodes(message)))));
             }
         }
     }

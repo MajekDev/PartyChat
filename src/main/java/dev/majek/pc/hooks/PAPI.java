@@ -1,18 +1,20 @@
 package dev.majek.pc.hooks;
 
 import dev.majek.pc.PartyChat;
+import me.clip.placeholderapi.PlaceholderAPI;
 import me.clip.placeholderapi.PlaceholderAPIPlugin;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.OfflinePlayer;
+import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 
-public class PlaceholderAPI extends PlaceholderExpansion {
+public class PAPI extends PlaceholderExpansion {
 
     private final PartyChat plugin;
     private String yes;
     private String no;
 
-    public PlaceholderAPI(PartyChat plugin){
+    public PAPI(PartyChat plugin){
         this.plugin = plugin;
         try {
             yes = PlaceholderAPIPlugin.booleanTrue();
@@ -68,6 +70,10 @@ public class PlaceholderAPI extends PlaceholderExpansion {
                     "Not in a party" : PartyChat.getDataHandler().getUser(player.getUniqueId()).getParty().getRawName();
 
         return null;
+    }
+
+    public static String applyPlaceholders(Player player, String message) {
+        return PlaceholderAPI.setPlaceholders(player, message);
     }
 
 }

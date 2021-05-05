@@ -7,6 +7,7 @@ authors: [ Majekdor ]
 description: Customizable chat plugin to talk with your friends in parties.
 website: https://majek.dev/partychat
 softdepend: [PlaceholderAPI, Essentials, LiteBans, AdvancedBan]
+loadbefore: [StaffPlus]
 commands:
   partychat:
     description: Toggle party chat or speak in party chat /pc <message>.

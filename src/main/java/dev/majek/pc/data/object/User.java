@@ -39,8 +39,8 @@ public class User extends Mechanic {
         this.playerID = player.getUniqueId();
         this.player = player;
         this.username = player.getName();
-        this.nickname = PartyChat.getDataHandler().useVault ? Vault.getPlayerDisplayName(player)
-                : PartyChat.getDataHandler().useDisplayNames ? player.getDisplayName() : player.getName();
+        this.nickname = (PartyChat.getDataHandler().useVault ? Vault.getPlayerDisplayName(player)
+                : PartyChat.getDataHandler().useDisplayNames ? player.getDisplayName() : player.getName()) + "";
         this.isOnline = true;
         this.partyID = null;
         this.inParty = false;
@@ -77,8 +77,8 @@ public class User extends Mechanic {
             return;
         }
         User user = PartyChat.getDataHandler().getUser(event.getPlayer());
-        user.setNickname(PartyChat.getDataHandler().useVault ? Vault.getPlayerDisplayName(event.getPlayer())
-                : PartyChat.getDataHandler().useDisplayNames ? event.getPlayer().getDisplayName() : event.getPlayer().getName());
+        user.setNickname((PartyChat.getDataHandler().useVault ? Vault.getPlayerDisplayName(event.getPlayer())
+                : PartyChat.getDataHandler().useDisplayNames ? event.getPlayer().getDisplayName() : event.getPlayer().getName()) + "");
         user.setPlayer(event.getPlayer());
         user.setStaff(event.getPlayer().hasPermission("partychat.admin"));
         user.setSpyToggle(event.getPlayer().hasPermission("partychat.admin") && PartyChat.getDataHandler()

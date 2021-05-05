@@ -1,5 +1,7 @@
 package dev.majek.pc.util;
 
+import dev.majek.pc.PartyChat;
+import dev.majek.pc.hooks.PAPI;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.TextComponent;
 import net.kyori.adventure.text.event.ClickEvent;
@@ -8,7 +10,7 @@ import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.apache.commons.lang.StringUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
-import org.json.simple.JSONObject;
+import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -39,6 +41,10 @@ public class Chat {
      * @return Formatted string.
      */
     public static String applyColorCodes(String string, boolean blockDarkColors) {
+        // Check if the string has no length - will throw error with matcher
+        if (string.length() == 0)
+            return string;
+
         // Do this first so it doesn't affect &0 in hex codes since they haven't been formatted
         if (blockDarkColors)
             string = string.replace("&0", "");
@@ -154,16 +160,20 @@ public class Chat {
      * @param message Expression to parse.
      */
     public static void sendFormatted(CommandSender sender, String message) {
-        sender.sendMessage(parseExpression(message));
+        sender.sendMessage(parseExpression(sender, message));
     }
 
     /**
      * Parse JSON for {@link MiniJSON} within the provided message.
      *
+     * @param sender The sender the message is being parsed for. Needed for
+     * {@link me.clip.placeholderapi.PlaceholderAPI#setPlaceholders(Player, String)}.
      * @param message The message to parse.
      * @return Component from the provided string.
      */
-    public static Component parseExpression(String message) {
+    public static Component parseExpression(CommandSender sender, String message) {
+        if (PartyChat.hasPapi && sender instanceof Player)
+            message = PAPI.applyPlaceholders((Player) sender, message);
         int indexOfJSONStart = message.indexOf('$');
         if (indexOfJSONStart == -1)
             return getComponentText(message).asComponent();
