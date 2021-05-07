@@ -21,10 +21,14 @@ public class PartyLeave extends PartyCommand {
 
     @Override
     public boolean execute(Player player, String[] args, boolean leftServer) {
-        User user = PartyChat.getDataHandler().getUser(player);
+        return execute(PartyChat.getDataHandler().getUser(player), leftServer);
+    }
+
+    public static synchronized boolean execute(User user, boolean leftServer) {
+        Player player = user.getPlayer();
 
         // Player can only leave a party if they're in one
-        if (!user.isInParty()) {
+        if (!user.isInParty() && !leftServer) {
             sendMessage(player, "not-in-party");
             return false;
         }

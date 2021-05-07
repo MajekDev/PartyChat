@@ -1,6 +1,7 @@
 package dev.majek.pc.mechanic;
 
 import dev.majek.pc.PartyChat;
+import dev.majek.pc.command.party.PartyLeave;
 import dev.majek.pc.data.Restrictions;
 import dev.majek.pc.data.object.User;
 import org.bukkit.Bukkit;
@@ -13,7 +14,7 @@ public class PlayerQuit extends Mechanic {
     public void onPlayerQuit(PlayerQuitEvent event) {
         User user = PartyChat.getDataHandler().getUser(event.getPlayer());
         if (user.isInParty() && !PartyChat.getDataHandler().getConfigBoolean(PartyChat.getDataHandler().mainConfig, "persistent-parties"))
-            PartyChat.getCommandHandler().getCommand("leave").execute(user.getPlayer(), new String[0], true);
+            PartyLeave.execute(user, true);
 
         // Remove the player from the party if they left the server due to a ban
         Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(PartyChat.getCore(), () -> {

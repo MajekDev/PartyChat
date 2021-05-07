@@ -4,7 +4,6 @@ import dev.majek.pc.PartyChat;
 import dev.majek.pc.data.object.Party;
 import dev.majek.pc.data.Restrictions;
 import dev.majek.pc.data.object.User;
-import dev.majek.pc.util.Chat;
 import dev.majek.pc.util.TabCompleterBase;
 import okhttp3.*;
 import org.bukkit.Bukkit;
@@ -280,6 +279,13 @@ public class PartyChatCommand implements TabCompleter, CommandExecutor {
                     user.setPartyChatToggle(false);
                     sendMessage(player, "pc-disabled");
                     return true;
+                } else if (args[0].equalsIgnoreCase("party-only")) {
+                    boolean newToggle = user.flipPartyOnly();
+                    if (newToggle)
+                        sendMessage(sender, "party-only-enabled");
+                    else
+                        sendMessage(sender, "party-only-disabled");
+                    return true;
                 }
 
                 // Check if the player is currently muted
@@ -320,7 +326,7 @@ public class PartyChatCommand implements TabCompleter, CommandExecutor {
         if (sender.hasPermission("partychat-admin")) {
             if (args.length == 1)
                 return TabCompleterBase.filterStartingWith(args[0], Arrays.asList("on", "off",
-                        "reload", "edit", "spy", "bugreport"));
+                        "reload", "edit", "spy", "bugreport", "party-only"));
             else if (args.length == 2 && args[0].equalsIgnoreCase("edit"))
                 return TabCompleterBase.filterStartingWith(args[1], PartyChat.getCommandHandler()
                         .getCommands().stream().map(PartyCommand::getName));
@@ -335,7 +341,7 @@ public class PartyChatCommand implements TabCompleter, CommandExecutor {
                 return Collections.emptyList();
         } else {
             if (args.length == 1)
-                return TabCompleterBase.filterStartingWith(args[0], Arrays.asList("on", "off"));
+                return TabCompleterBase.filterStartingWith(args[0], Arrays.asList("on", "off", "party-only"));
             else
                 return Collections.emptyList();
         }

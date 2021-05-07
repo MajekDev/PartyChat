@@ -28,6 +28,7 @@ public class User extends Mechanic {
     private boolean   isStaff;
     private boolean   spyToggle;
     private boolean   noMove;
+    private boolean   partyOnly;
 
     public User() {}
 
@@ -49,6 +50,7 @@ public class User extends Mechanic {
         this.spyToggle = player.hasPermission("partychat.admin") && PartyChat.getDataHandler()
                 .getConfigBoolean(PartyChat.getDataHandler().mainConfig, "auto-spy");
         this.noMove = false;
+        this.partyOnly = PartyChat.getDataHandler().getConfigBoolean(PartyChat.getDataHandler().mainConfig, "party-only-in-party");
         PartyChat.getDataHandler().addToUserMap(this);
     }
 
@@ -68,6 +70,7 @@ public class User extends Mechanic {
         this.isStaff = false;
         this.spyToggle = false;
         this.noMove = false;
+        this.partyOnly = false;
     }
 
     @EventHandler
@@ -85,6 +88,7 @@ public class User extends Mechanic {
                 .getConfigBoolean(PartyChat.getDataHandler().mainConfig, "auto-spy"));
         user.setNoMove(false);
         user.setOnline(true);
+        user.setPartyOnly(PartyChat.getDataHandler().getConfigBoolean(PartyChat.getDataHandler().mainConfig, "party-only-in-party"));
         PartyChat.getDataHandler().addToUserMap(user);
     }
 
@@ -188,6 +192,19 @@ public class User extends Mechanic {
 
     public void setNoMove(boolean noMove) {
         this.noMove = noMove;
+    }
+
+    public boolean isPartyOnly() {
+        return partyOnly;
+    }
+
+    public void setPartyOnly(boolean partyOnly) {
+        this.partyOnly = partyOnly;
+    }
+
+    public boolean flipPartyOnly() {
+        this.partyOnly = !this.partyOnly;
+        return this.partyOnly;
     }
 
     public boolean isLeader() {

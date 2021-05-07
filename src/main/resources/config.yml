@@ -79,6 +79,10 @@ console-log: true
 # If this is set to true only the leader can add players
 only-leader-can-add: false
 
+# If this is enabled then by default players will only see party chat and not normal chat when party chat is enabled.
+# This can always be toggled on a per player basis with /pc party-only
+party-only-in-party: false
+
 # The amount of time (in seconds) a player must stand still before teleporting from party summon
 summon-teleport-time: 3
 

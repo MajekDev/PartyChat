@@ -39,6 +39,7 @@ public class PlayerChat extends Mechanic {
 
             PartyChat.getPartyHandler().sendMessageToPartyChat(party, user, message);
         } else {
+            event.getRecipients().removeIf(recipient -> PartyChat.getDataHandler().getUser(recipient).isPartyOnly());
             if (PartyChat.getDataHandler().getConfigBoolean(PartyChat.getDataHandler().mainConfig, "format-chat"))
                 event.setMessage(Chat.applyColorCodes(event.getMessage()));
         }

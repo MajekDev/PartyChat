@@ -222,9 +222,12 @@ public class PartyHandler extends Mechanic {
      */
     public void sendMessageToPartyChat(Party party, User sender, String message) {
 
-        // Run PartyChatEvent
         PartyChatEvent event = new PartyChatEvent(sender.getPlayer(), party, message);
-        PartyChat.getCore().getServer().getPluginManager().callEvent(event);
+        PartyChat.getCore().getServer().getScheduler().runTask(PartyChat.getCore(), () -> {
+            // Run PartyChatEvent
+            PartyChat.getCore().getServer().getPluginManager().callEvent(event);
+        });
+
         if (event.isCancelled())
             return;
 
