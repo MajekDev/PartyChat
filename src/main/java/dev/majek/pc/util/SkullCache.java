@@ -70,7 +70,7 @@ public class SkullCache {
             // Generate an inventory off the rip to try to fix the hashmap
             Inventory inventory  = Bukkit.createInventory(null, 54, "Skull Cache Test");
             for (int i = 0; i < Math.min(54, uuids.length); i++) {
-                inventory.setItem(i, SkullCache.getSkull(uuids[i]));
+                inventory.setItem(i, SkullCache.getSkull(uuids[i]).clone());
             }
             inventory.clear();
             Bukkit.getLogger().log(Level.INFO, ChatColor.GREEN + "[SkullCache] Cached " + uuids.length

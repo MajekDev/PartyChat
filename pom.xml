@@ -6,7 +6,7 @@
 
     <groupId>dev.majek.pc</groupId>
     <artifactId>PartyChat</artifactId>
-    <version>4.0.1</version>
+    <version>4.0.2</version>
     <packaging>jar</packaging>
 
     <name>PartyChat</name>
@@ -251,6 +251,13 @@
             <groupId>net.milkbowl.vault</groupId>
             <artifactId>VaultAPI</artifactId>
             <version>1.7</version>
+            <scope>provided</scope>
+        </dependency>
+        <!-- DiscordSRV -->
+        <dependency>
+            <groupId>com.discordsrv</groupId>
+            <artifactId>discordsrv</artifactId>
+            <version>1.22.0</version>
             <scope>provided</scope>
         </dependency>
         <!-- JDA -->

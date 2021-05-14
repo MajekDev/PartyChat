@@ -102,6 +102,10 @@ join-expire-time: 60
 # Set to -1 to not block
 block-time: 300
 
+# Only enabled this if you are running Majek's fork of DiscordSRV
+# If you enable this while running normal DiscordSRV there will be errors
+has-custom-discordsrv: false
+
 # Don't set to true unless you want players to see random messages or other undesirable behavior
 # If you have to turn this on you should probably contact the developer
 debug: false

@@ -28,7 +28,7 @@ public class GuiNoParty extends Gui {
         User user = PartyChat.getDataHandler().getUser(player);
 
         // Player's head in the first slot
-        ItemStack playerHead = SkullCache.getSkull(player);
+        ItemStack playerHead = SkullCache.getSkull(player).clone();
         addLabel(1, playerHead);
         setDisplayName(1, ChatColor.AQUA + Chat.applyColorCodes(user.getNickname()));
 

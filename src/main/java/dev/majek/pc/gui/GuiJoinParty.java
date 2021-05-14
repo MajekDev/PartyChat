@@ -30,7 +30,7 @@ public class GuiJoinParty extends Gui {
 
         for (int i = 0; i < 45 && i + page * 45 < parties.size(); ++i) {
             Party party = parties.get(i + page * 45);
-            ItemStack leaderHead = SkullCache.getSkull(party.getLeader().getPlayerID());
+            ItemStack leaderHead = SkullCache.getSkull(party.getLeader().getPlayerID()).clone();
             addActionItem(i, leaderHead, () -> {
                 if (PartyChat.getCommandHandler().getCommand("join").isEnabled())
                     PartyJoin.execute(player, party.getRawName());

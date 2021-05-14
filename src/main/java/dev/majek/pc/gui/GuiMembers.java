@@ -51,7 +51,7 @@ public class GuiMembers extends Gui {
                         .getDataHandler().mainConfig, "hide-vanished-players"))
                     continue;
             }
-            ItemStack playerHead = SkullCache.getSkull(member.getPlayerID());
+            ItemStack playerHead = SkullCache.getSkull(member.getPlayerID()).clone();
             ItemMeta meta = playerHead.getItemMeta();
             meta.setDisplayName(ChatColor.AQUA + Chat.applyColorCodes(member.getNickname()));
             List<String> lore = new ArrayList<>();

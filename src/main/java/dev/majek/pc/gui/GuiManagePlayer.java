@@ -42,7 +42,7 @@ public class GuiManagePlayer extends Gui {
         }
 
         // Target player's head
-        ItemStack playerHead = SkullCache.getSkull(target.getPlayerID());
+        ItemStack playerHead = SkullCache.getSkull(target.getPlayerID()).clone();
         ItemMeta meta = playerHead.getItemMeta();
         meta.setDisplayName(ChatColor.RESET + Chat.applyColorCodes(target.getNickname()));
         playerHead.setItemMeta(meta);

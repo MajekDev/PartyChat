@@ -5,10 +5,12 @@ import dev.majek.pc.command.CommandHandler;
 import dev.majek.pc.command.PartyCommand;
 import dev.majek.pc.data.*;
 import dev.majek.pc.gui.GuiHandler;
+import dev.majek.pc.hooks.DiscordSRVListener;
 import dev.majek.pc.hooks.PAPI;
 import dev.majek.pc.mechanic.MechanicHandler;
 import dev.majek.pc.util.Chat;
 import dev.majek.pc.util.UpdateChecker;
+import github.scarsz.discordsrv.DiscordSRV;
 import net.dv8tion.jda.api.JDA;
 import net.dv8tion.jda.api.JDABuilder;
 import net.dv8tion.jda.api.entities.TextChannel;
@@ -68,6 +70,10 @@ public final class PartyChat extends JavaPlugin {
      * True if PartyChat is hooked into PlaceholderAPI.
      */
     public static boolean hasPapi = false;
+    /**
+     * True if PartyChat is hooked into Majek's Custom <a href="https://github.com/Majekdor/DiscordSRV">DiscordSRV</a>.
+     */
+    public static boolean hasDiscordSRV = false;
 
     //    <--- Other --->
     private static JDA jda = null;
@@ -124,6 +130,13 @@ public final class PartyChat extends JavaPlugin {
                 this.getServer().getPluginManager().getPlugin("Vault") != null) {
             log("Hooking into Vault...");
             hasVault = true;
+        }
+        if (this.getServer().getPluginManager().isPluginEnabled("DiscordSRV") &&
+                this.getServer().getPluginManager().getPlugin("DiscordSRV") != null &&
+                getConfig().getBoolean("has-custom-discordsrv")) {
+            log("Hooking into DiscordSRV...");
+            hasDiscordSRV = true;
+            DiscordSRV.api.subscribe(new DiscordSRVListener());
         }
 
         // Attempt to connect to Discord if enabled

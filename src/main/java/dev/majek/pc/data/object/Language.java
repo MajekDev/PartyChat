@@ -27,10 +27,12 @@ public class Language {
         messagesConfig.saveDefaultConfig();
         File en_US_FILE = new File(PartyChat.getCore().getDataFolder(), "Lang/" + langID + ".yml");
         //createFileIfNotExists(configManager,  en_US_FILE);
-        try {
-            ConfigUpdater.update(PartyChat.getCore(), "Lang/" + langID + ".yml", en_US_FILE, Collections.emptyList());
-        } catch (IOException e) {
-            e.printStackTrace();
+        if (langID.equalsIgnoreCase("en_US")) {
+            try {
+                ConfigUpdater.update(PartyChat.getCore(), "Lang/" + langID + ".yml", en_US_FILE, Collections.emptyList());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
         messagesConfig.reloadConfig();
     }

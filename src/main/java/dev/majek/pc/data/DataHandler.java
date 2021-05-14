@@ -160,9 +160,10 @@ public class DataHandler extends Mechanic {
         // Set global values defined in main config
         debug = getConfigBoolean(mainConfig, "debug");
         disableGuis = getConfigBoolean(mainConfig, "disable-guis");
-        disableGuis = !(minecraftVersion >= 13); // They just don't work in 12 and below
-        if (disableGuis)
+        if (minecraftVersion < 13) {
+            disableGuis = true;
             PartyChat.log("GUIs have been disabled due to the server's Minecraft version.");
+        }
         if (PartyChat.hasVault)
             useVault = getConfigBoolean(mainConfig, "use-vault-names");
         persistentParties = getConfigBoolean(mainConfig, "persistent-parties");
