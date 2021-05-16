@@ -33,6 +33,8 @@ public class PartyDisband extends PartyCommand {
         for (User user : party.getMembers()) {
             user.setPartyID(null);
             user.setInParty(false);
+            user.setPartyOnly(false);
+            user.setPartyChatToggle(false);
             Player member = user.getPlayer();
             if (member != null && member.isOnline())
                 sendMessageWithReplacement(member, "party-disbanded", "%partyName%", party.getName());

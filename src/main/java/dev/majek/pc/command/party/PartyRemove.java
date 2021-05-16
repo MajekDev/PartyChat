@@ -82,6 +82,8 @@ public class PartyRemove extends PartyCommand {
         party.removeMember(target);
         target.setPartyID(null);
         target.setInParty(false);
+        target.setPartyOnly(false);
+        target.setPartyChatToggle(false);
 
         if (target.isOnline() && target.getPlayer() != null)
             sendMessageWithReplacement(target.getPlayer(), "you-removed", "%player%", user.getNickname());

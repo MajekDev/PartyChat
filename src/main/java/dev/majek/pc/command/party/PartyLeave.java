@@ -52,6 +52,8 @@ public class PartyLeave extends PartyCommand {
             PartyChat.getPartyHandler().removeFromPartyMap(user.getPartyID());
         user.setPartyID(null);
         user.setInParty(false);
+        user.setPartyOnly(false);
+        user.setPartyChatToggle(false);
 
         if (!partyDisbanded) {
             party.getMembers().stream().map(User::getPlayer).filter(Objects::nonNull).forEach(member ->
