@@ -21,27 +21,46 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package dev.majek.pc.hooks;
+package dev.majek.pc.gui;
 
-import dev.majek.pc.PartyChat;
-import net.milkbowl.vault.chat.Chat;
-import org.bukkit.entity.Player;
+import org.bukkit.Material;
 
 /**
- * Handles integration with Vault.
+ * Handles toggles for an ItemStack in a gui.
  */
-public class Vault {
+public class GuiToggle {
 
-  public static String getPlayerDisplayName(Player player) {
-    Chat vaultChat = PartyChat.core().getServer().getServicesManager().load(Chat.class);
-    if (vaultChat == null) {
-      PartyChat.error("Couldn't hook into vault!");
-      return null;
-    }
-    if (PartyChat.core().getConfig().getBoolean("use-vault-chat"))
-      return vaultChat.getPlayerPrefix(player) + (PartyChat.dataHandler().useDisplayNames
-          ? player.getDisplayName() : player.getName()) + vaultChat.getPlayerSuffix(player);
-    else
-      return PartyChat.dataHandler().useDisplayNames ? player.getDisplayName() : player.getName();
+  private final String name;
+  private final int hdbId;
+  private final Material configMaterial;
+  private final Material defaultMaterial;
+  private final boolean visible;
+
+  public GuiToggle(String name, int hdbId, Material configMaterial, Material defaultMaterial, boolean visible) {
+    this.name = name;
+    this.hdbId = hdbId;
+    this.configMaterial = configMaterial;
+    this.defaultMaterial = defaultMaterial;
+    this.visible = visible;
+  }
+
+  public String name() {
+    return name;
+  }
+
+  public boolean hasHdbId() {
+    return hdbId != -1;
+  }
+
+  public int hdbId() {
+    return hdbId;
+  }
+
+  public Material material() {
+    return configMaterial == null ? defaultMaterial : configMaterial;
+  }
+
+  public boolean isVisible() {
+    return visible;
   }
 }

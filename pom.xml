@@ -6,14 +6,14 @@
 
     <groupId>dev.majek.pc</groupId>
     <artifactId>PartyChat</artifactId>
-    <version>4.0.2</version>
+    <version>4.1.0</version>
     <packaging>jar</packaging>
 
     <name>PartyChat</name>
 
     <description>Customizable chat plugin to talk with your friends in parties.</description>
     <properties>
-        <java.version>1.8</java.version>
+        <maven.compiler.release>11</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
     <url>https://majek.dev/partychat</url>
@@ -68,8 +68,7 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>3.8.1</version>
                 <configuration>
-                    <source>${java.version}</source>
-                    <target>${java.version}</target>
+                    <release>11</release>
                 </configuration>
             </plugin>
             <plugin>
@@ -83,6 +82,72 @@
                             <goal>shade</goal>
                         </goals>
                         <configuration>
+                            <relocations>
+                                <relocation>
+                                    <pattern>com.google</pattern>
+                                    <shadedPattern>dev.majek.libs.com.google</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>com.fasterxml</pattern>
+                                    <shadedPattern>dev.majek.libs.com.fasterxml</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>com.iwebpp</pattern>
+                                    <shadedPattern>dev.majek.libs.com.iwebpp</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>com.neovisionaries</pattern>
+                                    <shadedPattern>dev.majek.libs.com.neovisionaries</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>gnu.trove</pattern>
+                                    <shadedPattern>dev.majek.libs.gnu.trove</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>javax.annotation</pattern>
+                                    <shadedPattern>dev.majek.libs.javax.annotation</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>net.dv8tion</pattern>
+                                    <shadedPattern>dev.majek.libs.net.dv8tion</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>net.wesjd</pattern>
+                                    <shadedPattern>dev.majek.libs.net.wesjd</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>okio</pattern>
+                                    <shadedPattern>dev.majek.libs.okio</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>okhttp3</pattern>
+                                    <shadedPattern>dev.majek.libs.okhttp3</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>org.apache</pattern>
+                                    <shadedPattern>dev.majek.libs.org.apache</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>org.checkerframework</pattern>
+                                    <shadedPattern>dev.majek.libs.org.checkerframework</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>org.intellij</pattern>
+                                    <shadedPattern>dev.majek.libs.org.intellij</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>org.jetbrains</pattern>
+                                    <shadedPattern>dev.majek.libs.org.jetbrains</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>org.slf4j</pattern>
+                                    <shadedPattern>dev.majek.libs.org.slf4j</shadedPattern>
+                                </relocation>
+                                <relocation>
+                                    <pattern>org.bstats</pattern>
+                                    <shadedPattern>dev.majek.libs.org.bstats</shadedPattern>
+                                </relocation>
+                            </relocations>
                             <minimizeJar>true</minimizeJar>
                             <createDependencyReducedPom>false</createDependencyReducedPom>
                         </configuration>
@@ -133,8 +198,8 @@
             <url>https://m2.dv8tion.net/releases</url>
         </repository>
         <repository>
-            <id>majek-repo</id>
-            <url>https://repo.majek.dev/releases</url>
+            <id>HeadDatabase-API</id>
+            <url>https://mvn.intellectualsites.com/content/repositories/thirdparty/</url>
         </repository>
     </repositories>
 
@@ -158,7 +223,7 @@
             <groupId>org.jetbrains</groupId>
             <artifactId>annotations</artifactId>
             <version>21.0.1</version>
-            <scope>provided</scope>
+            <scope>compile</scope>
         </dependency>
         <!-- AnvilGUI -->
         <dependency>
@@ -188,48 +253,25 @@
             <version>0.3.4</version>
             <scope>provided</scope>
         </dependency>
-        <!-- AdvancedBan -->
-        <!--
-        <dependency>
-            <groupId>me.leoko.advancedban</groupId>
-            <artifactId>AdvancedBan</artifactId>
-            <version>2.1.7</version>
-            <scope>provided</scope>
-        </dependency>
-        -->
-        <!-- OkHTTP -->
-        <dependency>
-            <groupId>com.squareup.okhttp3</groupId>
-            <artifactId>okhttp</artifactId>
-            <version>4.9.1</version>
-            <scope>compile</scope>
-        </dependency>
-        <!-- JSON -->
-        <dependency>
-            <groupId>org.json</groupId>
-            <artifactId>json</artifactId>
-            <version>20210307</version>
-            <scope>provided</scope>
-        </dependency>
         <!-- Adventure API -->
         <dependency>
             <groupId>net.kyori</groupId>
             <artifactId>adventure-api</artifactId>
-            <version>4.8.0</version>
+            <version>4.8.1</version>
             <scope>compile</scope>
         </dependency>
         <!-- Adventure Serializers -->
         <dependency>
             <groupId>net.kyori</groupId>
             <artifactId>adventure-text-serializer-legacy</artifactId>
-            <version>4.8.0</version>
+            <version>4.8.1</version>
             <scope>compile</scope>
         </dependency>
         <!-- Adventure - Bukkit Specific -->
         <dependency>
-            <groupId>me.lucko</groupId>
+            <groupId>net.kyori</groupId>
             <artifactId>adventure-platform-bukkit</artifactId>
-            <version>4.7.0</version>
+            <version>4.0.0-SNAPSHOT</version>
             <scope>compile</scope>
         </dependency>
         <!-- GSON -->
@@ -237,13 +279,6 @@
             <groupId>com.google.code.gson</groupId>
             <artifactId>gson</artifactId>
             <version>2.8.7</version>
-            <scope>compile</scope>
-        </dependency>
-        <!-- Apache Commons -->
-        <dependency>
-            <groupId>commons-io</groupId>
-            <artifactId>commons-io</artifactId>
-            <version>2.9.0</version>
             <scope>compile</scope>
         </dependency>
         <!-- Vault -->
@@ -257,14 +292,14 @@
         <dependency>
             <groupId>com.discordsrv</groupId>
             <artifactId>discordsrv</artifactId>
-            <version>1.22.0</version>
+            <version>1.23.0-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <!-- JDA -->
         <dependency>
             <groupId>net.dv8tion</groupId>
             <artifactId>JDA</artifactId>
-            <version>4.2.1_273</version>
+            <version>4.3.0_277</version>
             <scope>compile</scope>
             <exclusions>
                 <exclusion>
@@ -272,6 +307,20 @@
                     <artifactId>opus-java</artifactId>
                 </exclusion>
             </exclusions>
+        </dependency>
+        <!-- HeadDatabase-API -->
+        <dependency>
+            <groupId>me.arcaniax</groupId>
+            <artifactId>HeadDatabase-API</artifactId>
+            <version>1.1.0</version>
+            <scope>provided</scope>
+        </dependency>
+        <!-- bStats -->
+        <dependency>
+            <groupId>org.bstats</groupId>
+            <artifactId>bstats-bukkit</artifactId>
+            <version>2.2.1</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 </project>

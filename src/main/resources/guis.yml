@@ -1,0 +1,64 @@
+# Configure the blocks shown in GUIs in this file
+# If a block has a head database id the material will be ignored
+# You must have HeadDatabase installed to change hdb-id to anything but -1
+# Material names should be the block's namespaced id https://minecraft.fandom.com/wiki/Java_Edition_data_values/Blocks
+
+view-members:
+  hdb-id: -1
+  material: BOOK
+  visible: true
+invite-player:
+  hdb-id: -1
+  material: NETHER_STAR
+  visible: true
+leave-party:
+  hdb-id: -1
+  material: RED_STAINED_GLASS_PANE
+  visible: true
+close-gui:
+  hdb-id: -1
+  material: BARRIER
+summon-party:
+  hdb-id: -1
+  material: ENDER_PEARL
+  visible: true
+rename-party:
+  hdb-id: -1
+  material: OAK_SIGN
+  visible: true
+public-private:
+  hdb-id-public: -1
+  hdb-id-private: -1
+  material-public: GREEN_CONCRETE
+  material-private: RED_CONCRETE
+  visible: true
+disband-party:
+  hdb-id: -1
+  material: tnt
+  visible: true
+next-page:
+  hdb-id: -1
+  material: EMERALD_BLOCK
+previous-page:
+  hdb-id: -1
+  material: REDSTONE_BLOCK
+promote-player:
+  hdb-id: -1
+  material: NETHER_STAR
+  visible: true
+remove-player:
+  hdb-id: -1
+  material: IRON_AXE
+  visible: true
+create-party:
+  hdb-id: -1
+  material: NETHER_STAR
+  visible: true
+no-parties:
+  hdb-id: -1
+  material: RED_CONCRETE
+  visible: true
+join-party:
+  hdb-id: -1
+  material: GREEN_CONCRETE
+  visible: true

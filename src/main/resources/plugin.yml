@@ -6,7 +6,7 @@ prefix: PCv4
 authors: [ Majekdor ]
 description: Customizable chat plugin to talk with your friends in parties.
 website: https://majek.dev/partychat
-softdepend: [PlaceholderAPI, Essentials, LiteBans, DiscordSRV, Vault]
+softdepend: [PlaceholderAPI, Essentials, LiteBans, DiscordSRV, Vault, HeadDatabase]
 loadbefore: [StaffPlus]
 commands:
   partychat:

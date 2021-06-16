@@ -23,25 +23,35 @@
  */
 package dev.majek.pc.hooks;
 
-import dev.majek.pc.PartyChat;
-import net.milkbowl.vault.chat.Chat;
-import org.bukkit.entity.Player;
+import dev.majek.pc.mechanic.Mechanic;
+import me.arcaniax.hdb.api.DatabaseLoadEvent;
+import me.arcaniax.hdb.api.HeadDatabaseAPI;
+import org.bukkit.event.EventHandler;
+import org.bukkit.inventory.ItemStack;
+import org.jetbrains.annotations.Nullable;
 
 /**
- * Handles integration with Vault.
+ * Handles integration with HeadDatabase.
  */
-public class Vault {
+public class HeadDatabase extends Mechanic {
 
-  public static String getPlayerDisplayName(Player player) {
-    Chat vaultChat = PartyChat.core().getServer().getServicesManager().load(Chat.class);
-    if (vaultChat == null) {
-      PartyChat.error("Couldn't hook into vault!");
-      return null;
-    }
-    if (PartyChat.core().getConfig().getBoolean("use-vault-chat"))
-      return vaultChat.getPlayerPrefix(player) + (PartyChat.dataHandler().useDisplayNames
-          ? player.getDisplayName() : player.getName()) + vaultChat.getPlayerSuffix(player);
-    else
-      return PartyChat.dataHandler().useDisplayNames ? player.getDisplayName() : player.getName();
+  private static HeadDatabaseAPI api;
+
+  @EventHandler
+  public void onDatabaseLoad(DatabaseLoadEvent e) {
+    api = new HeadDatabaseAPI();
+  }
+
+  public static HeadDatabaseAPI api() {
+    return api;
+  }
+
+  @Nullable
+  public static ItemStack getHead(int id) {
+    return api.getItemHead(String.valueOf(id));
+  }
+
+  public static boolean isHead(int id) {
+    return api.isHead(String.valueOf(id));
   }
 }
