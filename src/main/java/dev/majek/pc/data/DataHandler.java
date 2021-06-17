@@ -90,7 +90,7 @@ public class DataHandler extends Mechanic {
   @SuppressWarnings("all")
   public void wipeOldPlugin() {
     File langFolder = new File(instance.getDataFolder() + "/Lang");
-    if (!langFolder.exists()) {
+    if (!langFolder.exists() && instance.getDataFolder().exists()) {
       instance.getLogger().log(Level.SEVERE, "PCv3 data folder found! Archiving old config files and " +
           "creating new data folder... ");
       migrated = false;

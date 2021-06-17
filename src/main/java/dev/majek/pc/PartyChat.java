@@ -155,8 +155,7 @@ public final class PartyChat extends JavaPlugin {
       hasVault = true;
     }
     if (this.getServer().getPluginManager().isPluginEnabled("DiscordSRV") &&
-        this.getServer().getPluginManager().getPlugin("DiscordSRV") != null &&
-        getConfig().getBoolean("has-custom-discordsrv")) {
+        this.getServer().getPluginManager().getPlugin("DiscordSRV") != null) {
       log("Hooking into DiscordSRV...");
       hasDiscordSRV = true;
       DiscordSRV.api.subscribe(new DiscordSRVListener());

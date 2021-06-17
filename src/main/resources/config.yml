@@ -104,6 +104,7 @@ block-time: 300
 
 # Only enabled this if you are running Majek's fork of DiscordSRV
 # If you enable this while running normal DiscordSRV there will be errors
+# THIS NO LONGER DOES ANYTHING - FEEL FREE TO DELETE IT
 has-custom-discordsrv: false
 
 # Don't set to true unless you want players to see random messages or other undesirable behavior
