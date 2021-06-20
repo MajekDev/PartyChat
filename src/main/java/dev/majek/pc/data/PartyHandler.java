@@ -242,51 +242,54 @@ public class PartyHandler extends Mechanic {
    */
   public void sendMessageToPartyChat(Party party, User sender, String message) {
 
-    // Run PartyChatEvent
-    PartyChatEvent event = new PartyChatEvent(sender.getPlayer(), party, message);
-    PartyChat.core().getServer().getPluginManager().callEvent(event);
-    if (event.isCancelled())
-      return;
-
-    String finalMessage = event.getMessage();
-
-    // Check for inappropriate words
-    if (PartyChat.dataHandler().getConfigBoolean(PartyChat.dataHandler().mainConfig, "block-inappropriate-chat")) {
-      if (Restrictions.containsCensoredWord(finalMessage)) {
-        PartyChat.messageHandler().sendMessage(sender, "inappropriate-message");
+    // Run the event sync
+    Bukkit.getScheduler().runTask(PartyChat.core(), () -> {
+      // Run PartyChatEvent
+      PartyChatEvent event = new PartyChatEvent(sender.getPlayer(), party, message);
+      PartyChat.core().getServer().getPluginManager().callEvent(event);
+      if (event.isCancelled())
         return;
+
+      String finalMessage = event.getMessage();
+
+      // Check for inappropriate words
+      if (PartyChat.dataHandler().getConfigBoolean(PartyChat.dataHandler().mainConfig, "block-inappropriate-chat")) {
+        if (Restrictions.containsCensoredWord(finalMessage)) {
+          PartyChat.messageHandler().sendMessage(sender, "inappropriate-message");
+          return;
+        }
       }
-    }
 
-    // This is used so staff don't get the message twice
-    List<Player> messageReceived = new ArrayList<>();
+      // This is used so staff don't get the message twice
+      List<Player> messageReceived = new ArrayList<>();
 
-    // Log message to console if that's enabled
-    if (PartyChat.dataHandler().getConfigBoolean(PartyChat.dataHandler().mainConfig, "console-log"))
-      PartyChat.messageHandler().sendMessageWithEverything(Bukkit.getConsoleSender(), "spy-format", "%partyName%",
-          ChatUtils.removeColorCodes(party.getName()), "%player%", sender.getUsername(), finalMessage);
+      // Log message to console if that's enabled
+      if (PartyChat.dataHandler().getConfigBoolean(PartyChat.dataHandler().mainConfig, "console-log"))
+        PartyChat.messageHandler().sendMessageWithEverything(Bukkit.getConsoleSender(), "spy-format", "%partyName%",
+                ChatUtils.removeColorCodes(party.getName()), "%player%", sender.getUsername(), finalMessage);
 
-    // Send message to party members
-    party.getMembers().stream().map(User::getPlayer).filter(Objects::nonNull).forEach(member -> {
-      PartyChat.messageHandler().sendMessageWithEverything(member, "message-format", "%partyName%",
-          party.getName(), "%player%", sender.getNickname(), finalMessage);
-      messageReceived.add(member);
+      // Send message to party members
+      party.getMembers().stream().map(User::getPlayer).filter(Objects::nonNull).forEach(member -> {
+        PartyChat.messageHandler().sendMessageWithEverything(member, "message-format", "%partyName%",
+                party.getName(), "%player%", sender.getNickname(), finalMessage);
+        messageReceived.add(member);
+      });
+
+      // Send message to server staff
+      PartyChat.dataHandler().getUserMap().values().stream().filter(User::isSpyToggle).map(User::getPlayer)
+              .filter(Objects::nonNull).filter(staff -> !messageReceived.contains(staff))
+              .forEach(staff -> PartyChat.messageHandler().sendMessageWithEverything(staff, "spy-format",
+                      "%partyName%", ChatUtils.removeColorCodes(party.getRawName()), "%player%",
+                      sender.getUsername(), finalMessage));
+
+      //   Log to discord if enabled
+      if (PartyChat.dataHandler().getConfigBoolean(PartyChat.dataHandler().mainConfig, "log-to-discord")
+              && PartyChat.jda() != null) {
+        PartyChat.logToDiscord(ChatUtils.removeColorCodes(PartyChat.dataHandler().getConfigString(PartyChat
+                .dataHandler().messages, "message-format").replace("%partyName%", party.getName())
+                .replace("%player%", sender.getNickname()) + finalMessage
+                .replace("_", "\\_").replace("*", "\\*")));
+      }
     });
-
-    // Send message to server staff
-    PartyChat.dataHandler().getUserMap().values().stream().filter(User::isSpyToggle).map(User::getPlayer)
-        .filter(Objects::nonNull).filter(staff -> !messageReceived.contains(staff))
-        .forEach(staff -> PartyChat.messageHandler().sendMessageWithEverything(staff, "spy-format",
-            "%partyName%", ChatUtils.removeColorCodes(party.getRawName()), "%player%",
-            sender.getUsername(), finalMessage));
-
-    //   Log to discord if enabled
-    if (PartyChat.dataHandler().getConfigBoolean(PartyChat.dataHandler().mainConfig, "log-to-discord")
-        && PartyChat.jda() != null) {
-      PartyChat.logToDiscord(ChatUtils.removeColorCodes(PartyChat.dataHandler().getConfigString(PartyChat
-          .dataHandler().messages, "message-format").replace("%partyName%", party.getName())
-          .replace("%player%", sender.getNickname()) + finalMessage
-          .replace("_", "\\_").replace("*", "\\*")));
-    }
   }
 }

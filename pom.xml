@@ -124,10 +124,6 @@
                                     <shadedPattern>dev.majek.libs.okhttp3</shadedPattern>
                                 </relocation>
                                 <relocation>
-                                    <pattern>org.apache</pattern>
-                                    <shadedPattern>dev.majek.libs.org.apache</shadedPattern>
-                                </relocation>
-                                <relocation>
                                     <pattern>org.checkerframework</pattern>
                                     <shadedPattern>dev.majek.libs.org.checkerframework</shadedPattern>
                                 </relocation>
