@@ -44,7 +44,7 @@ Once the party is created you can invite another player to it by running `/party
 
 To send a message to your party you have two options. The first is to run `/partychat` (which also has a handy alias of `/pc`) which will send you a message saying it's enabled and allow you to type your message straight into chat. You can disable this to chat normally by running the same command again. The second option is to append your message to `/partychat`, for example `/partychat Hello party members!` would send "Hello party members!" to your party.
 
-You can view full command documenation [here](https://github.com/Majekdor/PartyChat/wiki/commands).
+You can view full command documentation [here](https://github.com/Majekdor/PartyChat/wiki/commands).
 
 ## Configuration
 
@@ -61,7 +61,7 @@ Message files (every message PartyChat sends is pulled from these) are stored [h
 
 By default PartyChat uses the en_US.yml config file for messages sent in chat. The plugin will also fall-back to this file if there is an issue loading another one. 
 
-All messages in these files can be changed to your liking, including content and color codes. However, placeholders are meant for specific messages and should not be moved between or added to different messgaes they weren't originally in.
+All messages in these files can be changed to your liking, including content and color codes. However, placeholders are meant for specific messages and should not be moved between or added to different messages they weren't originally in.
 
 ### commands.yml
 This file is where information on every command, including description and usage, is stored and the default version can be found [here](https://github.com/Majekdor/PartyChat/blob/main/src/main/resources/commands.yml).
