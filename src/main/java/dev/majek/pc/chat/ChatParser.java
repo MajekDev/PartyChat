@@ -44,7 +44,7 @@ import java.util.List;
  */
 public class ChatParser {
 
-  private final TextComponent.Builder builder;
+  private TextComponent.Builder builder;
   private String previousColors;
   private final List<String> validFunctions;
 
@@ -234,16 +234,20 @@ public class ChatParser {
     return this;
   }
 
-  /*
-          Not ready
+  /**
+   * Insert a hover item on a certain bit of text in the component.
+   *
+   * @param target The current text to target for the hover event.
+   * @param replacement The replacement for the current text.
+   * @param hover The ItemStack to create a hover event from.
+   * @return Instance of itself. Use {@link ChatParser#getAsComponent()}, {@link ChatParser#getAsBaseComponent()}, or
+   * {@link ChatParser#getAsRawString()} to finish the process.
    */
-  private Component insertItemHover(String target, String replacement, ItemStack hover) {
-    try {
-      return builder.asComponent().replaceText(TextReplacementConfig.builder().matchLiteral(target)
-          .replacement(getComponentFromString(replacement).hoverEvent(hover.asHoverEvent())).build());
-    } catch (NoSuchMethodError ignored) {
-      return builder.asComponent();
-    }
+  public ChatParser insertItemHover(String target, String replacement, ItemStack hover) {
+    Component newBuilder = builder.asComponent().replaceText(TextReplacementConfig.builder().matchLiteral(target)
+        .replacement(getComponentFromString(replacement).hoverEvent(hover.asHoverEvent())).build());
+    builder = Component.text().append(newBuilder);
+    return this;
   }
 
   /**

@@ -23,11 +23,11 @@
  */
 package dev.majek.pc.data;
 
+import com.tchristofferson.configupdater.ConfigUpdater;
 import dev.majek.pc.PartyChat;
 import dev.majek.pc.data.legacy.Database;
 import dev.majek.pc.data.legacy.SQLite;
 import dev.majek.pc.data.object.User;
-import dev.majek.pc.data.storage.ConfigUpdater;
 import dev.majek.pc.data.object.Language;
 import dev.majek.pc.data.storage.YamlConfig;
 import dev.majek.pc.mechanic.Mechanic;
@@ -37,6 +37,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.io.*;
@@ -46,6 +47,7 @@ import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.logging.Level;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -403,11 +405,23 @@ public class DataHandler extends Mechanic {
   }
 
   /**
+   * Get a PartyChat user from a name. This may be null.
+   * @param name The user's name.
+   * @return User from name.
+   */
+  @Nullable
+  public User getUser(@NotNull String name) {
+    List<User> users = userMap.values().stream().filter(user -> user.getUsername()
+            .equalsIgnoreCase(name)).collect(Collectors.toList());
+    return users.isEmpty() ? null : users.get(0);
+  }
+
+  /**
    * Get PartyChat user from map.
    * @param player The player to get a user from.
    * @return User from player.
    */
-  public User getUser(Player player) {
+  public User getUser(@NotNull Player player) {
     return userMap.get(player.getUniqueId());
   }
 
@@ -417,8 +431,11 @@ public class DataHandler extends Mechanic {
    * @return User from unique id.
    */
   @Nullable
-  public User getUser(UUID uuid) {
-    return userMap.get(uuid);
+  public User getUser(@Nullable UUID uuid) {
+    if (uuid == null)
+      return null;
+    else
+      return userMap.get(uuid);
   }
 
   /**

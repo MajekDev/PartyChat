@@ -40,7 +40,7 @@ public class PlayerQuit extends Mechanic {
   public void onPlayerQuit(PlayerQuitEvent event) {
     User user = PartyChat.dataHandler().getUser(event.getPlayer());
     if (user.isInParty() && !PartyChat.dataHandler().getConfigBoolean(PartyChat.dataHandler().mainConfig, "persistent-parties"))
-      PartyLeave.execute(user, true);
+      PartyLeave.execute(user, null, true);
 
     // Remove the player from the party if they left the server due to a ban
     Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(PartyChat.core(), () -> {

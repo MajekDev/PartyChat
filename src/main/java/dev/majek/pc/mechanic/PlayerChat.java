@@ -24,6 +24,10 @@
 package dev.majek.pc.mechanic;
 
 import dev.majek.pc.PartyChat;
+import dev.majek.pc.command.party.PartyAdd;
+import dev.majek.pc.command.party.PartyCreate;
+import dev.majek.pc.command.party.PartyLeave;
+import dev.majek.pc.command.party.PartyRename;
 import dev.majek.pc.data.Restrictions;
 import dev.majek.pc.data.object.Party;
 import dev.majek.pc.data.object.User;
@@ -38,10 +42,42 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
  */
 public class PlayerChat extends Mechanic {
 
-  @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+  @EventHandler(priority = EventPriority.LOWEST, ignoreCancelled = true)
   public void onPlayerChat(AsyncPlayerChatEvent event) {
     Player player = event.getPlayer();
     User user = PartyChat.dataHandler().getUser(player);
+
+    if (user.isChatInputCreate()) {
+      if (PartyChat.commandHandler().getCommand(PartyCreate.class).canUse(player)) {
+        PartyCreate.execute(player, event.getMessage());
+        user.setChatInputCreate(false);
+        return;
+      }
+    }
+
+    if (user.isChatInputInvite()) {
+      if (PartyChat.commandHandler().getCommand(PartyAdd.class).canUse(player)) {
+        PartyAdd.execute(player, event.getMessage());
+        user.setChatInputInvite(false);
+        return;
+      }
+    }
+
+    if (user.isChatInputRename()) {
+      if (PartyChat.commandHandler().getCommand(PartyRename.class).canUse(player)) {
+        PartyRename.execute(player, event.getMessage());
+        user.setChatInputRename(false);
+        return;
+      }
+    }
+
+    if (user.isChatInputLeave()) {
+      if (PartyChat.commandHandler().getCommand(PartyLeave.class).canUse(player)) {
+        PartyLeave.execute(user, PartyChat.dataHandler().getUser(event.getMessage()), false);
+        user.setChatInputLeave(false);
+        return;
+      }
+    }
 
     if (user.isInParty() && user.partyChatToggle()) {
       event.setCancelled(true);

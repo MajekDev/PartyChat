@@ -29,6 +29,7 @@ import dev.majek.pc.data.object.Party;
 import dev.majek.pc.data.object.User;
 import org.bukkit.entity.Player;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
@@ -86,12 +87,13 @@ public class PartyRemove extends PartyCommand {
     }
 
     // Make sure the user is in the party
-    User target = party.getMembers().stream().filter(member -> member.getUsername()
-        .equalsIgnoreCase(toRemove)).collect(Collectors.toList()).get(0);
-    if (target == null) {
+    List<User> users = party.getMembers().stream().filter(member -> member.getUsername()
+        .equalsIgnoreCase(toRemove)).collect(Collectors.toList());
+    if (users.isEmpty()) {
       PartyChat.messageHandler().sendMessage(player, "player-not-in-party");
       return false;
     }
+    User target = users.get(0);
 
     // Player is trying to remove themself
     if (user == target) {

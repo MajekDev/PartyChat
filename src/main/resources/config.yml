@@ -13,7 +13,6 @@ language: "en_US"
 # Add your new language to this list, putting the filename without ".yml" and the file in PartyChat's Lang folder.
 supported-languages:
   - "en_US"
-  - "es_MX"
 
 # If this is enabled parties will not be deleted unless all of the players leave or the leader runs /party disband
 # and the parties will be saved on server restart/reload

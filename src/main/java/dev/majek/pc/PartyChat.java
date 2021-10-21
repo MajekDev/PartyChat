@@ -23,8 +23,6 @@
  */
 package dev.majek.pc;
 
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import dev.majek.pc.api.PartyChatApi;
 import dev.majek.pc.command.CommandHandler;
 import dev.majek.pc.data.*;
@@ -47,11 +45,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.Nullable;
 
 import javax.security.auth.login.LoginException;
-import java.io.IOException;
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
 import java.util.logging.Level;
 
 /**
@@ -100,7 +93,6 @@ public final class PartyChat extends JavaPlugin {
   //    <--- Other --->
   private static JDA jda = null;
   public static boolean hasUpdate = false;
-  private static String showcaseMessage = "";
 
   public PartyChat() {
     // DO NOT CHANGE THE ORDER OF THESE
@@ -185,22 +177,6 @@ public final class PartyChat extends JavaPlugin {
         ex.printStackTrace();
       }
     }
-
-    // Get PartyChat showcase message from majek.dev
-    HttpClient httpClient = HttpClient.newHttpClient();
-    HttpRequest httpRequest = HttpRequest.newBuilder().uri(URI.create("https://majek.dev/pluginresponse"))
-        .header("Content-Type", "application/json").GET().build();
-    try {
-      HttpResponse<String> httpResponse = httpClient.send(httpRequest, HttpResponse.BodyHandlers.ofString());
-      JsonObject json = JsonParser.parseString(httpResponse.body()).getAsJsonObject();
-      showcaseMessage = json.get("partychat").getAsString();
-    } catch (IOException | InterruptedException e) {
-      e.printStackTrace();
-    }
-
-    // Send showcase message to console if there is one
-    if (showcaseMessage.length() != 0)
-      PartyChat.log(showcaseMessage);
 
     // Check for PartyChat update
     UpdateChecker updateChecker = new UpdateChecker(this, 79295);
@@ -306,15 +282,6 @@ public final class PartyChat extends JavaPlugin {
   @Nullable
   public static JDA jda() {
     return jda;
-  }
-
-  /**
-   * Get the showcase message for PartyChat if there is one.
-   * @return Showcase Message
-   */
-  @SuppressWarnings("unused")
-  public static String getShowcaseMessage() {
-    return showcaseMessage;
   }
 
   /**

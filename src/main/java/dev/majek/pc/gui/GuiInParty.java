@@ -24,24 +24,18 @@
 package dev.majek.pc.gui;
 
 import dev.majek.pc.PartyChat;
-import dev.majek.pc.command.party.PartyAdd;
-import dev.majek.pc.command.party.PartyPromote;
-import dev.majek.pc.command.party.PartyRename;
+import dev.majek.pc.command.party.PartyLeave;
 import dev.majek.pc.data.object.Party;
 import dev.majek.pc.data.object.User;
 import dev.majek.pc.chat.ChatUtils;
 import dev.majek.pc.util.SkullCache;
 import net.md_5.bungee.api.ChatColor;
-import net.wesjd.anvilgui.AnvilGUI;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
-import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
 import java.util.Objects;
 
 /**
@@ -94,7 +88,7 @@ public class GuiInParty extends Gui {
     // Leave party item
     ItemStack leaveGlass = getItemStack(handler().getToggle("leave-party"));
     if (leaveGlass != null) {
-      addActionItem(6, leaveGlass, () -> leaveParty(user, false));
+      addActionItem(6, leaveGlass, () -> leaveParty(user));
       setDisplayName(6, getConfigString("gui-leave"));
     }
 
@@ -163,89 +157,32 @@ public class GuiInParty extends Gui {
     }
   }
 
-  private void leaveParty(User user, boolean tryAgain) {
-    ItemStack firstSlot = new ItemStack(Material.PAPER);
-    ItemMeta meta = firstSlot.getItemMeta();
-    List<String> lore = new ArrayList<>();
-    lore.add(ChatColor.GRAY + getConfigString("anvil-promote-prompt"));
-    if (tryAgain) {
-      lore.add(ChatColor.GRAY + "");
-      lore.add(ChatColor.GRAY + getConfigString("anvil-promote-error"));
-    }
-    meta.setLore(lore);
-    firstSlot.setItemMeta(meta);
-    if (!user.isLeader() || Objects.requireNonNull(user.getParty()).getSize() == 1) {
-      PartyChat.commandHandler().getCommand("leave")
-          .execute(user.getPlayer(), new String[0], false);
-      Objects.requireNonNull(user.getPlayer()).closeInventory();
+  private void leaveParty(User user) {
+    if (user.getParty().getSize() > 1 && user.isLeader()) {
+      user.setChatInputLeave(true);
+      user.getPlayer().closeInventory();
+      PartyChat.messageHandler().sendMessage(user, "type-leader-name");
+      Bukkit.getScheduler().scheduleSyncDelayedTask(PartyChat.core(), () -> {
+        if (user.isChatInputLeave()) {
+          PartyLeave.execute(user, null, false);
+          user.setChatInputLeave(false);
+        }
+      }, 200L);
     } else {
-      new AnvilGUI.Builder()
-          .onClose(player -> PartyChat.commandHandler().getCommand("leave")
-              .execute(player, new String[0], false))
-          .onComplete((player, text) -> {
-            text = text.replaceAll("\\s","");
-            if (PartyChat.commandHandler().getCommand("promote").isEnabled()) {
-              boolean completed = PartyPromote.execute(user.getPlayer(), text, true);
-              if (!completed)
-                tryAgain(user);
-            }
-            return AnvilGUI.Response.close();
-          })
-          .text(getConfigString("anvil-username"))
-          .title(getConfigString("anvil-promote-player"))
-          .itemLeft(firstSlot)
-          .plugin(PartyChat.core())
-          .open(user.getPlayer());
+      PartyLeave.execute(user, null, false);
     }
-  }
-
-  private void tryAgain(User user) {
-    Bukkit.getScheduler().scheduleSyncDelayedTask(PartyChat.core(),
-        () -> leaveParty(user, true), 5L);
   }
 
   private void renameParty(User user) {
-    ItemStack firstSlot = new ItemStack(Material.PAPER);
-    ItemMeta meta = firstSlot.getItemMeta();
-    List<String> lore = new ArrayList<>();
-    lore.add(ChatColor.GRAY + getConfigString("anvil-rename-prompt"));
-    meta.setLore(lore);
-    firstSlot.setItemMeta(meta);
-    new AnvilGUI.Builder()
-        .onClose(player -> {})
-        .onComplete((player, text) -> {
-          text = text.replaceAll("\\s","-");
-          if (PartyChat.commandHandler().getCommand("rename").isEnabled())
-            PartyRename.execute(user.getPlayer(), text);
-          return AnvilGUI.Response.close();
-        })
-        .text(getConfigString("anvil-party-name"))
-        .title(getConfigString("anvil-rename"))
-        .itemLeft(firstSlot)
-        .plugin(PartyChat.core())
-        .open(user.getPlayer());
+    user.setChatInputRename(true);
+    user.getPlayer().closeInventory();
+    PartyChat.messageHandler().sendMessage(user, "type-party-name-new");
   }
 
   private void invitePlayer(User user) {
-    ItemStack firstSlot = new ItemStack(Material.PAPER);
-    ItemMeta meta = firstSlot.getItemMeta();
-    List<String> lore = new ArrayList<>();
-    lore.add(ChatColor.GRAY + getConfigString("anvil-invite-prompt"));
-    meta.setLore(lore);
-    firstSlot.setItemMeta(meta);
-    new AnvilGUI.Builder()
-        .onClose(player -> {})
-        .onComplete((player, text) -> {
-          text = text.replaceAll("\\s","");
-          if (PartyChat.commandHandler().getCommand("add").isEnabled())
-            PartyAdd.execute(user.getPlayer(), text);
-          return AnvilGUI.Response.close();
-        })
-        .text(getConfigString("anvil-username"))
-        .title(getConfigString("anvil-invite-player"))
-        .itemLeft(firstSlot)
-        .plugin(PartyChat.core())
-        .open(user.getPlayer());
+    user.setChatInputInvite(true);
+    user.getPlayer().closeInventory();
+    PartyChat.messageHandler().sendMessage(user, "type-player-name");
   }
 
   private void togglePublic(User user) {

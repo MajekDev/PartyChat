@@ -24,20 +24,13 @@
 package dev.majek.pc.gui;
 
 import dev.majek.pc.PartyChat;
-import dev.majek.pc.command.party.PartyCreate;
 import dev.majek.pc.data.object.Party;
 import dev.majek.pc.data.object.User;
 import dev.majek.pc.chat.ChatUtils;
 import dev.majek.pc.util.SkullCache;
 import net.md_5.bungee.api.ChatColor;
-import net.wesjd.anvilgui.AnvilGUI;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.meta.ItemMeta;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Handles the gui when a player is not in a party.
@@ -86,24 +79,8 @@ public class GuiNoParty extends Gui {
   }
 
   private void createParty(User user) {
-    ItemStack firstSlot = new ItemStack(Material.PAPER);
-    ItemMeta meta = firstSlot.getItemMeta();
-    List<String> lore = new ArrayList<>();
-    lore.add(ChatColor.GRAY + getConfigString("anvil-create-prompt"));
-    meta.setLore(lore);
-    firstSlot.setItemMeta(meta);
-    new AnvilGUI.Builder()
-        .onClose(player -> {})
-        .onComplete((player, text) -> {
-          text = text.replaceAll("\\s","-");
-          if (PartyChat.commandHandler().getCommand("create").isEnabled())
-            PartyCreate.execute(user.getPlayer(), text);
-          return AnvilGUI.Response.close();
-        })
-        .text(getConfigString("anvil-party-name"))
-        .title(getConfigString("anvil-create"))
-        .itemLeft(firstSlot)
-        .plugin(PartyChat.core())
-        .open(user.getPlayer());
-  }
+    user.setChatInputCreate(true);
+    user.getPlayer().closeInventory();
+    PartyChat.messageHandler().sendMessage(user, "type-party-name");
+   }
 }

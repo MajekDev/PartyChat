@@ -25,7 +25,7 @@ package dev.majek.pc.api;
 
 import dev.majek.pc.data.object.Party;
 import dev.majek.pc.data.object.User;
-import org.bukkit.entity.Player;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
@@ -38,7 +38,7 @@ import org.jetbrains.annotations.Nullable;
 public class PartyLeaveEvent extends Event implements Cancellable {
 
   private boolean cancelled;
-  private final Player player;
+  private final OfflinePlayer player;
   private final Party party;
   private final boolean isLeader;
   private User newLeader;
@@ -51,7 +51,7 @@ public class PartyLeaveEvent extends Event implements Cancellable {
    * @param party     The party the player is leaving.
    * @param newLeader The new leader of the party if there is one.
    */
-  public PartyLeaveEvent(Player player, Party party, @Nullable User newLeader) {
+  public PartyLeaveEvent(OfflinePlayer player, Party party, @Nullable User newLeader) {
     this.player = player;
     this.party = party;
     this.isLeader = party.getLeader().getPlayerID().equals(player.getUniqueId());
@@ -63,7 +63,7 @@ public class PartyLeaveEvent extends Event implements Cancellable {
    *
    * @return Leaving player.
    */
-  public Player getPlayer() {
+  public OfflinePlayer getPlayer() {
     return player;
   }
 

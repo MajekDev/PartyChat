@@ -23,9 +23,9 @@
  */
 package dev.majek.pc.data.object;
 
+import com.tchristofferson.configupdater.ConfigUpdater;
 import dev.majek.pc.PartyChat;
 import dev.majek.pc.data.storage.YamlConfig;
-import dev.majek.pc.data.storage.ConfigUpdater;
 
 import java.io.File;
 import java.io.IOException;

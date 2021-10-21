@@ -44,8 +44,8 @@ public class ChatUtils {
   private static final Pattern HEX_COLOR_PATTERN_THREE = Pattern.compile("&#([0-9a-fA-F]{3})");
 
   /**
-   * This will translate 6 character and 3 character hex codes (&#rrggbb and &#rgb)
-   * and standard minecraft color codes (ex. &a, &7, etc.) to color.
+   * This will translate 6 character and 3 character hex codes
+   * and standard minecraft color codes to color.
    *
    * @param string The string to colorize.
    * @param blockDarkColors Whether or not to disallow colors that are too dark.
@@ -128,7 +128,7 @@ public class ChatUtils {
   }
 
   /**
-   * Get luminescence of a formatted hex color - "&x&r&r&g&g&b&b".
+   * Get luminescence of a formatted hex color.
    *
    * @param color The formatted hex string.
    * @return Luminescence value 0-255.

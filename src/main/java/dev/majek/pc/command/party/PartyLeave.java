@@ -28,7 +28,10 @@ import dev.majek.pc.api.PartyLeaveEvent;
 import dev.majek.pc.command.PartyCommand;
 import dev.majek.pc.data.object.Party;
 import dev.majek.pc.data.object.User;
+import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
 import java.util.Random;
@@ -48,10 +51,10 @@ public class PartyLeave extends PartyCommand {
 
   @Override
   public boolean execute(Player player, String[] args, boolean leftServer) {
-    return execute(PartyChat.dataHandler().getUser(player), leftServer);
+    return execute(PartyChat.dataHandler().getUser(player), null, leftServer);
   }
 
-  public static synchronized boolean execute(User user, boolean leftServer) {
+  public static synchronized boolean execute(User user, @Nullable User newLeader, boolean leftServer) {
     Player player = user.getPlayer();
 
     // Player can only leave a party if they're in one
@@ -61,22 +64,23 @@ public class PartyLeave extends PartyCommand {
     }
 
     Party party = user.getParty();
+    OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(user.getPlayerID());
 
     // This should never happen, but I want to know if it does
-    if (party == null || player == null) {
+    if (party == null) {
       PartyChat.error("Error: PC-LEV_1 | The plugin is fine, but please report this error " +
           "code here: https://discord.gg/CGgvDUz");
-      PartyChat.messageHandler().sendMessage(player, "error");
+      if (offlinePlayer.isOnline())
+        PartyChat.messageHandler().sendMessage(player, "error");
       return false;
     }
 
     boolean partyDisbanded = party.getSize() == 1;
-    User newLeader = null;
-    if (!partyDisbanded)
+    if (!partyDisbanded && newLeader == null)
       newLeader = party.getMembers().get(new Random().nextInt(party.getSize()));
 
     // Call party leave event
-    PartyLeaveEvent event = new PartyLeaveEvent(player, party, newLeader);
+    PartyLeaveEvent event = new PartyLeaveEvent(offlinePlayer, party, newLeader);
     PartyChat.core().getServer().getPluginManager().callEvent(event);
     if (event.isCancelled())
       return true;

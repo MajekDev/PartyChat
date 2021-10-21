@@ -366,12 +366,10 @@ public final class Utils {
    * 2 non damaging blocks above (air|vines|etc) and
    * 1 block the player can stand on below (non passable and non damaging)
    * Because bottom and top specify search range for Y they should satisfy these ranges:
-   * 0 < bottom < top < 256   for the overworld
-   * 0 < bottom < top < 124   for the nether (if nether roof is not enabled)
    *
    * @param safe   the location to check for safety
-   * @param bottom where to set the bottom of the "binary search", must comply with       0 < bottom < top
-   * @param top    where to set the top    of the "binary search", must comply with  bottom < top    < 256
+   * @param bottom where to set the bottom of the "binary search"
+   * @param top    where to set the top    of the "binary search"
    * @return a safe location if found, else null
    */
   public static Location findSafe(Location safe, int bottom, int top) {

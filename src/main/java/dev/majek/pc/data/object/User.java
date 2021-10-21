@@ -54,6 +54,10 @@ public class User extends Mechanic {
   private boolean   spyToggle;
   private boolean   noMove;
   private boolean   partyOnly;
+  private boolean   chatInputCreate;
+  private boolean   chatInputInvite;
+  private boolean   chatInputRename;
+  private boolean   chatInputLeave;
 
   public User() {}
 
@@ -66,7 +70,7 @@ public class User extends Mechanic {
     this.player = player;
     this.username = player.getName();
     this.nickname = (PartyChat.dataHandler().useVault ? Vault.getPlayerDisplayName(player)
-        : PartyChat.dataHandler().useDisplayNames ? player.getDisplayName() : player.getName()) + "";
+        : PartyChat.dataHandler().useDisplayNames ? player.getDisplayName() : player.getName());
     this.isOnline = true;
     this.partyID = null;
     this.inParty = false;
@@ -77,6 +81,10 @@ public class User extends Mechanic {
     this.noMove = false;
     this.partyOnly = PartyChat.dataHandler().getConfigBoolean(PartyChat.dataHandler().mainConfig, "party-only-in-party");
     PartyChat.dataHandler().addToUserMap(this);
+    this.chatInputCreate = false;
+    this.chatInputInvite = false;
+    this.chatInputRename = false;
+    this.chatInputLeave = false;
   }
 
   /**
@@ -96,6 +104,10 @@ public class User extends Mechanic {
     this.spyToggle = false;
     this.noMove = false;
     this.partyOnly = false;
+    this.chatInputCreate = false;
+    this.chatInputInvite = false;
+    this.chatInputRename = false;
+    this.chatInputLeave = false;
   }
 
   @EventHandler
@@ -257,5 +269,37 @@ public class User extends Mechanic {
     } catch (NoSuchMethodError error) {
       BukkitAudiences.create(PartyChat.core()).player(player).sendMessage(message); // spigot
     }
+  }
+
+  public boolean isChatInputCreate() {
+    return chatInputCreate;
+  }
+
+  public void setChatInputCreate(boolean chatInputCreate) {
+    this.chatInputCreate = chatInputCreate;
+  }
+
+  public boolean isChatInputInvite() {
+    return chatInputInvite;
+  }
+
+  public void setChatInputInvite(boolean chatInputInvite) {
+    this.chatInputInvite = chatInputInvite;
+  }
+
+  public boolean isChatInputRename() {
+    return chatInputRename;
+  }
+
+  public void setChatInputRename(boolean chatInputRename) {
+    this.chatInputRename = chatInputRename;
+  }
+
+  public boolean isChatInputLeave() {
+    return chatInputLeave;
+  }
+
+  public void setChatInputLeave(boolean chatInputLeave) {
+    this.chatInputLeave = chatInputLeave;
   }
 }
