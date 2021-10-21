@@ -167,6 +167,8 @@ public class DataHandler extends Mechanic {
 
   /**
    * Reload config files to recognize changes. This is called on /pc reload
+   *
+   * @param updateLang whether to update lang files
    */
   public void reload(boolean updateLang) {
     PartyChat.core().reloadConfig();

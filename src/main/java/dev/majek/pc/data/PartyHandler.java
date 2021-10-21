@@ -162,7 +162,7 @@ public class PartyHandler extends Mechanic {
   /**
    * Check if a certain party name is already taken.
    * @param name Name to check.
-   * @return true -> taken | false -> free
+   * @return true if taken | false if free
    */
   public boolean isNameTaken(String name) {
     for (Party party : partyMap.values()) {
@@ -212,6 +212,8 @@ public class PartyHandler extends Mechanic {
 
   /**
    * Get main party map.
+   *
+   * @return the map
    */
   public Map<UUID, Party> getPartyMap() {
     return partyMap;

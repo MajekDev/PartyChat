@@ -237,6 +237,7 @@ public class SkullCache {
    * @param item  The item to apply the name to. Must be a player skull.
    * @param id    The player's uuid.
    * @return      The head of the player.
+   * @throws Exception if the player is not found
    */
   @SuppressWarnings("deprecation")
   public static ItemStack itemWithUuid(ItemStack item, UUID id) throws Exception {

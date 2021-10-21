@@ -16,6 +16,8 @@ public class PlayerMove extends Mechanic {
   /**
    * This checks if the player moves after accepting a summon request.
    * If the player moves then they will not be teleported.
+   *
+   * @param event the event
    */
   @EventHandler
   public void onPlayerMove(PlayerMoveEvent event) {

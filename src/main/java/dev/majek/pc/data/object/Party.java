@@ -74,8 +74,8 @@ public class Party {
    * @param partyName The name of the party.
    * @param leaderUUID The leader of the party's unique id.
    * @param members The list of party members.
-   * @param isPublic Whether or not the party is public.
-   * @param friendlyFire Whether or not the party allows friendly fire.
+   * @param isPublic Whether the party is public.
+   * @param friendlyFire Whether the party allows friendly fire.
    */
   public Party(String partyName, String leaderUUID, List<User> members, Boolean isPublic, Boolean friendlyFire) {
     this.name = partyName;
@@ -163,7 +163,7 @@ public class Party {
 
   /**
    * Get party status: public or private.
-   * @return true -> public | false -> private
+   * @return true if public | false if private
    */
   public boolean isPublic() {
     return isPublic;
@@ -171,15 +171,15 @@ public class Party {
 
   /**
    * Set the public status.
-   * @param isPublic Whether or not the party should be public.
+   * @param isPublic Whether the party should be public.
    */
   public void setPublic(boolean isPublic) {
     this.isPublic = isPublic;
   }
 
   /**
-   * Get whether or not the party allows friendly fire between members.
-   * @return true -> allows | false -> denies
+   * Get whether the party allows friendly fire between members.
+   * @return true if allows | false if denies
    */
   public boolean allowsFriendlyFire() {
     return friendlyFire;
@@ -187,7 +187,7 @@ public class Party {
 
   /**
    * Set the party's friendly fire toggle.
-   * @param friendlyFire Whether or not the party should allow friendly fire.
+   * @param friendlyFire Whether the party should allow friendly fire.
    */
   public void setFriendlyFire(boolean friendlyFire) {
     this.friendlyFire = friendlyFire;

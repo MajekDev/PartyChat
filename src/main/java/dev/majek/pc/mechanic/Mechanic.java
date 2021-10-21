@@ -42,12 +42,16 @@ public class Mechanic implements Listener {
   public void onShutdown() { }
 
   /**
-   * Runs when the a player joins the server.
+   * Runs when a player joins the server.
+   *
+   * @param player the joining player
    */
   public void onPlayerJoin(Player player) { }
 
   /**
-   * Runs when the a player quits the server.
+   * Runs when a player quits the server.
+   *
+   * @param player the quitting player
    */
   public void onPlayerQuit(Player player) { }
 }

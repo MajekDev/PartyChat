@@ -416,6 +416,8 @@ public final class Utils {
    * Calculate reasonable bottom and top values
    *
    * @param origin location to check for safety
+   * @param bottom location of the bottom
+   * @param top location of the top
    * @return a safe location near the origin
    */
   public static Location findSafeNear(Location origin, int bottom, int top) {
