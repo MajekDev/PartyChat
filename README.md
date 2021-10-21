@@ -1,13 +1,6 @@
-[version]: https://img.shields.io/github/v/release/Majekdor/PartyChat?color=b&label=Download
-[download]: #installation
-[discord-invite]: https://discord.gg/CGgvDUz
-[discord-shield]: https://img.shields.io/discord/753727849860432076?color=%237289da
-[license]: https://github.com/Majekdor/PartyChat/blob/main/LICENSE
-[license-shield]: https://img.shields.io/github/license/Majekdor/PartyChat?color=%09%237f7f7f
-[ ![version][] ][download]
-[ ![discord-shield][] ][discord-invite]
-[ ![license-shield][] ][license]
-[![](https://img.shields.io/jenkins/build?jobUrl=https%3A%2F%2Fci.majek.dev%2Fjob%2FPartyChat)](https://ci.majek.dev/job/PartyChat)
+[![build](https://github.com/Majekdor/PartyChat/actions/workflows/build.yml/badge.svg)](https://github.com/PartyChat/HexNicks/actions/workflows/build.yml)
+[![GitHub release (latest by date)](https://img.shields.io/github/v/release/Majekdor/PartyChat)](https://github.com/Majekdor/PartyChat/releases/latest)
+[![chat](https://img.shields.io/discord/753727849860432076?color=%237289da)](https://discord.majek.dev)
 [![](https://img.shields.io/spiget/rating/79295?color=%23ff781f&label=Spigot)](https://www.spigotmc.org/resources/partychat.79295/)
 
 <img align="right" src="https://raw.githubusercontent.com/Majekdor/PartyChat/main/partychat.png" height="200" width="200">
@@ -79,7 +72,7 @@ This is where you'll be able to customize cooldowns for party subcommands such a
 
 If you can't find information on what you're looking for here, head on over to the [wiki](https://github.com/Majekdor/PartyChat/wiki). There you can find documentation on every command, permission node, and configuration option. You will also find tutorials on how to do things such as change the language, use `/partychat edit`, and much more.
 
-JavaDocs for the current release can be found [here](https://javadocs.majek.dev/PartyChat).
+JavaDocs for the current release can be found [here](https://jd.partychat.majek.dev).
 
 If you still can't find what you're looking for go ahead and join my [Discord](https://discord.gg/CGgvDUz) and I can try to help you and add documentation for your issue.
 
@@ -89,15 +82,15 @@ If you're reading this section you likely want to hook into PartyChat in some wa
 
 ## Support
 
-If you need help with the plugin and can't find the answer here, on the [wiki](https://github.com/Majekdor/PartyChat/wiki), or on Spigot, then the best way to get help is to join my [Discord](https://discord.gg/CGgvDUz). Make sure you read the frequently-asked channel before posting in the bug-reports channel (if it's a bug) or in the party-chat channel (for general help). 
+If you need help with the plugin and can't find the answer here, on the [wiki](https://github.com/Majekdor/PartyChat/wiki), or on Spigot, then the best way to get help is to join my [Discord](https://discord.gg/CGgvDUz). Make sure you read the frequently-asked channel before posting in the bug-reports channel (if it's a bug) or in the partychat channel (for general help). 
 
-If you have discovered a bug you can either join my [Discord](https://discord.gg/CGgvDUz) and report it there or open an issue here on GitHub. Please do not message me on Spigot in regards to bugs, there are easier ways to communicate.
+If you have discovered a bug you can either join my [Discord](https://discord.gg/CGgvDUz) to tell me about it and then open an issue here on GitHub. An open issue is the quickest way to get me to fix it. Please do not message me on Spigot in regard to a bug, there are easier ways to communicate.
 
 ## Contributing
 
 PartyChat is open-source and licensed under the [MIT License](https://github.com/Majekdor/PartyChat/blob/main/LICENSE), so if you want to use any code contained in the plugin or clone the repository and make some changes, go ahead!
 
-If you've found a bug within the plugin and would like to just make the changes to fix it yourself, you're free to do so and make a pull request here on GitHub. If you make significant contributions to the project, and by significant I mean one little PR to fix a tiny bug doesn't count as significant, you can earn the Contributor role in my [Discord](https://discord.gg/CGgvDUz).
+If you've found a bug within the plugin and would like to just make the changes to fix it yourself, you're free to do so and make a pull request here on GitHub. If you make significant contributions to the project, and by significant I mean one PR to fix a typo doesn't count as significant, you can earn the Contributor role in my [Discord](https://discord.gg/CGgvDUz).
 
 ## Donate
 
