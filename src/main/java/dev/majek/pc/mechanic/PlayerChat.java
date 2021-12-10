@@ -32,6 +32,7 @@ import dev.majek.pc.data.Restrictions;
 import dev.majek.pc.data.object.Party;
 import dev.majek.pc.data.object.User;
 import dev.majek.pc.chat.ChatUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
@@ -49,32 +50,44 @@ public class PlayerChat extends Mechanic {
 
     if (user.isChatInputCreate()) {
       if (PartyChat.commandHandler().getCommand(PartyCreate.class).canUse(player)) {
-        PartyCreate.execute(player, event.getMessage());
-        user.setChatInputCreate(false);
+        Bukkit.getScheduler().runTask(PartyChat.core(), () -> {
+          PartyCreate.execute(player, event.getMessage());
+          user.setChatInputCreate(false);
+        });
+        event.setCancelled(true);
         return;
       }
     }
 
     if (user.isChatInputInvite()) {
       if (PartyChat.commandHandler().getCommand(PartyAdd.class).canUse(player)) {
-        PartyAdd.execute(player, event.getMessage());
-        user.setChatInputInvite(false);
+        Bukkit.getScheduler().runTask(PartyChat.core(), () -> {
+          PartyAdd.execute(player, event.getMessage());
+          user.setChatInputInvite(false);
+        });
+        event.setCancelled(true);
         return;
       }
     }
 
     if (user.isChatInputRename()) {
       if (PartyChat.commandHandler().getCommand(PartyRename.class).canUse(player)) {
-        PartyRename.execute(player, event.getMessage());
-        user.setChatInputRename(false);
+        Bukkit.getScheduler().runTask(PartyChat.core(), () -> {
+          PartyRename.execute(player, event.getMessage());
+          user.setChatInputRename(false);
+        });
+        event.setCancelled(true);
         return;
       }
     }
 
     if (user.isChatInputLeave()) {
       if (PartyChat.commandHandler().getCommand(PartyLeave.class).canUse(player)) {
-        PartyLeave.execute(user, PartyChat.dataHandler().getUser(event.getMessage()), false);
-        user.setChatInputLeave(false);
+        Bukkit.getScheduler().runTask(PartyChat.core(), () -> {
+          PartyLeave.execute(user, PartyChat.dataHandler().getUser(event.getMessage()), false);
+          user.setChatInputLeave(false);
+        });
+        event.setCancelled(true);
         return;
       }
     }

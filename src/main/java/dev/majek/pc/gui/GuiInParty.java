@@ -206,7 +206,7 @@ public class GuiInParty extends Gui {
 
   private void disbandParty(User user) {
     Objects.requireNonNull(user.getPlayer()).closeInventory();
-    if (PartyChat.commandHandler().getCommand("summon").isEnabled())
+    if (PartyChat.commandHandler().getCommand("disband").isEnabled())
       PartyChat.commandHandler().getCommand("disband")
           .execute(user.getPlayer(), new String[0], false);
   }
