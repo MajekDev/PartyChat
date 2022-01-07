@@ -102,7 +102,7 @@ public class PartyRemove extends PartyCommand {
     }
 
     // Player is trying to remove leader
-    if (user.equals(party.getLeader())) {
+    if (target.equals(party.getLeader())) {
       PartyChat.messageHandler().sendMessage(player, "remove-leader");
       return false;
     }
