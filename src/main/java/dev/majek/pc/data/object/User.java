@@ -25,7 +25,7 @@ package dev.majek.pc.data.object;
 
 import dev.majek.pc.PartyChat;
 import dev.majek.pc.hooks.Vault;
-import dev.majek.pc.mechanic.Mechanic;
+import dev.majek.pc.event.Mechanic;
 import net.kyori.adventure.platform.bukkit.BukkitAudiences;
 import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;

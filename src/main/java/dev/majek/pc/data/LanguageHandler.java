@@ -25,7 +25,7 @@ package dev.majek.pc.data;
 
 import dev.majek.pc.PartyChat;
 import dev.majek.pc.data.object.Language;
-import dev.majek.pc.mechanic.Mechanic;
+import dev.majek.pc.event.Mechanic;
 
 import java.util.*;
 

@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package dev.majek.pc.mechanic;
+package dev.majek.pc.event;
 
 import dev.majek.pc.PartyChat;
 import dev.majek.pc.data.object.Party;

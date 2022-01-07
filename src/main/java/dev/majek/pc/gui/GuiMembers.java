@@ -27,7 +27,7 @@ import dev.majek.pc.PartyChat;
 import dev.majek.pc.data.Restrictions;
 import dev.majek.pc.data.object.Party;
 import dev.majek.pc.data.object.User;
-import dev.majek.pc.chat.ChatUtils;
+import dev.majek.pc.message.ChatUtils;
 import dev.majek.pc.util.SkullCache;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;

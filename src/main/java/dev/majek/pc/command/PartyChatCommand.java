@@ -29,7 +29,7 @@ import dev.majek.pc.PartyChat;
 import dev.majek.pc.data.object.Party;
 import dev.majek.pc.data.Restrictions;
 import dev.majek.pc.data.object.User;
-import dev.majek.pc.chat.MessageHandler;
+import dev.majek.pc.message.MessageHandler;
 import dev.majek.pc.util.TabCompleterBase;
 import org.bukkit.Bukkit;
 import org.bukkit.command.Command;

@@ -21,31 +21,37 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package dev.majek.pc.mechanic;
+package dev.majek.pc.event;
 
-import dev.majek.pc.PartyChat;
-import dev.majek.pc.command.party.PartyLeave;
-import dev.majek.pc.data.Restrictions;
-import dev.majek.pc.data.object.User;
-import org.bukkit.Bukkit;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.entity.Player;
+import org.bukkit.event.Listener;
 
 /**
- * Handles the player quit event.
+ * Represents a mechanic such as a {@link org.bukkit.event.player.PlayerQuitEvent} and
+ * is used in classes that need to run code on plugin startup.
  */
-public class PlayerQuit extends Mechanic {
+public class Mechanic implements Listener {
+  /**
+   * Runs when the plugin is being enabled.
+   */
+  public void onStartup() { }
 
-  @EventHandler
-  public void onPlayerQuit(PlayerQuitEvent event) {
-    User user = PartyChat.dataHandler().getUser(event.getPlayer());
-    if (user.isInParty() && !PartyChat.dataHandler().getConfigBoolean(PartyChat.dataHandler().mainConfig, "persistent-parties"))
-      PartyLeave.execute(user, null, true);
+  /**
+   * Runs when the plugin is being shutdown.
+   */
+  public void onShutdown() { }
 
-    // Remove the player from the party if they left the server due to a ban
-    Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(PartyChat.core(), () -> {
-      if (Restrictions.isBanned(event.getPlayer()))
-        PartyChat.commandHandler().getCommand("leave").execute(user.getPlayer(), new String[0], true);
-    }, 20L); // Give hooked plugins time to figure their shit out
-  }
+  /**
+   * Runs when a player joins the server.
+   *
+   * @param player the joining player
+   */
+  public void onPlayerJoin(Player player) { }
+
+  /**
+   * Runs when a player quits the server.
+   *
+   * @param player the quitting player
+   */
+  public void onPlayerQuit(Player player) { }
 }

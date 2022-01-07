@@ -30,7 +30,7 @@ import dev.majek.pc.data.legacy.SQLite;
 import dev.majek.pc.data.object.User;
 import dev.majek.pc.data.object.Language;
 import dev.majek.pc.data.storage.YamlConfig;
-import dev.majek.pc.mechanic.Mechanic;
+import dev.majek.pc.event.Mechanic;
 import org.apache.commons.io.FileUtils;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.configuration.file.FileConfiguration;

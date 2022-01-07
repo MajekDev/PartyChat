@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package dev.majek.pc.mechanic;
+package dev.majek.pc.event;
 
 import dev.majek.pc.PartyChat;
 import dev.majek.pc.command.party.PartyAdd;
@@ -31,7 +31,7 @@ import dev.majek.pc.command.party.PartyRename;
 import dev.majek.pc.data.Restrictions;
 import dev.majek.pc.data.object.Party;
 import dev.majek.pc.data.object.User;
-import dev.majek.pc.chat.ChatUtils;
+import dev.majek.pc.message.ChatUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;

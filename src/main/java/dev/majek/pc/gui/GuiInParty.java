@@ -27,7 +27,7 @@ import dev.majek.pc.PartyChat;
 import dev.majek.pc.command.party.PartyLeave;
 import dev.majek.pc.data.object.Party;
 import dev.majek.pc.data.object.User;
-import dev.majek.pc.chat.ChatUtils;
+import dev.majek.pc.message.ChatUtils;
 import dev.majek.pc.util.SkullCache;
 import net.md_5.bungee.api.ChatColor;
 import org.bukkit.Bukkit;

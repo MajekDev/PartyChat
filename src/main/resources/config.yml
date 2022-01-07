@@ -1,5 +1,5 @@
-# PartyChat by Majekdor | Created on 5/23/2020 | Updated 4/25/2021
-# Need help? https://github.com/Majekdor/PartyChat/wiki or join my Discord https://discord.gg/CGgvDUz
+# PartyChat by Majekdor | Created on 5/23/2020 | Updated 12/21/2021
+# Need help? https://github.com/MajekDev/PartyChat/wiki or join my Discord https://discord.majek.dev
 
 # If set to false (default) everyone will have permission to use PartyChat
 # If set to true only players with the permission partychat.use will be able to use PartyChat
@@ -14,7 +14,7 @@ language: "en_US"
 supported-languages:
   - "en_US"
 
-# If this is enabled parties will not be deleted unless all of the players leave or the leader runs /party disband
+# If this is enabled parties will not be deleted unless all the players leave or the leader runs /party disband
 # and the parties will be saved on server restart/reload
 persistent-parties: true
 

@@ -8,13 +8,6 @@ description: Customizable chat plugin to talk with your friends in parties.
 website: https://majek.dev/partychat
 softdepend: [PlaceholderAPI, Essentials, LiteBans, DiscordSRV, Vault, HeadDatabase]
 loadbefore: [StaffPlus]
-commands:
-  partychat:
-    description: Toggle party chat or speak in party chat /pc <message>.
-    usage: /partychat <message>
-  party:
-    description: Party management commands.
-
 
 permissions:
   partychat.admin:

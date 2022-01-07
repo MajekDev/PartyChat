@@ -23,7 +23,7 @@
  */
 package dev.majek.pc.hooks;
 
-import dev.majek.pc.mechanic.Mechanic;
+import dev.majek.pc.event.Mechanic;
 import me.arcaniax.hdb.api.DatabaseLoadEvent;
 import me.arcaniax.hdb.api.HeadDatabaseAPI;
 import org.bukkit.event.EventHandler;

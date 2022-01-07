@@ -57,7 +57,7 @@ loadScripts(document, 'script');</script>
 <ul class="horizontal">
 <li><a href="dev/majek/pc/package-tree.html">dev.majek.pc</a>, </li>
 <li><a href="dev/majek/pc/api/package-tree.html">dev.majek.pc.api</a>, </li>
-<li><a href="dev/majek/pc/chat/package-tree.html">dev.majek.pc.chat</a>, </li>
+<li><a href="dev/majek/pc/chat/package-tree.html">dev.majek.pc.message</a>, </li>
 <li><a href="dev/majek/pc/command/package-tree.html">dev.majek.pc.command</a>, </li>
 <li><a href="dev/majek/pc/command/party/package-tree.html">dev.majek.pc.command.party</a>, </li>
 <li><a href="dev/majek/pc/data/package-tree.html">dev.majek.pc.data</a>, </li>
@@ -66,7 +66,7 @@ loadScripts(document, 'script');</script>
 <li><a href="dev/majek/pc/data/storage/package-tree.html">dev.majek.pc.data.storage</a>, </li>
 <li><a href="dev/majek/pc/gui/package-tree.html">dev.majek.pc.gui</a>, </li>
 <li><a href="dev/majek/pc/hooks/package-tree.html">dev.majek.pc.hooks</a>, </li>
-<li><a href="dev/majek/pc/mechanic/package-tree.html">dev.majek.pc.mechanic</a>, </li>
+<li><a href="dev/majek/pc/mechanic/package-tree.html">dev.majek.pc.event</a>, </li>
 <li><a href="dev/majek/pc/util/package-tree.html">dev.majek.pc.util</a></li>
 </ul>
 </div>
@@ -76,8 +76,8 @@ loadScripts(document, 'script');</script>
 <li class="circle">java.lang.<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/Object.html" title="class or interface in java.lang" class="external-link"><span class="type-name-link">Object</span></a>
 <ul>
 <li class="circle">dev.majek.pc.data.object.<a href="dev/majek/pc/data/object/Bar.html" title="class in dev.majek.pc.data.object"><span class="type-name-link">Bar</span></a></li>
-<li class="circle">dev.majek.pc.chat.<a href="dev/majek/pc/chat/ChatParser.html" title="class in dev.majek.pc.chat"><span class="type-name-link">ChatParser</span></a></li>
-<li class="circle">dev.majek.pc.chat.<a href="dev/majek/pc/chat/ChatUtils.html" title="class in dev.majek.pc.chat"><span class="type-name-link">ChatUtils</span></a></li>
+<li class="circle">dev.majek.pc.message.<a href="dev/majek/pc/chat/ChatParser.html" title="class in dev.majek.pc.message"><span class="type-name-link">ChatParser</span></a></li>
+<li class="circle">dev.majek.pc.message.<a href="dev/majek/pc/chat/ChatUtils.html" title="class in dev.majek.pc.message"><span class="type-name-link">ChatUtils</span></a></li>
 <li class="circle">dev.majek.pc.data.object.<a href="dev/majek/pc/data/object/Cooldown.html" title="class in dev.majek.pc.data.object"><span class="type-name-link">Cooldown</span></a></li>
 <li class="circle">dev.majek.pc.data.legacy.<a href="dev/majek/pc/data/legacy/Database.html" title="class in dev.majek.pc.data.legacy"><span class="type-name-link">Database</span></a>
 <ul>
@@ -111,7 +111,7 @@ loadScripts(document, 'script');</script>
 <li class="circle">dev.majek.pc.data.storage.<a href="dev/majek/pc/data/storage/JsonConfig.html" title="class in dev.majek.pc.data.storage"><span class="type-name-link">JsonConfig</span></a></li>
 <li class="circle">dev.majek.pc.data.object.<a href="dev/majek/pc/data/object/Language.html" title="class in dev.majek.pc.data.object"><span class="type-name-link">Language</span></a></li>
 <li class="circle">dev.majek.pc.hooks.<a href="dev/majek/pc/hooks/LiteBans.html" title="class in dev.majek.pc.hooks"><span class="type-name-link">LiteBans</span></a></li>
-<li class="circle">dev.majek.pc.mechanic.<a href="dev/majek/pc/mechanic/Mechanic.html" title="class in dev.majek.pc.mechanic"><span class="type-name-link">Mechanic</span></a> (implements org.bukkit.event.Listener)
+<li class="circle">dev.majek.pc.event.<a href="dev/majek/pc/mechanic/Mechanic.html" title="class in dev.majek.pc.event"><span class="type-name-link">Mechanic</span></a> (implements org.bukkit.event.Listener)
 <ul>
 <li class="circle">dev.majek.pc.command.<a href="dev/majek/pc/command/CommandHandler.html" title="class in dev.majek.pc.command"><span class="type-name-link">CommandHandler</span></a></li>
 <li class="circle">dev.majek.pc.data.<a href="dev/majek/pc/data/DataHandler.html" title="class in dev.majek.pc.data"><span class="type-name-link">DataHandler</span></a></li>
@@ -119,15 +119,15 @@ loadScripts(document, 'script');</script>
 <li class="circle">dev.majek.pc.hooks.<a href="dev/majek/pc/hooks/HeadDatabase.html" title="class in dev.majek.pc.hooks"><span class="type-name-link">HeadDatabase</span></a></li>
 <li class="circle">dev.majek.pc.data.<a href="dev/majek/pc/data/LanguageHandler.html" title="class in dev.majek.pc.data"><span class="type-name-link">LanguageHandler</span></a></li>
 <li class="circle">dev.majek.pc.data.<a href="dev/majek/pc/data/PartyHandler.html" title="class in dev.majek.pc.data"><span class="type-name-link">PartyHandler</span></a></li>
-<li class="circle">dev.majek.pc.mechanic.<a href="dev/majek/pc/mechanic/PlayerChat.html" title="class in dev.majek.pc.mechanic"><span class="type-name-link">PlayerChat</span></a></li>
-<li class="circle">dev.majek.pc.mechanic.<a href="dev/majek/pc/mechanic/PlayerMove.html" title="class in dev.majek.pc.mechanic"><span class="type-name-link">PlayerMove</span></a></li>
-<li class="circle">dev.majek.pc.mechanic.<a href="dev/majek/pc/mechanic/PlayerQuit.html" title="class in dev.majek.pc.mechanic"><span class="type-name-link">PlayerQuit</span></a></li>
-<li class="circle">dev.majek.pc.mechanic.<a href="dev/majek/pc/mechanic/PvPEvent.html" title="class in dev.majek.pc.mechanic"><span class="type-name-link">PvPEvent</span></a></li>
+<li class="circle">dev.majek.pc.event.<a href="dev/majek/pc/mechanic/PlayerChat.html" title="class in dev.majek.pc.event"><span class="type-name-link">PlayerChat</span></a></li>
+<li class="circle">dev.majek.pc.event.<a href="dev/majek/pc/mechanic/PlayerMove.html" title="class in dev.majek.pc.event"><span class="type-name-link">PlayerMove</span></a></li>
+<li class="circle">dev.majek.pc.event.<a href="dev/majek/pc/mechanic/PlayerQuit.html" title="class in dev.majek.pc.event"><span class="type-name-link">PlayerQuit</span></a></li>
+<li class="circle">dev.majek.pc.event.<a href="dev/majek/pc/mechanic/PvPEvent.html" title="class in dev.majek.pc.event"><span class="type-name-link">PvPEvent</span></a></li>
 <li class="circle">dev.majek.pc.data.object.<a href="dev/majek/pc/data/object/User.html" title="class in dev.majek.pc.data.object"><span class="type-name-link">User</span></a></li>
 </ul>
 </li>
-<li class="circle">dev.majek.pc.mechanic.<a href="dev/majek/pc/mechanic/MechanicHandler.html" title="class in dev.majek.pc.mechanic"><span class="type-name-link">MechanicHandler</span></a> (implements org.bukkit.event.Listener)</li>
-<li class="circle">dev.majek.pc.chat.<a href="dev/majek/pc/chat/MessageHandler.html" title="class in dev.majek.pc.chat"><span class="type-name-link">MessageHandler</span></a>
+<li class="circle">dev.majek.pc.event.<a href="dev/majek/pc/mechanic/MechanicHandler.html" title="class in dev.majek.pc.event"><span class="type-name-link">MechanicHandler</span></a> (implements org.bukkit.event.Listener)</li>
+<li class="circle">dev.majek.pc.message.<a href="dev/majek/pc/chat/MessageHandler.html" title="class in dev.majek.pc.message"><span class="type-name-link">MessageHandler</span></a>
 <ul>
 <li class="circle">dev.majek.pc.command.<a href="dev/majek/pc/command/PartyChatCommand.html" title="class in dev.majek.pc.command"><span class="type-name-link">PartyChatCommand</span></a> (implements org.bukkit.command.CommandExecutor, org.bukkit.command.TabCompleter)</li>
 <li class="circle">dev.majek.pc.command.<a href="dev/majek/pc/command/PartyCommand.html" title="class in dev.majek.pc.command"><span class="type-name-link">PartyCommand</span></a> (implements org.bukkit.command.CommandExecutor, org.bukkit.command.TabCompleter)
@@ -151,7 +151,7 @@ loadScripts(document, 'script');</script>
 </li>
 </ul>
 </li>
-<li class="circle">dev.majek.pc.chat.<a href="dev/majek/pc/chat/Paginate.html" title="class in dev.majek.pc.chat"><span class="type-name-link">Paginate</span></a></li>
+<li class="circle">dev.majek.pc.message.<a href="dev/majek/pc/chat/Paginate.html" title="class in dev.majek.pc.message"><span class="type-name-link">Paginate</span></a></li>
 <li class="circle">dev.majek.pc.util.<a href="dev/majek/pc/util/Pair.html" title="class in dev.majek.pc.util"><span class="type-name-link">Pair</span></a>&lt;A,&#8203;B&gt;</li>
 <li class="circle">dev.majek.pc.data.object.<a href="dev/majek/pc/data/object/Party.html" title="class in dev.majek.pc.data.object"><span class="type-name-link">Party</span></a></li>
 <li class="circle">dev.majek.pc.api.<a href="dev/majek/pc/api/PartyChatApi.html" title="class in dev.majek.pc.api"><span class="type-name-link">PartyChatApi</span></a></li>
@@ -183,7 +183,7 @@ loadScripts(document, 'script');</script>
 <ul>
 <li class="circle">java.lang.<a href="https://docs.oracle.com/en/java/javase/11/docs/api/java.base/java/lang/RuntimeException.html" title="class or interface in java.lang" class="external-link"><span class="type-name-link">RuntimeException</span></a>
 <ul>
-<li class="circle">dev.majek.pc.chat.<a href="dev/majek/pc/chat/ChatParser.ParseException.html" title="class in dev.majek.pc.chat"><span class="type-name-link">ChatParser.ParseException</span></a></li>
+<li class="circle">dev.majek.pc.message.<a href="dev/majek/pc/chat/ChatParser.ParseException.html" title="class in dev.majek.pc.message"><span class="type-name-link">ChatParser.ParseException</span></a></li>
 </ul>
 </li>
 </ul>

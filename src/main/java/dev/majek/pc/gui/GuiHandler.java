@@ -24,7 +24,7 @@
 package dev.majek.pc.gui;
 
 import dev.majek.pc.PartyChat;
-import dev.majek.pc.mechanic.Mechanic;
+import dev.majek.pc.event.Mechanic;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.inventory.InventoryClickEvent;

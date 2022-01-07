@@ -21,7 +21,7 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
  * SOFTWARE.
  */
-package dev.majek.pc.chat;
+package dev.majek.pc.message;
 
 import dev.majek.pc.PartyChat;
 import dev.majek.pc.data.DataHandler;

@@ -1,4 +1,4 @@
-package dev.majek.pc.mechanic;
+package dev.majek.pc.event;
 
 import dev.majek.pc.PartyChat;
 import dev.majek.pc.data.object.Bar;

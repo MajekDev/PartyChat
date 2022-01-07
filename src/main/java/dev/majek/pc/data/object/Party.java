@@ -24,7 +24,7 @@
 package dev.majek.pc.data.object;
 
 import dev.majek.pc.PartyChat;
-import dev.majek.pc.chat.ChatUtils;
+import dev.majek.pc.message.ChatUtils;
 import dev.majek.pc.util.Pair;
 import org.bukkit.entity.Player;
 

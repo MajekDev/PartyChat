@@ -25,7 +25,7 @@ package dev.majek.pc.command;
 
 import dev.majek.pc.PartyChat;
 import dev.majek.pc.command.party.*;
-import dev.majek.pc.mechanic.Mechanic;
+import dev.majek.pc.event.Mechanic;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandMap;
 
@@ -47,6 +47,7 @@ public class CommandHandler extends Mechanic {
     commandMap = new HashMap<>();
   }
 
+  /*
   @Override
   @SuppressWarnings("ConstantConditions")
   public void onStartup() {
@@ -77,11 +78,13 @@ public class CommandHandler extends Mechanic {
     }
 
     // Register /party subcommands
-    registerCommands();
+    //registerCommands();
 
     PartyChat.core().getCommand("partychat").setExecutor(new PartyChatCommand());
     PartyChat.core().getCommand("partychat").setTabCompleter(new PartyChatCommand());
   }
+
+   */
 
   @SuppressWarnings("ConstantConditions")
   private void registerCommand(PartyCommand command) {
@@ -126,7 +129,7 @@ public class CommandHandler extends Mechanic {
 
   public void reload() {
     commandMap.clear();
-    registerCommands();
+    //registerCommands();
   }
 
   public List<String> getAllCommandsAndAliases() {
