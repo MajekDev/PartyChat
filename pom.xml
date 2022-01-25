@@ -6,7 +6,7 @@
 
     <groupId>dev.majek.pc</groupId>
     <artifactId>PartyChat</artifactId>
-    <version>4.2.0</version>
+    <version>4.2.1-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>PartyChat</name>
@@ -272,6 +272,16 @@
             <artifactId>discordsrv</artifactId>
             <version>1.24.0</version>
             <scope>provided</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>net.kyori</groupId>
+                    <artifactId>adventure-platform-bukkit</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>net.kyori</groupId>
+                    <artifactId>adventure-text-minimessage</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <!-- JDA -->
         <dependency>
@@ -324,6 +334,13 @@
             <groupId>net.kyori</groupId>
             <artifactId>adventure-text-serializer-bungeecord</artifactId>
             <version>4.0.2-SNAPSHOT</version>
+            <scope>compile</scope>
+        </dependency>
+        <!-- Adventure Platform Bukkit -->
+        <dependency>
+            <groupId>net.kyori</groupId>
+            <artifactId>adventure-platform-bukkit</artifactId>
+            <version>4.0.1</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>

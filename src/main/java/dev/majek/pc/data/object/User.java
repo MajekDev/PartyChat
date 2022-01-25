@@ -159,7 +159,7 @@ public class User extends Mechanic {
   }
 
   public String getNickname() {
-    if (nickname.length() == 0) {
+    if (nickname == null || nickname.length() == 0) {
       return username;
     } else {
       return nickname;
