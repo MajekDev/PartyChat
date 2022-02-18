@@ -1,0 +1,13 @@
+dev.majek.pc
+dev.majek.pc.api
+dev.majek.pc.chat
+dev.majek.pc.command
+dev.majek.pc.command.party
+dev.majek.pc.data
+dev.majek.pc.data.legacy
+dev.majek.pc.data.object
+dev.majek.pc.data.storage
+dev.majek.pc.gui
+dev.majek.pc.hooks
+dev.majek.pc.mechanic
+dev.majek.pc.util
