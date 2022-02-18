@@ -26,6 +26,7 @@ package dev.majek.pc.data;
 import dev.majek.pc.PartyChat;
 import dev.majek.pc.data.object.Language;
 import dev.majek.pc.mechanic.Mechanic;
+import org.junit.Assert;
 
 import java.util.*;
 
@@ -58,6 +59,11 @@ public class LanguageHandler extends Mechanic {
       language = langMap.get("en_US");
       PartyChat.error("Unknown language defined in config.yml: " + userDefinedLang);
       PartyChat.log("Defaulting to language: en_US");
+      try {
+        Assert.assertNotNull("Language is still null!", language);
+      } catch (AssertionError ex) {
+        PartyChat.logError(ex, "Cannot find any language to use!");
+      }
     }
     if (!language.getLangID().equals("en_US"))
       PartyChat.log("Language set to " + language.getLangID() + ".");

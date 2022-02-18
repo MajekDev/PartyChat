@@ -33,6 +33,7 @@ import dev.majek.pc.hooks.PAPI;
 import dev.majek.pc.mechanic.MechanicHandler;
 import dev.majek.pc.chat.ChatUtils;
 import dev.majek.pc.chat.MessageHandler;
+import dev.majek.pc.util.Logging;
 import dev.majek.pc.util.UpdateChecker;
 import github.scarsz.discordsrv.DiscordSRV;
 import net.dv8tion.jda.api.JDA;
@@ -42,6 +43,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.security.auth.login.LoginException;
@@ -109,6 +111,8 @@ public final class PartyChat extends JavaPlugin {
 
   @Override
   public void onEnable() {
+    instance.getLogger().addHandler(new Logging());
+
     dataHandler().logToFile("Beginning to load plugin...", "START");
 
     // Visual stuff
@@ -167,14 +171,7 @@ public final class PartyChat extends JavaPlugin {
         PartyChat.log("Successfully connected to Discord.");
       } catch (LoginException ex) {
         jda = null;
-        StringBuilder error = new StringBuilder();
-        error.append(ex.getClass().getName()).append(": ").append(ex.getMessage()).append('\n');
-        for (StackTraceElement ste : ex.getStackTrace())
-          error.append("    at ").append(ste.toString()).append('\n');
-        String errorString = error.toString();
-        PartyChat.error("There was an error hooking into Discord!");
-        PartyChat.error(errorString);
-        ex.printStackTrace();
+        PartyChat.logError(ex, "There was an error hooking into Discord!");
       }
     }
 
@@ -192,10 +189,10 @@ public final class PartyChat extends JavaPlugin {
     messageHandler().sendFormattedMessage(Bukkit.getConsoleSender(), "[PCv4] Testing message type...");
 
     // Run post startup method from data handler
-    Bukkit.getScheduler().scheduleSyncDelayedTask(instance, () -> dataHandler().postStartup(), 40L);
+    Bukkit.getScheduler().scheduleSyncDelayedTask(instance, () -> dataHandler().postStartup(), 80L);
 
     Bukkit.getScheduler().scheduleSyncDelayedTask(instance, () ->
-        log("Successfully loaded PartyChat version " + pdf.getVersion()), 60L);
+        log("Successfully loaded PartyChat version " + pdf.getVersion()), 100L);
   }
 
   @Override
@@ -288,16 +285,15 @@ public final class PartyChat extends JavaPlugin {
    * Log an object to console.
    * @param object The object to log.
    */
-  public static void log(Object object) {
+  public static void log(@NotNull Object object) {
     instance.getLogger().log(Level.INFO, object.toString());
-    dataHandler().logToFile(object.toString(), "INFO");
   }
 
   /**
    * Log a message to the Discord channel defined in the config.yml
    * @param message The message to log.
    */
-  public static void logToDiscord(String message) {
+  public static void logToDiscord(@NotNull String message) {
     TextChannel channel = jda.getTextChannelById(dataHandler().getConfigString(dataHandler().mainConfig,
         "discord-logging-channel-id"));
     if (channel == null)
@@ -309,9 +305,8 @@ public final class PartyChat extends JavaPlugin {
    * Log an error to console.
    * @param object The error to log.
    */
-  public static void error(Object object) {
+  public static void error(@NotNull Object object) {
     instance.getLogger().log(Level.SEVERE, object.toString());
-    dataHandler().logToFile(object.toString(), "ERROR");
   }
 
   /**
@@ -319,10 +314,31 @@ public final class PartyChat extends JavaPlugin {
    * @param player The player to send the message to.
    * @param string The message to send.
    */
-  public static void debug(Player player, String string) {
+  public static void debug(@Nullable Player player, @NotNull String string) {
     if (dataHandler().debug) {
-      instance.getLogger().log(Level.WARNING, "Internal Debug: " + string);
-      player.sendMessage("Internal Debug: " + string);
+      instance.getLogger().log(Level.FINE, "Internal Debug: " + string);
+      if (player != null) {
+        player.sendMessage("Internal Debug: " + string);
+      }
     }
+  }
+
+  /**
+   * Log an exception to console and the plugin's log.
+   *
+   * @param ex the exception
+   * @param message the message to go with the exception
+   */
+  public static void logError(@NotNull Throwable ex, @Nullable String message) {
+    final StringBuilder error = new StringBuilder();
+    error.append(ex.getClass().getName()).append(": ").append(ex.getMessage()).append('\n');
+    for (StackTraceElement ste : ex.getStackTrace()) {
+      error.append("    at ").append(ste.toString()).append('\n');
+    }
+    String errorString = error.toString();
+    if (message != null) {
+      PartyChat.error(message);
+    }
+    PartyChat.error(errorString);
   }
 }

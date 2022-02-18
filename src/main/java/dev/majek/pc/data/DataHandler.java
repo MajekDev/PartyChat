@@ -157,6 +157,7 @@ public class DataHandler extends Mechanic {
    * Set message config file a little after startup.
    */
   public void postStartup() {
+    PartyChat.debug(null, "DataHandler#postStartup()");
     // Set the message config file based on language from main config
     messages = PartyChat.languageHandler().getLanguage().getMessagesConfig().getConfig();
   }

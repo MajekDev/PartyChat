@@ -158,9 +158,9 @@ public class GuiInParty extends Gui {
   }
 
   private void leaveParty(User user) {
+    user.getPlayer().closeInventory();
     if (user.getParty().getSize() > 1 && user.isLeader()) {
       user.setChatInputLeave(true);
-      user.getPlayer().closeInventory();
       PartyChat.messageHandler().sendMessage(user, "type-leader-name");
       Bukkit.getScheduler().scheduleSyncDelayedTask(PartyChat.core(), () -> {
         if (user.isChatInputLeave()) {

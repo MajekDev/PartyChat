@@ -327,18 +327,12 @@ public class PartyChatCommand extends MessageHandler implements TabCompleter, Co
         return true;
       }
     } catch (Exception ex) {
-      StringBuilder error = new StringBuilder();
-      error.append(ex.getClass().getName()).append(": ").append(ex.getMessage()).append('\n');
-      for (StackTraceElement ste : ex.getStackTrace())
-        error.append("    at ").append(ste.toString()).append('\n');
-      String errorString = error.toString();
       if (sender.hasPermission("partychat.admin"))
         sendMessageWithReplacement(sender, "command-error-staff", "%command%", commandString);
       else
         sendMessageWithReplacement(sender, "command-error", "%command%", commandString);
-      PartyChat.error("There was an error executing command " + commandString);
-      PartyChat.error(errorString);
-      ex.printStackTrace();
+
+      PartyChat.logError(ex, "There was an error executing command " + commandString);
     }
     return false;
   }
