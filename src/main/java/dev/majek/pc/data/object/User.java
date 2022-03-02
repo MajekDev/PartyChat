@@ -33,6 +33,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.UUID;
@@ -158,12 +159,14 @@ public class User extends Mechanic {
     return username;
   }
 
-  public String getNickname() {
+  public @NotNull String getNickname() {
+    String ret;
     if (nickname == null || nickname.length() == 0) {
-      return username;
+      ret = username;
     } else {
-      return nickname;
+      ret = nickname;
     }
+    return ret == null ? "" : ret;
   }
 
   public void setNickname(String nickname) {
