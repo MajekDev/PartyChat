@@ -1,5 +1,9 @@
 # Plugin Changelog
 
+# 4.2.1 - Bug Fixes
+
+This update includes minor bug fixes and dependency bumps. It will be the last update before v5 comes out in a few months.
+
 # 4.2.0 - Bye Bye AnvilGUI
 
 - Drop support for AnvilGUI in favor of typing the input in chat.
