@@ -122,7 +122,7 @@ public final class PartyChat extends JavaPlugin {
     Bukkit.getConsoleSender().sendMessage(ChatUtils.applyColorCodes("    &b____   &e___             "));
     Bukkit.getConsoleSender().sendMessage(ChatUtils.applyColorCodes("   &b(  _ \\ &e/ __)     &2PartyChat &9v" + pdf.getVersion()));
     Bukkit.getConsoleSender().sendMessage(ChatUtils.applyColorCodes("    &b)___/&e( (__      &7Detected Minecraft &9"  + minecraftVersion));
-    Bukkit.getConsoleSender().sendMessage(ChatUtils.applyColorCodes("   &b(__)   &e\\___)     &7Last updated &96/20/2021 &7by &bMajekdor"));
+    Bukkit.getConsoleSender().sendMessage(ChatUtils.applyColorCodes("   &b(__)   &e\\___)     &7Last updated &99/4/2022 &7by &bMajekdor"));
     Bukkit.getConsoleSender().sendMessage(ChatUtils.applyColorCodes(""));
 
     // Register listeners and game mechanics

@@ -54,14 +54,23 @@ public class PartyCreate extends PartyCommand {
       return false;
     }
 
+    String partyName;
+
     // Make sure the player specifies a party name
     if (args.length == 1) {
-      sendMessage(player, "no-name");
-      return false;
+      boolean bool = PartyChat.dataHandler().getConfigBoolean(PartyChat.dataHandler().mainConfig, "player-party-names");
+      if (bool) {
+        partyName = player.getName();
+      } else {
+        sendMessage(player, "no-name");
+        return false;
+      }
+    } else {
+      partyName = TabCompleterBase.joinArgsBeyond(0, "-", args);
     }
 
     // Continue in a separate method, passing through party name
-    return execute(player, TabCompleterBase.joinArgsBeyond(0, "-", args));
+    return execute(player, partyName);
   }
 
   public static boolean execute(Player player, String name) {

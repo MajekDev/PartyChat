@@ -200,7 +200,9 @@ public class DataHandler extends Mechanic {
     guiConfig = guis.getConfig();
 
     // Register gui toggles
-    PartyChat.guiHandler().registerToggles();
+    if (minecraftVersion > 13) {
+      PartyChat.guiHandler().registerToggles();
+    }
 
     // Set global values defined in main config
     debug = getConfigBoolean(mainConfig, "debug");

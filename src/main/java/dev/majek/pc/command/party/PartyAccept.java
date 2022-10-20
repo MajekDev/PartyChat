@@ -76,6 +76,13 @@ public class PartyAccept extends PartyCommand {
         return false;
       }
 
+      // Make sure the party isn't full
+      int limit = PartyChat.dataHandler().getConfigInt(PartyChat.dataHandler().mainConfig, "max-party-size");
+      if (limit != -1 && party.getSize() >= limit) {
+        PartyChat.messageHandler().sendMessage(player, "full-party");
+        return false;
+      }
+
       // Run PartyJoinEvent
       PartyJoinEvent event = new PartyJoinEvent(player, party);
       PartyChat.core().getServer().getPluginManager().callEvent(event);
@@ -184,6 +191,13 @@ public class PartyAccept extends PartyCommand {
             sendMessage(player, "no-request");
             return false;
           }
+        }
+
+        // Make sure the party isn't full
+        int limit = PartyChat.dataHandler().getConfigInt(PartyChat.dataHandler().mainConfig, "max-party-size");
+        if (limit != -1 && party.getSize() >= limit) {
+          PartyChat.messageHandler().sendMessage(player, "full-party");
+          return false;
         }
 
         User newUser = PartyChat.dataHandler().getUser(toAccept);

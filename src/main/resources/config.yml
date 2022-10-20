@@ -18,6 +18,10 @@ supported-languages:
 # and the parties will be saved on server restart/reload
 persistent-parties: true
 
+# If this is enabled the party will be disbanded if the leader leaves the server or the party.
+# This will have no effect if persistent-parties is set to true.
+disband-on-leader-leave: false
+
 # Discord logging settings. This will allow you to log messages sent to party chat in a specific discord channel
 log-to-discord: false
 discord-bot-token: ""
@@ -53,6 +57,13 @@ default-friendly-fire: true
 # The maximum amount of characters allowed for a party name. This does not include color codes.
 # Set to -1 for no max length
 max-name-length: 20
+
+# The maximum numbers of players allowed in a party.
+# Set to -1 for no limit.
+max-party-size: -1
+
+# Set the party name to the creating player's username if no name is specified.
+player-party-names: false
 
 # Disable guis if you don't want them
 # Note: this is ignored and guis are automatically disabled if you're running a version below 1.13.x

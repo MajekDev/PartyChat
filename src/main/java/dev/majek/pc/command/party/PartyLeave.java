@@ -75,6 +75,15 @@ public class PartyLeave extends PartyCommand {
       return false;
     }
 
+    if (
+        user.equals(party.getLeader())
+            && !PartyChat.dataHandler().persistentParties
+            && PartyChat.dataHandler().getConfigBoolean(PartyChat.dataHandler().mainConfig, "disband-on-leader-leave")
+    ) {
+      PartyChat.commandHandler().getCommand(PartyDisband.class).execute(player, new String[0], leftServer);
+      return true;
+    }
+
     boolean partyDisbanded = party.getSize() == 1;
     if (!partyDisbanded && newLeader == null)
       newLeader = party.getMembers().get(new Random().nextInt(party.getSize()));

@@ -87,6 +87,13 @@ public class PartyJoin extends PartyCommand {
       return false;
     }
 
+    // Make sure the party isn't full
+    int limit = PartyChat.dataHandler().getConfigInt(PartyChat.dataHandler().mainConfig, "max-party-size");
+    if (limit != -1 && party.getSize() >= limit) {
+      PartyChat.messageHandler().sendMessage(player, "full-party");
+      return false;
+    }
+
     Player leader = party.getLeader().getPlayer();
 
     // Make sure the leader is online

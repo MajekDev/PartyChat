@@ -6,7 +6,7 @@
 
     <groupId>dev.majek.pc</groupId>
     <artifactId>PartyChat</artifactId>
-    <version>4.2.1</version>
+    <version>4.2.2</version>
     <packaging>jar</packaging>
 
     <name>PartyChat</name>

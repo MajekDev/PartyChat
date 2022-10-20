@@ -99,6 +99,13 @@ public class PartyAdd extends PartyCommand {
       }
     }
 
+    // Make sure the party isn't full
+    int limit = PartyChat.dataHandler().getConfigInt(PartyChat.dataHandler().mainConfig, "max-party-size");
+    if (limit != -1 && party.getSize() >= limit) {
+      PartyChat.messageHandler().sendMessage(player, "full-party");
+      return false;
+    }
+
     // Passed all checks, send messages
     for (String message : PartyChat.dataHandler().getConfigStringList(PartyChat
         .dataHandler().messages, "invite-message")) {
