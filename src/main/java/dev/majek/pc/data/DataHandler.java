@@ -127,9 +127,8 @@ public class DataHandler extends Mechanic {
   @Override
   public void onStartup() {
     // Minecraft version shenanigans
-    String fullVersion = PartyChat.core().getServer().getClass().getPackage().getName();
-    String substring = fullVersion.substring(fullVersion.lastIndexOf('.') + 1);
-    String[] versionSplit = substring.split("_");
+    String fullVersion = PartyChat.core().getServer().getMinecraftVersion();
+    String[] versionSplit = fullVersion.split("\\.");
     minecraftVersion = Integer.parseInt(versionSplit[1]);
 
     reload(false);
