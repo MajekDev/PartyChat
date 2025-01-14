@@ -25,6 +25,7 @@ package dev.majek.pc.util;
 
 import com.google.gson.JsonParser;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -54,8 +55,13 @@ public class UpdateChecker {
     this.currentVersion = Integer.parseInt(plugin.getDescription().getVersion()
         .replace(".", "").replace("-SNAPSHOT", ""));
     try {
-      this.spigotVersion = Integer.parseInt(getSpigotVersion().replace(".", ""));
-    } catch (ExecutionException | InterruptedException e) {
+      String version = this.getSpigotVersion();
+      if (version != null) {
+        this.spigotVersion = Integer.parseInt(version.replace(".", ""));
+      } else {
+        this.spigotVersion = 0;
+      }
+    } catch (Exception e) {
       e.printStackTrace();
     }
   }
@@ -63,7 +69,7 @@ public class UpdateChecker {
   /**
    * Get the plugin version currently posted on Spigot.
    */
-  private String getSpigotVersion() throws ExecutionException, InterruptedException {
+  private @Nullable String getSpigotVersion() throws ExecutionException, InterruptedException {
     CompletableFuture<String> spigotVersion = CompletableFuture.supplyAsync(() -> {
       try {
         URL url = new URL("https://api.spigotmc.org/simple/0.1/index.php?action=getResource&id="+resourceId);
